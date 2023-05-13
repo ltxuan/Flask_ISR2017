@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style type="text/css">span.iconify, i.iconify, iconify-icon {display: inline-block; width: 1em; }
+  </style>
+    <title>LOGIN</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/login/css/all.min.css">
+    <link rel="stylesheet" href="/static/login/css/bootstrap.min.css"/>   
+    <script src="/static/login/js/iconify.min.js.download"></script>
+    <script type="module" src="/static/login/js/index.js.download"></script>
+    <script nomodule="" src="/static/login/js/index.mjs"></script>
+    <script nomodule="" src="/static/login/js/index.d.ts"></script>
+    <script src="/static/login/js/jquery-3.6.0.js.download"></script>
+    <script src="/static/login/js/jquery-2.2.4.js.download"></script>
+    <script src="/static/login/js/jquery-latest.js.download"></script>
+    <link rel="stylesheet" href="/static/login/css/login.css">
+    <link rel="stylesheet" href="/static/login/css/font-awesome.min.css"/>
+    <script src="/static/login/js/login.js.download"></script>
+</head>
+<body>
+        <div id="Login" class="container-fluid">
+            <div class="row row1"></div>
+            <div class="row loginContent">
+                <div class="col-4">
+                    <img src="/static/login/images/logo_admin.png">
+                </div>
+                <div class="col-1"></div>
+                <div class="col-6">
+                    <div class="layer1">
+                        <div class="layer11"></div>
+                        <div class="layer12"><i class="fa fa-user"></i></div>
+                        <div class="layer13"></div>
+                    </div>
+                    <div class="layer2">
+                        <form class="form_login" action="{{ url_for('login') }}" method="POST">
+                            <div class="title"> <span>SWL3</span><span> Configuration Panel</span></div>
+                            <div class="username">
+                                <label for="username">User Name</label>
+                                <i class="iconUsername fa fa-user"></i>
+                                <input type="text" id="username" placeholder="Enter User Name" name="username">
+                            </div>
+                            <div class="password">
+                            <label for="password">Password</label>
+                                <i class="iconPassword fa fa-lock"></i>
+                                <i class="iconEye fa fa-eye"></i>
+                                <input type="password" id="password"  placeholder="Enter Password" name="password">
+                            </div>
+                            <div class="msg" style = "color: rgb(255, 0, 0)">{{ msg }}</div>
+                            <div class="btn_login">
+                                <button type="submit" id = "Submit" class="btn btn-primar">Login</button>
+                                <button class="btn btn-primary" type="button" onclick="" hidden>Reset</button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="layer3"><i class="fas fa-sort-down"></i></div>
+                </div>
+            </div>
+            <div class="row row1"></div>
+        </div>
+</body>
+</html>

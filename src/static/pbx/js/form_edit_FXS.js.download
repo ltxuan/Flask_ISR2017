@@ -1,0 +1,98 @@
+$(document).ready(function (){
+
+    $(function () {
+        let i;
+        for (i = 0; i < 60; i++) {
+            $('#Edit_Group_FXS').append('<option value="' + i + '">' + i + '</option>');
+        }
+    })
+
+    $('#tabNameOtherSetting').css("background",'#c3c1c1');
+    $('#tabNameOtherSetting').click(function(){
+        $('#tabNameOtherSetting').css("background",'#f0f0f0');
+        $('#tabNameOtherSetting').css("border-bottom",'none');
+        $('#tabNameGeneral').css("border-bottom",'1px solid gray');
+        $('#tabNameGeneral').css("background",'#c3c1c1');
+        $('#GeneralEditEXOther').show();
+        $('#GeneralEditEX').hide();
+    })
+    $('#tabNameGeneral').click(function(){
+        $('#tabNameGeneral').css("background",'#f0f0f0');
+        $('#tabNameOtherSetting').css("background",'#c3c1c1');
+        $('#tabNameGeneral').css("border-bottom",'none');
+        $('#tabNameOtherSetting').css("border-bottom",'1px solid gray');
+        $('#GeneralEditEXOther').hide();
+        $('#GeneralEditEX').show();
+    })
+
+    var ObjectListFXS = [];
+    function createObject(Edit_Extension_FXS,Edit_Port_FXS, Edit_Name_FXS, Edit_CallID_FXS, Edit_EnableVoicemail_FXS,Edit_VoicemailPIN_FXS,
+                          Edit_EnableSendVoicemail_FXS, Edit_EmailAddress_FXS, Edit_HookFlash_FXS, Edit_Group_FXS, Max_Call_Duration) {
+        return {
+            Edit_Extension_FXS: Edit_Extension_FXS,
+            Edit_Port_FXS: Edit_Port_FXS,
+            Edit_Name_FXS: Edit_Name_FXS,
+            Edit_CallID_FXS: Edit_CallID_FXS,
+            Edit_EnableVoicemail_FXS:Edit_EnableVoicemail_FXS,
+            Edit_VoicemailPIN_FXS: Edit_VoicemailPIN_FXS,
+            Edit_EnableSendVoicemail_FXS: Edit_EnableSendVoicemail_FXS,
+            Edit_EmailAddress_FXS: Edit_EmailAddress_FXS,
+            Edit_HookFlash_FXS:Edit_HookFlash_FXS,
+            Edit_Group_FXS: Edit_Group_FXS,
+            Max_Call_Duration:Max_Call_Duration,
+        };
+    }
+
+})
+function deleteFXS_Extension(idBtnEdit_FXS){
+    var get_idBtnEdit_FXS =parseInt(idBtnEdit_FXS.substr(13));
+
+    var Delete_EditExtension_FXS=document.getElementById('Delete_EditExtension_FXS');
+    Delete_EditExtension_FXS.style.display="block";
+    Delete_EditExtension_FXS.style.position = "absolute";
+    Delete_EditExtension_FXS.style.zIndex = '9';
+    Delete_EditExtension_FXS.style.top = "8rem";
+   var  Delete_FXS_Btn=document.getElementById('Delete_FXS_Btn');
+
+    $('#Delete_FXS_Btn').click(function (){
+        document.getElementById('rowTable-add'+get_idBtnEdit_FXS).remove();
+        CancelTable('Delete_EditExtension_FXS');
+       var ApplyChangeSuccess=document.getElementById('ApplyChangeSuccess');
+       ApplyChangeSuccess.style.display="block";
+       setTimeout(function (){
+           ApplyChangeSuccess.style.display="none";
+       },2000);
+    })
+
+}
+
+
+function editFXS_Extension(idBtnEdit_FXS){
+    // hien ra form va get data luon
+    // console.log("idrow"+idBtnEdit_FXS)
+    var get_idBtnEdit_FXS =parseInt(idBtnEdit_FXS.substr(11));
+    // console.log(get_idBtnEdit_FXS);
+    var EditExtension_VoID=document.getElementById('EditExtension_FXS');
+    EditExtension_VoID.style.display="block";
+    EditExtension_VoID.style.position = "absolute";
+    EditExtension_VoID.style.zIndex = '9';
+    EditExtension_VoID.style.top = "5rem";
+
+    // console.log(get_idBtnEdit_FXS);
+
+    var nameIdEitFXS=document.getElementById('nameIdEitFXS');
+
+    // LAY DATA TU BANG FXS
+    var Port=document.getElementById('rowTable-add'+get_idBtnEdit_FXS).getElementsByTagName("td")[0].innerHTML;
+    var Extension=document.getElementById('rowTable-add'+get_idBtnEdit_FXS).getElementsByTagName("td")[1].innerHTML;
+    var Name=document.getElementById('rowTable-add'+get_idBtnEdit_FXS).getElementsByTagName("td")[2].innerHTML;
+    var CallID=document.getElementById('rowTable-add'+get_idBtnEdit_FXS).getElementsByTagName("td")[3].innerHTML;
+
+    $('#Edit_Extension_FXS').val(Extension);
+    $('#Edit_Port_FXS').val(Port);
+    $('#Edit_CallID_FXS').val(CallID);
+    $('#Edit_Name_FXS').val(Name);
+
+}
+
+

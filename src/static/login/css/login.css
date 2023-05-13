@@ -1,0 +1,228 @@
+@font-face {
+    font-family: opensan;
+    src: url("./Font/Open_Sans/OpenSans-Regular.ttf");
+}
+
+* {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#Login {
+    height: 650px;
+}
+
+#Login .row.row1 {
+    height: 75px;
+    background: white;
+}
+
+#Login .row.loginContent {
+    height: 500px;
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#Login .row.loginContent .col-4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#Login .row.loginContent .col-4 img {
+    width: 55%;
+}
+
+#Login .row.loginContent .col-6 {
+    position: relative;
+    top: 10%;
+    width: 100% !important;
+    height: 80%;
+
+}
+
+#Login .row.loginContent .col-6 .layer1 {
+    position: absolute;
+    top: 20%;
+    z-index: 2;
+    height: 60%;
+    width: 30%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: hidden;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+#Login .row.loginContent .col-6 .layer1 .layer11 {
+    height: calc(100% / 3);
+    background-color: #a2d6ec;
+    width: 100%;
+    border: 2px solid #0273ad;
+    border-top-left-radius: 20px;
+
+}
+
+#Login .row.loginContent .col-6 .layer1 .layer12 {
+    height: calc(100% / 3);
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to bottom, #07d2fb, #0291d7);
+    border: 2px solid #0273ad;
+    border-top: none;
+    border-bottom: none;
+}
+
+#Login .row.loginContent .col-6 .layer1 .layer13 {
+    height: calc(100% / 3);
+    background-color: #a2d6ec;
+    width: 100%;
+    border: 2px solid #0273ad;
+    border-bottom-left-radius: 20px;
+}
+
+#Login .row.loginContent .col-6 .layer1 .layer12 i {
+    font-size: 300%;
+}
+
+#Login .row.loginContent .col-6 .layer2 {
+    position: absolute;
+    z-index: 3;
+    width: 70%;
+    height: 90%;
+    top: 10%;
+    left: 27%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid grey;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login {
+    height: 80%;
+    margin-top: 10% !important;
+    width: 60%;
+    margin-left: 20% !important;
+
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem !important;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login span:nth-child(1) {
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login span:nth-child(2) {
+    font-size: 100% !important;
+    font-weight: bold;
+    font-family: opensan;
+    margin-left: 3px !important;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login label {
+    font-family: opensan;
+    font-weight: bold;
+    width: 100%;
+    padding: 0.5rem 0 !important;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login input {
+    font-family: opensan;
+    font-weight: bold;
+    width: 100%;
+    padding: 0 25px !important;
+    height: 30px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login input:focus {
+    border: 2px solid #1a73e8;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .username {
+    position: relative;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .username i.iconUsername {
+    position: absolute;
+    top: 44px;
+    color: gray;
+    z-index: 5;
+    font-size: 120%;
+    left: 5px;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .password {
+    position: relative;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .password i {
+    position: absolute;
+    z-index: 5;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .password i.iconPassword {
+    top: 44px;
+    font-size: 120%;
+    color: gray;
+    left: 5px;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .password i.iconEye {
+    right: 3px;
+    font-size: 100%;
+    top: 46px;
+    color: gray;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .btn_login {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 5rem;
+}
+
+#Login .row.loginContent .col-6 .layer2 .form_login .btn_login button {
+    font-weight: bold;
+    font-family: opensan;
+    width: 6rem;
+    height: 2rem;
+
+}
+
+#Login .row.loginContent .col-6 .layer3 {
+    top: calc(50% + -31px);
+    left: calc(27% + -10px);
+    position: absolute;
+    z-index: 4;
+}
+
+#Login .row.loginContent .col-6 .layer3 i {
+    transform: rotate(90deg);
+    color: white;
+    font-size: 400%;
+    /* border:1px solid black; */
+}
+
+#Submit {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+#message {
+    color: rgb(255, 0, 0);
+}

@@ -1,0 +1,4133 @@
+:root {
+    --blueBorder: #1a73e8;
+    --bgGray: #efefef;
+    --toolbarLinear: to bottom, rgb(126, 174, 227), rgb(58, 157, 217);
+    --borderInput: rgb(218, 220, 224);
+    --bgNormal: #f4f2f4;
+    --box-shadow-custom: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --linearGray: to bottom, whitesmoke, rgb(203, 201, 202);
+    --blue1-color: #477ca7;
+    --black1-color: #2d3436;
+}
+
+@font-face {
+    font-family: opensan;
+    src: url("./Font/Open_Sans/OpenSans-Regular.ttf");
+}
+
+* {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+html {
+    font-family: opensan;
+}
+
+body {
+    font-family: opensan;
+}
+
+.container {
+    max-width: 100%;
+    height: auto;
+    overflow-y: hidden;
+}
+
+.row.toolbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-grow: 2;
+    background-color: white;
+    justify-content: flex-start;
+    height: 5.5rem !important;
+    transition: all 1s ease 0s !important;
+}
+
+.row.toolbar.active {
+    position: fixed;
+    z-index: 10;
+    background-color: whitesmoke;
+    transition: all 1s ease 0s !important;
+}
+
+.row.toolbar .logo3 {
+    width: 60%;
+    height: 5.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.row.toolbar img {
+    width: auto;
+    height: 100%;
+    margin-left: 2rem !important;
+}
+
+.row.toolbar .HTC-ISR {
+    font-size: 140%;
+    font-family: opensan;
+}
+
+.row.toolbar .text-title {
+    font-family: opensan;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem !important;
+}
+
+.row.toolbar .text-title span {
+    text-align: center;
+    font-family: opensan !important;
+}
+
+.toolbar-item {
+    width: 40%;
+    height: inherit;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 0% !important;
+}
+
+.toolbar-item-1 {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25% !important;
+}
+
+.toolbar-item-1 button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    height: 60%;
+    border: none;
+    background: none;
+    transition: all 0.5s ease 0s;
+}
+
+.toolbar-item-1.pbx button a {
+    text-decoration: none;
+    color: rgb(79, 108, 222);
+    transform: scale(1.2);
+}
+
+.toolbar-item-1 button a {
+    text-decoration: none;
+    color: black;
+}
+
+.toolbar-item-1:hover button {
+    transform: scale(1.2);
+    transition: all 0.5s ease 0s;
+}
+
+.toolbar-item-1 button svg {
+    font-size: 200%;
+}
+
+.toolbar-item-1 button p {
+    font-family: opensan;
+}
+
+#buttonChange button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(201, 57, 57);
+    border-radius: 0.3rem;
+    color: rgb(228, 234, 236);
+    font-family: opensan;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    margin-top: 0.2rem !important;
+    padding: 0.3rem !important;
+}
+
+#ApplyChangeSuccess {
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+    color: rgb(228, 234, 236);
+    font-family: opensan;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    margin-top: 0.4rem !important;
+    padding: 0.3rem !important;
+}
+
+#ApplyChangeSuccess span {
+    background: rgb(186, 107, 44);
+    border-radius: 0.5rem;
+    padding: 0.5rem !important;
+}
+
+.row.spaceBlack {
+    height: 1rem;
+    width: 100%;
+    background: rgb(48, 50, 49);
+}
+
+.row.spaceBlack.active {
+    position: fixed;
+    z-index: 10;
+    top: 5.5rem;
+}
+
+.row.content-one {
+    width: inherit;
+    height: auto;
+}
+
+.left-menu-content {
+    height: auto;
+    background: antiquewhite;
+    border-right: 2px solid white;
+    font-family: opensan;
+}
+
+.left-menu-content-item {
+    width: 100%;
+    height: 50px;
+}
+
+.accordion-item {
+    width: 100%;
+    height: 3rem;
+    background-image: linear-gradient(rgb(46, 168, 226), rgb(32, 137, 195));
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 2px solid whitesmoke;
+    opacity: 0.9;
+    transition: all 0.4s ease 0s;
+}
+
+.accordion-item:hover {
+    opacity: 1;
+    transition: all 0.4s ease 0s;
+    border-bottom: 2px solid white;
+}
+
+.accordion-item:hover i.icon-arrow {
+    color: white;
+    transition: all 0.4s ease 0s;
+}
+
+.accordion-item span {
+    font-family: opensan;
+    font-size: 100%;
+    color: white;
+}
+
+.accordion-item .icon-arrow {
+    font-size: 100%;
+    color: rgb(206, 197, 197);
+    margin: 0px 0.7rem !important;
+}
+
+.accordion-body {
+    width: 100%;
+    height: auto;
+    display: none;
+    background: rgb(213, 223, 232);
+}
+
+.contentBox {
+    transition: all 0.5s ease-out 0s !important;
+}
+
+.contentBox.active .accordion-body {
+    display: block;
+}
+
+.accordion-body ul li {
+    width: 100%;
+    height: 2rem;
+    transition: all 0.4s ease 0s;
+    border-bottom: 1px solid white;
+}
+
+.accordion-body ul li:hover {
+    border-bottom: 1px solid gray;
+    transition: all 0.4s ease 0s;
+    font-size: 105%;
+}
+
+.accordion-body ul li button {
+    font-family: opensan;
+    color: black;
+    text-decoration: none;
+    font-size: 85%;
+    transition: all 0.2s ease 0s;
+    background: none;
+    outline: none;
+    border: none;
+    margin-left: 3rem !important;
+}
+
+.accordion-body ul li button:hover {
+    color: rgb(1, 144, 212);
+    transition: all 0.2s ease 0s;
+    text-decoration: underline;
+}
+
+.tab_links_FXS_VoIP.active {
+    font-weight: bold;
+}
+
+.right-content {
+    border-left: 2px solid gray;
+    width: 100%;
+    height: 150rem;
+    background: rgb(239, 239, 239);
+    overflow: hidden;
+}
+
+.right-content .toolbar-content {
+    height: 3rem;
+    background-image: linear-gradient(white 75%, rgb(235, 233, 234) 100%);
+}
+
+.right-content .toolbar-content .tabTool {
+    background-image: url("../images/title.png");
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+}
+
+.tabTool span.title-tabTool {
+    color: white;
+    font-weight: bold;
+    font-size: 100%;
+    margin-left: 1rem !important;
+}
+
+.row.tab_content_FXS_VoIP {
+    width: 100%;
+    display: none;
+    height: 100% !important;
+    background-color: rgb(239, 239, 239) !important;
+}
+
+.form-content {
+    width: 100%;
+    height: 100%;
+    margin-top: 0rem !important;
+}
+
+.form-content .title-content {
+    width: 100%;
+    font-weight: bold;
+    height: 10rem !important;
+}
+
+.form-content .abc {
+    height: 2.5rem !important;
+    padding-top: 0.5rem !important;
+}
+
+.form-content span i {
+    color: rgb(57, 104, 222);
+    padding-left: 1rem !important;
+    padding-right: 0.5rem !important;
+}
+
+#FXS_VoIP_Extensions {
+    display: none;
+    height: 100%;
+}
+
+#table-FXS_VoIP_Extensions tr th {
+    height: 1.8rem;
+    width: 20%;
+    color: white;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+}
+
+#table-FXS_VoIP_Extensions tr th:nth-child(1) {
+    width: 10%;
+}
+
+#table-FXS_VoIP_Extensions tr td {
+    height: 1.5rem;
+    font-size: 85%;
+    color: black;
+}
+
+#table-FXS_VoIP_Extensions tr td button {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(white, rgb(185, 177, 177));
+    border-radius: 5px;
+    border: 1px solid rgb(141, 132, 132);
+    margin: 0px 0.5rem !important;
+}
+
+#table-FXS_VoIP_Extensions tr td button i {
+    font-size: 80%;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(1):hover {
+    border: 1px solid orange;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(1):hover i {
+    color: orange;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(2):hover {
+    border: 1px solid darkred;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(2):hover i {
+    color: firebrick;
+}
+
+#table-FXS_VoIP_Extensions tr:nth-child(2n) {
+    background-color: rgb(241, 232, 232);
+}
+
+.VoIP_Extensions_Btn {
+    cursor: pointer;
+}
+
+.toolbar-VoIP_Extensions {
+    width: 96%;
+    height: 1.5rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-left: 2% !important;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.toolbar-VoIP_Extensions .Btn1,
+.Btn2 {
+    width: auto;
+    height: 1.5rem;
+    background-image: linear-gradient(whitesmoke, rgb(203, 201, 202));
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 80%;
+    font-family: opensan;
+    cursor: pointer;
+    transition: all 0.4s ease 0s;
+    padding-right: 1rem !important;
+    border: 1px solid grey !important;
+    margin-right: 2rem !important;
+}
+
+.toolbar-VoIP_Extensions .Btn1:hover,
+.Btn4:hover {
+    font-weight: bold;
+    transition: all 0.4s ease 0s;
+}
+
+.toolbar-VoIP_Extensions .Btn1:hover i,
+.Btn4:hover i {
+    font-size: 140%;
+    transition: all 0.4s ease 0s;
+}
+
+.toolbar-VoIP_Extensions .Btn1 i,
+.Btn2 i {
+    font-size: 90%;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: linear-gradient(whitesmoke, whitesmoke);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px !important;
+}
+
+.toolbar-VoIP_Extensions .Btn3,
+.Btn4 {
+    width: auto;
+    height: 1.5rem;
+    background-image: linear-gradient(whitesmoke, rgb(203, 201, 202));
+    font-size: 80%;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: opensan;
+    cursor: pointer;
+    padding-right: 1rem !important;
+    border: 1px solid grey !important;
+    margin-right: 2rem !important;
+}
+
+.toolbar-VoIP_Extensions .Btn3 i,
+.Btn4 i {
+    font-size: 90%;
+    background-image: linear-gradient(whitesmoke, whitesmoke);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 5px !important;
+}
+
+.toolbar-VoIP_Extensions.counterRow {
+    font-size: 90%;
+    width: 100%;
+    height: 1.1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.toolbar-VoIP_Extensions.counterRow span:nth-child(1) {
+    position: absolute;
+    right: 10rem;
+    font-family: opensan;
+}
+
+.toolbar-VoIP_Extensions.counterRow span:nth-child(2) {
+    position: absolute;
+    right: 4rem;
+    font-family: opensan;
+}
+
+#Data_File_DownloadCertificate .div-input-dataFile {
+    width: 40rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    margin-left: 3% !important;
+}
+
+#Data_File_DownloadCertificate .div-input-dataFile span {
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+#Data_File_DownloadCertificate .div-input-dataFile input {
+    width: 20rem;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding-left: 0.3rem !important;
+    margin-left: 0.3rem !important;
+}
+
+#Data_File_DownloadCertificate .div-input-dataFile input:focus {
+    border: 2px solid rgb(26, 126, 176);
+}
+
+#Data_File_DownloadCertificate .div-input-dataFile button {
+    font-family: opensan;
+    font-size: 80%;
+    font-weight: bold;
+    margin: 0px 1rem !important;
+    padding: 0.2rem 0.3rem !important;
+}
+
+#table-Data_File_DownloadCertificate thead {
+    width: 100%;
+}
+
+#table-Data_File_DownloadCertificate .cell.active {
+    color: rgb(248, 116, 35);
+    font-size: 95%;
+    letter-spacing: 1px;
+    text-decoration: underline;
+}
+
+#Available_Codes .cell.active {
+    color: rgb(248, 116, 35);
+    font-size: 95%;
+    letter-spacing: 1px;
+    text-decoration: underline;
+}
+
+#Allowed_Codes .cell.active {
+    color: rgb(248, 116, 35);
+    font-size: 95%;
+    letter-spacing: 1px;
+    text-decoration: underline;
+}
+
+#table-FXS_VoIP_Extensions tr {}
+
+#table-FXS_VoIP_Extensions tr td {}
+
+#table-FXS_VoIP_Extensions tr td:nth-child(6) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100% !important;
+    height: 1.5rem !important;
+}
+
+#table-FXS_VoIP_Extensions tr td:nth-child(6) button {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+#table-Data_File_DownloadCertificate {
+    text-align: center;
+    width: 96%;
+    border: 1px solid grey;
+    border-spacing: 0px;
+    overflow: hidden;
+    border-collapse: separate !important;
+}
+
+#table-Data_File_DownloadCertificate tr td {
+    justify-content: center;
+    align-items: center;
+    height: 2rem !important;
+    width: 25% !important;
+    display: flex !important;
+}
+
+#button_Submit_DataFile,
+#button_Submit,
+#button_SubmitAll {
+    position: absolute;
+    width: 86px;
+    height: 26px;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    font-family: opensan;
+    background: white;
+    top: 2px;
+    left: 2px;
+    border-radius: 4px;
+}
+
+.background-run {
+    position: relative;
+    width: 90px;
+    height: 30px;
+    animation: 1s linear 0s infinite normal none running animationBtn;
+    border-radius: 5px;
+    background-image: linear-gradient(to right, rgb(153, 138, 138), rgb(5, 55, 80), rgb(153, 138, 138));
+    color: gray;
+    transition: all 0.7s ease 0s;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-top: 2rem !important;
+    margin-left: 2% !important;
+    margin-bottom: 26px !important;
+}
+
+.background-run:hover {
+    transform: scale(1.05);
+    background-image: linear-gradient(to right, rgb(71, 124, 167), rgb(1, 126, 188), rgb(71, 124, 167));
+}
+
+.background-run:hover button {
+    color: var(--blueBorder);
+}
+
+@keyframes animationBtn {
+    0% {
+        background-position: 0px center;
+    }
+
+    100% {
+        background-position: 120px center;
+    }
+}
+
+#table-add tr td button {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid rgb(141, 132, 132);
+    background-image: linear-gradient(white, rgb(185, 177, 177)) !important;
+    margin: 0px 0.5rem !important;
+}
+
+#table-add tr td button i {
+    font-size: 80%;
+}
+
+#table-add tr td button:nth-child(1):hover {
+    border: 1px solid orange;
+}
+
+#table-add tr td button:nth-child(1):hover i {
+    color: orange;
+}
+
+#table-add tr td button:nth-child(2):hover {
+    border: 1px solid darkred;
+}
+
+#table-add tr td button:nth-child(2):hover i {
+    color: firebrick;
+}
+
+#table-add tr td:nth-child(6) {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#table-VoIP_Trunk {
+    border-spacing: 0px;
+    overflow: hidden;
+    width: 96%;
+    text-align: center;
+    height: auto;
+    border: 1px solid rgb(126, 174, 227);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-collapse: separate !important;
+    border-radius: 6px !important;
+    margin-left: 2% !important;
+    margin-bottom: 1rem !important;
+}
+
+#table-VoIP_Trunk tr:nth-child(2n):hover {
+    background-color: rgba(126, 175, 227, 0.44);
+}
+
+#table-VoIP_Trunk tr:nth-child(2n+1):hover {
+    background-color: rgba(126, 175, 227, 0.44);
+}
+
+#table-VoIP_Trunk tr th {
+    height: 2rem;
+    width: 20%;
+    color: white;
+    font-family: opensan;
+    font-size: 90%;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+}
+
+#table-VoIP_Trunk tr th:nth-child(1) {
+    width: 10%;
+}
+
+#table-VoIP_Trunk tr td {
+    font-size: 85%;
+    font-family: opensan;
+    font-weight: bold;
+    color: rgb(29, 26, 26);
+    height: 2rem !important;
+}
+
+#table-VoIP_Trunk tr td button {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(white, rgb(185, 177, 177));
+    border-radius: 5px;
+    border: 1px solid rgb(141, 132, 132);
+    margin: 0px 0.5rem !important;
+}
+
+#table-VoIP_Trunk tr td button i {
+    font-size: 80%;
+}
+
+#table-VoIP_Trunk tr td button:nth-child(1):hover {
+    border: 1px solid orange;
+}
+
+#table-VoIP_Trunk tr td button:nth-child(1):hover i {
+    color: orange;
+}
+
+#table-VoIP_Trunk tr td button:nth-child(2):hover {
+    border: 1px solid darkred;
+}
+
+#table-VoIP_Trunk tr td button:nth-child(2):hover i {
+    color: firebrick;
+}
+
+#table-VoIP_Trunk tr:nth-child(2n) {
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+#table-VoIP_Trunk tr td:nth-child(1) {
+    width: 5%;
+    text-align: center;
+}
+
+#table-VoIP_Trunk tr td:nth-child(2) {
+    width: 18%;
+    text-align: center;
+}
+
+#table-VoIP_Trunk tr td:nth-child(3) {
+    width: 18%;
+    text-align: center;
+}
+
+#table-VoIP_Trunk tr td:nth-child(4) {
+    width: 18%;
+    text-align: center;
+}
+
+#table-VoIP_Trunk tr td:nth-child(5) {
+    width: 18%;
+    text-align: center;
+}
+
+#table-VoIP_Trunk tr td:nth-child(6) {
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex !important;
+}
+
+.row.footer {
+    height: 3rem;
+    background: white;
+    z-index: 3;
+    border-top: 2px solid rgb(220, 211, 211);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: open;
+    font-size: 60%;
+}
+
+.DateAndTime-content {
+    width: 80%;
+    height: auto;
+    margin-left: 10% !important;
+}
+
+.form-DateAndTime {
+    width: 100%;
+    height: auto;
+    border: 1px solid rgb(103, 141, 224);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-top: 2rem !important;
+}
+
+.form-DateAndTime div.title-date {
+    height: 2rem;
+    background-image: linear-gradient(rgb(122, 189, 224), rgb(36, 146, 211));
+    font-family: opensan;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 90%;
+    width: 100% !important;
+}
+
+.form-DateAndTime div.title-date span {
+    font-weight: bold;
+    margin-left: 1rem !important;
+}
+
+.row.dateAndTime {
+    width: 100%;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    font-family: opensan;
+}
+
+.row.dateAndTime:last-child {
+    margin-bottom: 0.5rem !important;
+}
+
+.row.dateAndTime #timeGMT {
+    font-family: opensan;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.row.dateAndTime .col-4 span {
+    float: right;
+    font-weight: bold;
+    font-size: 80%;
+}
+
+.row.dateAndTime .col-8 span {
+    float: left;
+    font-size: 100%;
+    padding-left: 10px !important;
+}
+
+.row.dateAndTime .col-8 select {
+    outline: none;
+    font-family: opensan;
+    font-size: 80%;
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+.row.dateAndTime .col-8 span.title {
+    font-weight: bold;
+    font-size: 80%;
+}
+
+.row.dateAndTime .col-8 {
+    display: flex;
+    align-items: center;
+}
+
+.row.dateAndTime .col-8 span.titleDate {
+    font-family: opensan;
+    font-size: 80%;
+    font-weight: bold;
+    margin-right: 1rem !important;
+}
+
+.row.dateAndTime .col-8 span.titleDate input {
+    width: 80%;
+    outline: none;
+}
+
+.row.dateAndTime .col-8 input.inputDate {
+    outline: none;
+    height: 1.3rem;
+    font-size: 80%;
+    width: 140px !important;
+}
+
+select#hour,
+select#minute,
+select#AM_PM {
+    height: 1.3rem;
+    width: 3rem !important;
+}
+
+.DateAndTime-content .saveAndCancelBtn {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.saveBtn,
+.cancelBtn,
+.btnStart-child {
+    width: 80px;
+    height: 25px;
+    border: 1px solid grey;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0px 1rem !important;
+}
+
+.saveBtn .child1,
+.cancelBtn .child1,
+.btnStart-child .child1 {
+    width: 30%;
+    height: 100%;
+    background-image: linear-gradient(white, rgb(186, 187, 187));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease 0s;
+}
+
+.saveBtn .child2,
+.cancelBtn .child2,
+.btnStart-child .child2 {
+    background-image: linear-gradient(white, rgb(231, 231, 230));
+    width: 70%;
+    height: 100%;
+    font-family: opensan;
+    font-size: 80%;
+    font-weight: 550;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease 0s;
+}
+
+.saveBtn img,
+.cancelBtn img,
+.btnStart-child img {
+    width: 50%;
+    height: 50%;
+}
+
+.saveBtn:hover .child2,
+.cancelBtn:hover .child2 {
+    background-image: linear-gradient(white, rgb(180, 212, 227));
+    transition: all 0.2s ease 0s;
+    font-weight: bold;
+}
+
+.saveBtn:hover .child1,
+.cancelBtn:hover .child1 {
+    transition: all 0.2s ease 0s;
+    background-image: linear-gradient(white, rgb(122, 189, 224));
+}
+
+.form-control.form-control-plaintext {
+    font-family: opensan;
+}
+
+#Download_Certificate .row.contentDownload_Certificate {
+    display: flex;
+    margin-top: 7rem !important;
+    justify-content: center;
+    align-items: center;
+}
+
+#Download_Certificate .header-certify {
+    display: flex;
+    justify-content: flex-start;
+    width: auto;
+    font-size: 90%;
+    font-weight: bold;
+    color: gray;
+    height: 30px;
+    z-index: 2;
+    left: -2px;
+    position: absolute;
+    top: -30px;
+    overflow: hidden;
+    border: 2px solid var(--blue1-color);
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom: none;
+    background-color: #dadce0;
+}
+
+#Download_Certificate .header-certify ul {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+    padding: 0 10px !important;
+
+}
+
+#Download_Certificate .header-certify ul:hover {
+    color: var(--blueBorder);
+    transition: 0.2s ease-in;
+}
+
+#Download_Certificate .header-certify ul:first-child {}
+
+#Download_Certificate .title_Download_Certificate.active,
+#Download_Certificate .title_Make_Certificate.active {
+    background-color: var(--bgGray);
+    color: #3867d6;
+}
+
+#Download_Certificate .title_Download_Certificate::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: calc(50% - 17px);
+    width: 2px;
+    height: 24px;
+    background-color: var(--blue1-color);
+}
+
+#Download_Certificate .content_Download_Certificate {
+    width: 600px;
+    height: auto;
+    border: 2px solid var(--blue1-color);
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-top-right-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: relative;
+}
+
+#Download_Certificate .content_Download_Certificate .title {
+    position: relative;
+    width: 100%;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+}
+
+#Download_Certificate .content_Download_Certificate button {
+    background: none;
+    float: right;
+    position: absolute;
+    right: 0.5rem;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+#Download_Certificate .content_Download_Certificate .title span {
+    margin-left: 0.3rem !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0px !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 span {
+    float: right;
+    font-size: 90%;
+    font-weight: bold;
+    margin-right: 5px !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 input {
+    border: 1px solid var(--borderInput);
+    height: 1.6rem;
+    outline: none;
+    border-radius: 5px;
+    font-size: 90%;
+    width: 90%;
+    padding-left: 0.3rem !important;
+    padding-right: 4.4rem !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 input:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 select {
+    border: 1px solid var(--borderInput);
+    height: 1.6rem;
+    outline: none;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 90%;
+    padding-left: 0.3rem !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 select:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 button {
+    position: absolute;
+    z-index: 2;
+    color: black;
+    right: calc(10%);
+    background: rgb(220, 219, 219);
+    font-weight: bold;
+    font-size: 90%;
+    height: 100%;
+    border: 1px solid var(--borderInput);
+    width: 4rem;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#browse:focus {
+    border-left: none !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 textarea {
+    border: 1px solid var(--borderInput);
+    outline: none;
+    width: 90%;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 90%;
+    padding-left: 0.3rem !important;
+}
+
+#Download_Certificate .content_Download_Certificate .row .col-6 textarea:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#Download_Certificate .container.content2 input {
+    width: 50% !important;
+}
+
+
+table#table-Data_File_DownloadCertificate {
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+#table-Data_File_DownloadCertificate {
+    width: 96%;
+    border: 1px solid rgb(46, 168, 226);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-left: 2% !important;
+    border-radius: 5px !important;
+}
+
+#table-Data_File_DownloadCertificate tr:nth-child(2n) {
+    background-color: rgb(243, 241, 243);
+}
+
+#table-Data_File_DownloadCertificate tr:nth-child(1) {
+    color: white;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+    height: 2.3rem;
+}
+
+#table-Data_File_DownloadCertificate tr {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 2rem;
+}
+
+#table-Data_File_DownloadCertificate tr:hover {
+    background-color: rgba(126, 174, 227, 0.36) !important;
+}
+
+#table-Data_File_DownloadCertificate tr th {
+    background-image: linear-gradient(rgb(46, 168, 226), rgb(32, 137, 195));
+    display: flex;
+    align-items: center;
+    float: left;
+    font-family: opensan;
+    letter-spacing: 1px;
+}
+
+#table-Data_File_DownloadCertificate tr th i {
+    margin: 0px 0.5rem !important;
+}
+
+#table-Data_File_DownloadCertificate tr td {
+    font-size: 80%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+#table-Data_File_DownloadCertificate tr td {
+    width: 25%;
+    transition: all 0.3s ease 0s;
+}
+
+#table-Data_File_DownloadCertificate tr td:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgb(32, 137, 195);
+    font-size: 95%;
+    transition: all 0.3s ease 0s;
+}
+
+#table-Data_File_DownloadCertificate tr td i {
+    transition: all 0.3s ease 0s;
+    margin: 0px 0.4rem !important;
+}
+
+#table-Data_File_DownloadCertificate tr:nth-child(2n+1) {
+    background-color: rgb(255, 255, 255);
+}
+
+#table-Data_File_DownloadCertificate tr:nth-child(2n) {
+    background-color: rgb(243, 241, 243);
+}
+
+
+.pagination-container {}
+
+.pagination {
+    float: right;
+    height: 1.5rem;
+    width: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 5rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.pagination.download_Certificate li {
+    font-size: 80%;
+    width: 1.5rem;
+    height: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(122, 189, 224);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 0.5rem !important;
+    margin: 0.2rem !important;
+}
+
+.pagination li.active {
+    background-image: linear-gradient(rgb(122, 189, 224), rgb(36, 146, 211));
+}
+
+.pagination li:first-child,
+.pagination li:last-child {
+    width: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.2rem !important;
+}
+
+.pagination li:first-child:hover,
+.pagination li:last-child:hover {
+    border: 2px solid rgb(32, 138, 196);
+    color: rgb(36, 146, 211);
+    font-size: 85%;
+}
+
+.pagination li:first-child i {
+    font-size: 90%;
+    margin-right: 0.3rem !important;
+}
+
+.pagination li:last-child i {
+    font-size: 90%;
+    margin-left: 0.3rem !important;
+}
+
+.form-content {
+    width: 100%;
+    height: 100%;
+    background: rgb(239, 239, 239);
+    margin-top: 0rem !important;
+}
+
+.form-content .title-content {
+    width: 100%;
+    font-weight: bold;
+    height: 10rem !important;
+}
+
+.form-content .abc {
+    height: 2.5rem !important;
+    padding-top: 0.5rem !important;
+}
+
+.form-content span i {
+    color: rgb(57, 104, 222);
+    padding-left: 1rem !important;
+    padding-right: 0.5rem !important;
+}
+
+#FXS_VoIP_Extensions {
+    display: none;
+}
+
+#table-FXS_VoIP_Extensions {
+    width: 96%;
+    text-align: center;
+    height: auto;
+    font-weight: bold;
+    border: 1px solid rgb(126, 174, 227);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-spacing: 0px;
+    overflow: hidden;
+    margin-left: 2% !important;
+    margin-bottom: 1rem !important;
+    border-radius: 6px !important;
+    border-collapse: separate !important;
+}
+
+#table-FXS_VoIP_Extensions tr th {
+    height: 2rem;
+    width: 20%;
+    color: white;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+}
+
+#table-FXS_VoIP_Extensions tr:nth-child(2n):hover td {
+    transition: all 0.3s ease-in-out 0s;
+    background-color: rgba(126, 175, 227, 0.44) !important;
+}
+
+#table-FXS_VoIP_Extensions tr:nth-child(2n+1):hover td {
+    background-color: rgba(126, 175, 227, 0.44);
+    transition: all 0.3s ease-in-out 0s;
+}
+
+#table-FXS_VoIP_Extensions tr th:nth-child(1) {
+    width: 10%;
+}
+
+#table-FXS_VoIP_Extensions tr td {
+    height: 1.5rem;
+    font-size: 85%;
+    color: black;
+}
+
+#table-FXS_VoIP_Extensions tr td button {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(white, rgb(185, 177, 177));
+    border-radius: 5px;
+    border: 1px solid rgb(141, 132, 132);
+    margin: 0px 0.5rem !important;
+}
+
+#table-FXS_VoIP_Extensions tr td button i {
+    font-size: 80%;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(1):hover {
+    border: 1px solid orange;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(1):hover i {
+    color: orange;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(2):hover {
+    border: 1px solid darkred;
+}
+
+#table-FXS_VoIP_Extensions tr td button:nth-child(2):hover i {
+    color: firebrick;
+}
+
+#table-FXS_VoIP_Extensions tr:nth-child(2n) {
+    background-color: white;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.VoIP_Extensions_Btn {
+    cursor: pointer;
+}
+
+.toolbar-VoIP_Extensions {
+    width: 96%;
+    height: 1.5rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 1rem 0px 1rem 2% !important;
+}
+
+.toolbar-VoIP_Extensions .Btn1:hover,
+.Btn2:hover {
+    font-weight: bold;
+    border: 1px solid rgb(83, 83, 83);
+    transition: all 0.4s ease 0s;
+}
+
+.toolbar-VoIP_Extensions .Btn1 i,
+.Btn2 i {
+    font-size: 90%;
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: all 0.4s ease 0s;
+    background-image: linear-gradient(whitesmoke, whitesmoke);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(109, 212, 109);
+    margin-right: 5px !important;
+}
+
+.toolbar-VoIP_Extensions .Btn1:hover i,
+.Btn2:hover i {
+    font-size: 130%;
+    transition: all 0.4s ease 0s;
+}
+
+.toolbar-VoIP_Extensions .Btn3,
+.Btn4 {
+    width: auto;
+    height: 1.5rem;
+    background-image: linear-gradient(whitesmoke, rgb(203, 201, 202));
+    font-size: 80%;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: opensan;
+    cursor: pointer;
+    margin-right: 2rem !important;
+    padding-right: 1rem !important;
+    border: 1px solid grey !important;
+}
+
+.toolbar-VoIP_Extensions .Btn3:hover,
+.Btn4:hover {
+    font-weight: bold;
+}
+
+.toolbar-VoIP_Extensions .Btn3 i,
+.Btn4 i {
+    font-size: 90%;
+    background-image: linear-gradient(whitesmoke, whitesmoke);
+    transition: all 0.4s ease 0s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 5px !important;
+}
+
+.toolbar-VoIP_Extensions .Btn3:hover i,
+.Btn4:hover i {
+    font-size: 130%;
+    transition: all 0.4s ease 0s;
+}
+
+.toolbar-VoIP_Extensions .Btn3 i {
+    color: orange;
+}
+
+.toolbar-VoIP_Extensions .Btn4 i {
+    color: red;
+}
+
+.toolbar-VoIP_Extensions.counterRow {
+    font-size: 90%;
+    width: 100%;
+    height: 1.1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.toolbar-VoIP_Extensions.counterRow span:nth-child(1) {
+    position: absolute;
+    right: 10rem;
+    font-family: opensan;
+    font-weight: bold;
+}
+
+.toolbar-VoIP_Extensions.counterRow span:nth-child(2) {
+    position: absolute;
+    right: 4rem;
+    font-family: opensan;
+    font-weight: bold;
+}
+
+#table-FXS_VoIP_Extensions tr td:nth-child(6) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: opensan;
+    width: 100% !important;
+    height: 2rem !important;
+}
+
+#table-FXS_VoIP_Extensions tr td:nth-child(6) button {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+#table-id-VoIP {
+    width: 100%;
+    text-align: center;
+    height: auto;
+    font-family: opensan;
+    font-weight: bold;
+    border-right: 1px solid rgb(126, 174, 227);
+    border-bottom: 1px solid rgb(126, 174, 227);
+    border-left: 1px solid rgb(126, 174, 227);
+    border-image: initial;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-spacing: 0px;
+    overflow: hidden;
+    border-top: none;
+    margin-bottom: 1rem !important;
+    border-radius: 6px !important;
+    border-collapse: separate !important;
+}
+
+#table-id-VoIP tr:nth-child(2n) {
+    background-color: rgb(243, 241, 243);
+}
+
+#table-id-VoIP tr:nth-child(1) {
+    color: white;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+    height: 2.3rem;
+}
+
+#table-id-VoIP tr {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 2rem;
+}
+
+#table-id-VoIP tr:hover {
+    background-color: rgba(126, 174, 227, 0.36) !important;
+}
+
+#table-id-VoIP tr th {
+    background-image: linear-gradient(rgb(46, 168, 226), rgb(32, 137, 195));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: opensan;
+}
+
+#table-id-VoIP tr td {
+    font-family: opensan;
+    font-size: 80%;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#table-id-VoIP tr td:nth-child(1) {
+    width: 5%;
+}
+
+#table-id-VoIP tr td {
+    width: 18%;
+}
+
+#table-id-VoIP tr td:nth-child(6) {
+    width: 23%;
+}
+
+#table-id-VoIP tr:nth-child(2n+1) {
+    background-color: rgb(255, 255, 255);
+}
+
+#table-id-VoIP tr:nth-child(2n) {
+    background-color: rgb(243, 241, 243);
+}
+
+#table-id-VoIP tr td button {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(white, rgb(185, 177, 177));
+    border-radius: 5px;
+    border: 1px solid rgb(141, 132, 132);
+    margin: 0px 0.5rem !important;
+}
+
+#table-id-VoIP tr td button i {
+    font-size: 80%;
+}
+
+#table-id-VoIP tr td button:nth-child(1):hover {
+    border: 1px solid orange;
+}
+
+#table-id-VoIP tr td button:nth-child(1):hover i {
+    color: orange;
+}
+
+#table-id-VoIP tr td button:nth-child(2):hover {
+    border: 1px solid darkred;
+}
+
+#table-id-VoIP tr td button:nth-child(2):hover i {
+    color: firebrick;
+}
+
+.pagination-container {}
+
+.pagination {
+    float: right;
+    height: 1.5rem;
+    width: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 5rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.pagination li {
+    font-size: 80%;
+    width: 1.5rem;
+    height: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(122, 189, 224);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 0.5rem !important;
+    margin: 0.2rem !important;
+}
+
+.pagination li.active {
+    background-image: linear-gradient(rgb(122, 189, 224), rgb(36, 146, 211));
+}
+
+.pagination li:first-child,
+.pagination li:last-child {
+    width: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.2rem !important;
+}
+
+.pagination li:first-child:hover,
+.pagination li:last-child:hover {
+    border: 2px solid rgb(32, 138, 196);
+    color: rgb(36, 146, 211);
+    font-size: 85%;
+}
+
+.pagination li:first-child i {
+    font-size: 90%;
+    margin-right: 0.3rem !important;
+}
+
+.pagination li:last-child i {
+    font-size: 90%;
+    margin-left: 0.3rem !important;
+}
+
+#ApplyChangeSuccess {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ApplyChangeSuccess span {
+    background: orange;
+    text-align: center;
+    color: white;
+    border-radius: 5px;
+    font-size: 80%;
+    font-weight: bold;
+    padding: 0.5rem !important;
+}
+
+#buttonChange button {
+    background: rgb(97, 177, 11);
+    text-align: center;
+    border-radius: 5px;
+    font-size: 80%;
+    font-weight: bold;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 0.3rem 0.7rem !important;
+}
+
+.row.tabAddBulkVoID {
+    height: inherit;
+    width: 100% !important;
+}
+
+.row.tabAddBulkVoID i {
+    color: rgb(26, 126, 176);
+}
+
+.form-addVoIP_range {
+    height: 615px;
+    position: fixed;
+    border: 1px solid rgb(26, 126, 176);
+    background-color: rgb(225, 225, 225);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 7px;
+    overflow: hidden;
+    width: 700px !important;
+}
+
+.title-content-1 {
+    width: 100%;
+    height: 2rem;
+    background-color: rgb(51, 152, 208);
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.title-content-1 span {
+    font-size: 80%;
+    color: white;
+    font-weight: bold;
+    margin-left: 1rem !important;
+}
+
+.title-content-1 button {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.title-content-1 button i {
+    transition: all 0.2s ease 0s;
+    color: whitesmoke !important;
+}
+
+.title-content-1 button:hover i {
+    font-size: 130%;
+    transition: all 0.2s ease 0s;
+}
+
+.form-addVoIP_range .form2 {
+    width: 90%;
+    height: auto;
+    position: relative;
+    border: 1px solid grey;
+    background-color: rgb(240, 240, 240);
+    margin-left: 5% !important;
+    margin-top: 3rem !important;
+}
+
+.form-addVoIP_range .form2 span.text1 {
+    font-size: 80%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 0.5rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.tabNameGeneral {
+    position: absolute;
+    top: 2.07rem;
+    z-index: 2;
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+    border-left: 1px solid grey;
+    border-image: initial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 5%;
+    background-color: rgb(240, 240, 240);
+    width: 5rem;
+    height: 2rem;
+    font-size: 90%;
+    font-weight: bold;
+    color: rgb(26, 126, 176);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: none !important;
+    margin-top: 1rem !important;
+}
+
+.form-addVoIP_range .general {
+    width: 96%;
+    height: auto;
+    border: 1px solid grey;
+    padding: 0.3rem !important;
+    margin-top: 1rem !important;
+    margin-left: 2% !important;
+}
+
+.form-addVoIP_range .general .input1 {
+    width: calc(33.3333%);
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-family: open;
+}
+
+.form-addVoIP_range .general .input1.res {
+    width: calc(33.3333%) !important;
+}
+
+.form-addVoIP_range .general .input1.res .res {
+    width: 59% !important;
+}
+
+.form-addVoIP_range .general .input1 p {
+    font-size: 80%;
+    font-family: opensan;
+    width: 42% !important;
+}
+
+.form-addVoIP_range .general .input1 input {
+    height: 1.2rem;
+    font-size: 80%;
+    font-family: opensan;
+    outline: none;
+    width: 40% !important;
+    padding: 0px 3px !important;
+}
+
+.form-addVoIP_range .general .input1 input:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .general .input1 select {
+    width: 40%;
+    height: 1.2rem;
+    font-size: 70%;
+    outline: none;
+    font-family: opensan;
+}
+
+.form-addVoIP_range .general .input1 select:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .general .input2 {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+    width: auto !important;
+}
+
+.form-addVoIP_range .general .input2 input,
+.input3 input {
+    margin-right: 0.5rem !important;
+}
+
+.form-addVoIP_range .general .input2.v2 {
+    margin-left: 2rem !important;
+}
+
+.form-addVoIP_range .general .input2.v2 input {
+    font-family: opensan;
+    font-size: 100%;
+    outline: none;
+    margin-left: 0.5rem !important;
+    padding: 0px 3px !important;
+}
+
+.form-addVoIP_range .general .input2.v2 input:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .form2 span.text2 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 6.1rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.form-addVoIP_range .general .input3 {
+    width: auto;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+}
+
+.form-addVoIP_range .general .input3.v3 input {
+    font-family: opensan;
+    font-size: 100%;
+    outline: none;
+    margin-left: 0.5rem !important;
+    padding: 0px 3px !important;
+}
+
+.form-addVoIP_range .general .input3.v3 input:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .form2 span.text3 {
+    position: absolute;
+    top: 9.8rem;
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    margin-left: 1.5rem !important;
+    padding: 0px 0.3rem !important;
+}
+
+.form-addVoIP_range .general .note1 {
+    font-size: 80%;
+    color: rgb(26, 126, 176);
+}
+
+.form-addVoIP_range .form2 span.text4 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 18rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.form-addVoIP_range .general .input4 {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+    width: 9rem !important;
+}
+
+.form-addVoIP_range .form2 span.text7 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 18rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.form-addVoIP_range .general .input7 {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+    width: 21rem !important;
+}
+
+.form-addVoIP_range .general .input7 input {
+    font-family: opensan;
+    outline: none;
+    padding: 0px 3px !important;
+}
+
+.form-addVoIP_range .general .input7 input:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .form2 span.text8 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 21.6rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.form-addVoIP_range .general .input8 {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+    width: 11rem !important;
+}
+
+.form-addVoIP_range .general .input8 select {
+    font-family: opensan;
+    outline: none;
+    margin-left: 0.5rem !important;
+}
+
+.form-addVoIP_range .general .input8 select:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .form2 span.text9 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 25.4rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.form-addVoIP_range .general .input9 {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+    width: 22rem !important;
+}
+
+.form-addVoIP_range .general .input9 input {
+    font-family: opensan;
+    outline: none;
+    margin: 0px 0.3rem !important;
+}
+
+.form-addVoIP_range .general .input9 input:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .general .input4 p {
+    width: 85%;
+}
+
+.form-addVoIP_range .general .input4 select {
+    width: 67%;
+    height: 1.2rem;
+    font-size: 100%;
+    font-family: opensan;
+    outline: none;
+}
+
+.form-addVoIP_range .general .input4 select:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .general .input5 {
+    width: calc(33.3333%);
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 80%;
+}
+
+.form-addVoIP_range .general .input5 input,
+.general .input5 select {
+    font-family: opensan;
+    outline: none;
+    margin-left: 0.5rem !important;
+}
+
+.form-addVoIP_range .general .input5 input,
+.general .input5 select:focus {
+    border-radius: 3px;
+    border: 2px solid var(--blueBorder) !important;
+}
+
+.form-addVoIP_range .form2 span.text5 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 21.6rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.form-addVoIP_range .form2 span.text6 {
+    font-size: 75%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 25.2rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+#GeneralEditEX .form-addVoIP_range .general .input4 {
+    width: 20rem !important;
+}
+
+.toolbar1 {
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0px !important;
+}
+
+.row.toolbar1 .Btn11,
+.Btn22 {
+    width: auto;
+    height: 1.5rem;
+    background-image: linear-gradient(whitesmoke, rgb(203, 201, 202));
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out 0s;
+    font-size: 80%;
+    font-family: opensan;
+    cursor: pointer;
+    padding-right: 1rem !important;
+    margin: 0.5rem 1rem !important;
+    border: 1px solid grey !important;
+}
+
+.row.toolbar1 .Btn11:hover,
+.Btn22:hover {
+    background-image: linear-gradient(rgb(255, 255, 255), rgba(153, 153, 153, 0.72));
+    transition: all 0.2s ease-in-out 0s;
+    font-size: 85%;
+    font-weight: bold;
+}
+
+.row.toolbar1 .Btn11:hover i,
+.Btn22:hover i {
+    background-image: linear-gradient(rgb(255, 255, 255), rgba(153, 153, 153, 0.72));
+    font-size: 105%;
+    transition: all 0.2s ease-in-out 0s;
+}
+
+.row.toolbar1 .Btn11 i,
+.Btn22 i {
+    font-size: 90%;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: linear-gradient(whitesmoke, rgb(162, 151, 156));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px !important;
+}
+
+.title-content-1 {
+    width: 100%;
+    height: 2rem;
+    background-color: rgb(51, 152, 208);
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-family: opensan;
+}
+
+.title-content-1 span {
+    font-size: 80%;
+    color: white;
+    font-weight: bold;
+    margin-left: 1rem !important;
+}
+
+.title-content-1 button {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.title-content-1 button i {
+    transition: all 0.2s ease 0s;
+    color: whitesmoke !important;
+}
+
+.title-content-1 button:hover i {
+    font-size: 130%;
+    transition: all 0.2s ease 0s;
+}
+
+.form2 .general i {
+    color: rgb(36, 145, 203);
+}
+
+#EditExtension_FXS {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+.form-content {
+    background: none !important;
+}
+
+#EditExtension_FXS #EditExtension_FXS_table {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+}
+
+#Delete_EditExtension_FXS,
+#Delete_EditExtension_VoIP,
+#Delete_EditTrunk,
+#DeleteMulti_Trunk {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+.form-content {
+    background: none !important;
+}
+
+#table_Delete_EditExtension_FXS,
+#table_DeleteMulti_VoIPEx,
+#table_Delete_EditExtension_VoIP,
+#table_Delete_EditTrunk,
+#table_DeleteMulti_Trunk {
+    position: fixed;
+    top: 40%;
+    left: 40%;
+    width: 25rem;
+    height: 10rem;
+    border: 1px solid rgb(51, 152, 208);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background: rgb(239, 239, 239);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#table_Delete_EditExtension_FXS .content-question,
+#table_DeleteMulti_VoIPEx .content-question,
+#table_Delete_EditExtension_VoIP .content-question,
+#table_Delete_EditTrunk .content-question,
+#table_DeleteMulti_Trunk .content-question {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 8rem;
+    font-family: opensan;
+    font-weight: bold;
+}
+
+#table_Delete_EditExtension_FXS .content-question .text_question,
+#table_DeleteMulti_VoIPEx .content-question .text_question,
+#table_Delete_EditExtension_VoIP .content-question .text_question,
+#table_Delete_EditTrunk .content-question .text_question,
+#table_DeleteMulti_Trunk .content-question .text_question {
+    margin-top: 2rem !important;
+}
+
+#table_Delete_EditExtension_FXS .content-question .row toolbar1 {
+    margin-top: 1rem !important;
+}
+
+#addExtensVoID {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#addVoIP_table {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+}
+
+#addBulkVoIP {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#addBulkVoIP_table {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+}
+
+#DeleteMulti_VoIPEx {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#EditExtension_VoID {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#EditExtension_VoID_table {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+}
+
+#AddVoIPTrunk,
+#EditVoIPTrunk {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#AddVoIPTrunk_table,
+#EditVoIPTrunk_table {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    height: 490px !important;
+}
+
+#AddVoIPTrunk table,
+#EditVoIPTrunk table {
+    border-collapse: separate;
+    border-spacing: 0px 0.5rem;
+    margin-left: 8rem !important;
+}
+
+#AddVoIPTrunk table tr,
+#EditVoIPTrunk table tr {
+    width: 100%;
+}
+
+#AddVoIPTrunk table td:nth-child(1),
+#EditVoIPTrunk table td:nth-child(1) {
+    width: 35%;
+}
+
+#AddVoIPTrunk table td:nth-child(1) span,
+#EditVoIPTrunk table td:nth-child(1) span {
+    float: right;
+}
+
+#AddVoIPTrunk table td:nth-child(2),
+#EditVoIPTrunk table td:nth-child(2) {
+    width: 70%;
+}
+
+#AddVoIPTrunk table td:nth-child(2) select,
+#EditVoIPTrunk table td:nth-child(2) select {
+    width: 55%;
+    height: 80%;
+    font-family: opensan;
+    font-weight: bold;
+    margin-left: 5% !important;
+}
+
+#AddVoIPTrunk table td:nth-child(2) input,
+#EditVoIPTrunk table td:nth-child(2) input {
+    width: 95%;
+    height: 80%;
+    margin-left: 5% !important;
+}
+
+.form2 {
+    background-color: rgb(240, 240, 240);
+    font-family: opensan;
+    font-size: 90%;
+    margin-top: 2rem !important;
+    padding-bottom: 0.7rem !important;
+}
+
+.form-addVoIP_range .form2 tr td {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.form-addVoIP_range .form2 tr:nth-child(8) td input {
+    float: right;
+}
+
+.form-addVoIP_range .form2 tr:nth-child(8) td span {
+    float: left;
+    margin-left: 5% !important;
+}
+
+.form-addVoIP_range .form2 span.text1 {
+    font-size: 80%;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    top: 0.5rem;
+    padding: 0px 0.3rem !important;
+    margin-left: 1.5rem !important;
+}
+
+.container.abcd span {
+    font-family: opensan;
+    font-size: 90%;
+    font-weight: bold;
+    margin-right: 0.5rem !important;
+}
+
+.container.abcd select {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.container.abcd select option {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.container.abcd .row2 {
+    margin-top: 1rem !important;
+}
+
+form.Form_SIP_Settings {
+    width: 100%;
+    height: 30rem;
+    position: relative;
+    top: 0rem;
+}
+
+.Send_DTMF {
+    margin-left: 10px !important;
+}
+
+.Send_DTMF input {
+    margin: 0px !important;
+}
+
+.Send_DTMF span {
+    font-size: 80%;
+    margin: 0px 1.5rem 0px 0.5rem !important;
+}
+
+.radioAudioSettings {
+    padding-left: 10px !important;
+}
+
+.radioAudioSettings input {
+    margin: 0px !important;
+}
+
+.radioAudioSettings span {
+    font-size: 85%;
+    margin: 0px 1rem 0px 0.5rem !important;
+}
+
+.lineInput:nth-child(1) {
+    margin-top: 2rem !important;
+}
+
+.lineInput {
+    width: 100%;
+    float: right;
+    height: 25px;
+    margin: 0.3rem 0px !important;
+}
+
+.nameInput {
+    height: 80%;
+}
+
+.nameInput1 {
+    width: auto;
+    float: right !important;
+}
+
+.nameInput i {
+    font-size: 80%;
+    color: rgb(1, 132, 195);
+}
+
+.nameInput span {
+    font-size: 90%;
+}
+
+.contentInput {
+    height: 80%;
+    width: 25%;
+    font-size: 80%;
+    margin-left: 10px !important;
+}
+
+.contentInput option {
+    text-align: center;
+}
+
+.nameInput1 span.checkbox-enable {
+    padding-right: 50px !important;
+}
+
+.lineInput.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem !important;
+}
+
+.lineInput.btn button {
+    border: 1px solid rgb(32, 56, 107);
+    background: rgb(61, 97, 173);
+    font-family: opensan;
+    font-size: 85%;
+    color: rgb(227, 227, 227);
+    border-radius: 5px;
+    transition: all 0.4s ease 0s;
+    outline: none;
+    font-weight: bold;
+    padding: 0.2rem 1rem !important;
+    margin: 0px 1rem !important;
+}
+
+.lineInput.btn button:hover {
+    background: rgb(34, 64, 126);
+    transition: all 0.4s ease 0s;
+    color: white;
+    transform: scale(1.05);
+}
+
+.tileSetingsLinks {
+    width: 100%;
+    position: absolute;
+    top: 4rem;
+}
+
+
+.tileSetingsLinks a {
+    float: right;
+    transition: all 0.4s ease 0s;
+    font-weight: bold;
+    text-decoration: underline;
+    color: rgb(49, 61, 186);
+    font-family: opensan;
+    margin-right: 10% !important;
+}
+
+.tileSetingsLinks a:hover {
+    transform: scale(1.05);
+    transition: all 0.4s ease 0s;
+    color: rgb(24, 131, 245);
+}
+
+.content__LocalDialPlan {
+    width: 80%;
+    margin-left: 10% !important;
+    position: relative;
+}
+
+.tileSetings {
+    font-weight: bold;
+    font-size: 90%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: -33px;
+    overflow: hidden;
+    border: 2px solid #477ca7;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom: none;
+}
+
+.tileSetings button {
+    padding: 0 0.7rem !important;
+    outline: none;
+    height: 100%;
+    font-weight: bold;
+    color: #808080;
+    background-color: #f4f2f4;
+}
+
+.tileSetings button:hover {
+    background-color: #dadce0;
+    color: var(--blue1-color);
+    transition: 0.3s;
+}
+
+.General_Preferences-btn {
+    border: none;
+}
+
+.General_Preferences-btn.active,
+.Call_Forwarding_Preferences-btn.active {
+    color: #0062cc;
+}
+
+.General_Preferences-btn::after {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 28px;
+    top: 2px;
+    right: calc(50% + 25px);
+    background-color: var(--blue1-color);
+}
+
+.Call_Forwarding_Preferences-btn {
+    border: none;
+}
+
+#General_Preferences-table1 {
+    border: 2px solid rgb(71, 124, 167);
+    border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    box-shadow: var(--box-shadow-custom);
+}
+
+#General_Preferences-table2 {
+    width: 400px;
+    margin-left: calc(50% - 200px) !important;
+    border: 1px solid black;
+    margin-bottom: 30px !important;
+    border-collapse: collapse;
+}
+
+#General_Preferences-table2 td,
+#General_Preferences-table2 th {
+    border: 1px solid black;
+    text-align: center;
+}
+
+#General_Preferences-table {
+    background: var(--bgNormal);
+    border-collapse: separate;
+    border-spacing: 0px 0.5rem;
+    width: 100%;
+    font-size: 90%;
+}
+
+#General_Preferences-table tr td:nth-child(1) {
+    width: 50%;
+}
+
+#General_Preferences-table tr td:nth-child(1) span {
+    float: right;
+}
+
+#General_Preferences-table tr td:nth-child(2) {
+    width: 50%;
+    float: left;
+}
+
+#General_Preferences-table tr td:nth-child(2) input,
+#General_Preferences-table tr td:nth-child(2) textarea {
+    float: left;
+    border: 1px solid var(--borderInput);
+    border-radius: 3px;
+    outline: none;
+    margin: 0px 0.5rem 0px 1rem !important;
+    padding: 0px 5px !important;
+}
+
+#General_Preferences-table tr td:nth-child(2) input:focus,
+#General_Preferences-table tr td:nth-child(2) textarea:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#Call_Forwarding_Preferences-table {
+    background: var(--bgNormal);
+    border: 2px solid rgb(71, 124, 167);
+    width: 100%;
+    font-size: 85%;
+    font-weight: bold;
+    border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    box-shadow: var(--box-shadow-custom);
+}
+
+
+#Call_Forwarding_Preferences-table tr {
+    width: 100%;
+    height: 30px;
+}
+
+#Call_Forwarding_Preferences-table tr th {
+    background: white;
+
+}
+
+#Call_Forwarding_Preferences-table tr:nth-child(odd) {
+    background-color: white;
+}
+
+#Call_Forwarding_Preferences-table tr:last-child {
+    margin-bottom: 2rem !important;
+}
+
+#Call_Forwarding_Preferences-table tr td:first-child {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 30% !important;
+    height: 30px;
+}
+
+#Call_Forwarding_Preferences-table tr td:last-child {
+    width: 30%;
+}
+
+#Call_Forwarding_Preferences-table tr td:last-child input {
+    width: 50%;
+    height: 22px;
+    padding: 0 5px !important;
+    font-size: 85%;
+}
+
+#Call_Forwarding_Preferences-table tr input[type=checkbox] {
+    margin: 0 0.5rem !important;
+}
+
+
+.GE_Setting .col-10 {
+    border: 1px solid rgb(58, 157, 217);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.GE_Setting .row:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GE_Setting .row:nth-child(1),
+.GE_Setting .row:nth-child(2) {
+    margin: 1rem 0px !important;
+}
+
+.GE_Setting .form-control {
+    padding-left: 0.5rem !important;
+}
+
+.GE_Setting .panel-heading {
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-family: opensan !important;
+}
+
+.GE_Setting .panel-heading i {
+    padding: 0px 0.5rem !important;
+    margin-left: 0.6rem !important;
+}
+
+.GE_Setting .form-group {
+    margin-top: 0.7rem !important;
+}
+
+.GE_Setting .form-group.col-2 {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    font-weight: bold;
+    font-size: 90%;
+    font-family: opensan !important;
+}
+
+.GE_Setting .form-group.col-2:nth-child(1) {
+    margin-left: 2rem !important;
+}
+
+.GE_Setting .form-group.col-2 label {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 0.2rem 1rem !important;
+    margin-right: 1rem !important;
+}
+
+.GE_Setting .form-group.col-6 {
+    margin-left: 1.45rem !important;
+    margin-top: 0px !important;
+}
+
+.GE_Setting .form-group.col-6 label {
+    font-weight: bold;
+    color: rgb(24, 22, 22);
+    font-family: opensan;
+    padding: 0.3rem 0px !important;
+}
+
+.GE_Setting .form-group.col-6 input {
+    outline: none !important;
+}
+
+.GE_Setting .form-group.col-6 input:focus {
+    border: 2px solid var(--blueBorder);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.GE_Setting input.submit {
+    transition: all 0.3s ease-in-out 0s;
+    color: white;
+    background: rgb(70, 136, 241);
+    border-radius: 5px;
+    border: 1px solid rgb(0, 117, 255);
+    outline: none;
+    font-family: opensan;
+    font-weight: bold;
+    margin: 1.2rem 0rem 1rem 24px !important;
+    padding: 0.3rem 1rem !important;
+}
+
+.GE_Setting input.submit:hover {
+    transition: all 0.3s ease-in-out 0s;
+    background: rgb(17, 81, 167) !important;
+}
+
+.panel-body {
+    width: 96%;
+    margin-left: 2% !important;
+}
+
+.Configuration .container .row.mother {
+    margin-top: 3rem !important;
+}
+
+.Configuration .container .row.mother .col-10 {
+    background-color: rgb(244, 242, 244);
+    border: 1px solid rgb(218, 220, 224);
+    border-radius: 10px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.col-10 {}
+
+.Configuration .container .row .col-10 .row.child .col-10 {
+    height: auto;
+    border: none;
+    box-shadow: none;
+    margin-top: 1rem !important;
+}
+
+.col-10.tableRouter {}
+
+.Configuration .tableRouter .row {
+    font-weight: bold;
+    height: 2rem;
+    margin: 0.7rem 0px !important;
+}
+
+.Configuration .tableRouter .col-2 {}
+
+.Configuration .tableRouter .col-6 {}
+
+.Configuration .tableRouter .row .col-2 input {
+    width: 80%;
+    height: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid rgb(218, 220, 224);
+    padding-left: 0.3rem !important;
+    margin-left: 10% !important;
+}
+
+.Configuration .tableRouter .row .col-2 input:focus {
+    border: 2px solid rgb(26, 115, 232);
+}
+
+.Configuration .tableRouter .row .col-6 input {
+    width: 90%;
+    height: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid rgb(218, 220, 224);
+    padding-left: 0.3rem !important;
+}
+
+.Configuration .tableRouter .row .col-6 input:focus {
+    border: 2px solid rgb(26, 115, 232);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.Configuration .tableRouter .row.lastrowBtn {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem !important;
+}
+
+.Configuration .tableRouter .row.lastrowBtn .saveBtn_Quagga,
+.Configuration .tableRouter .row.lastrowBtn .cancelBtn_Quagga {
+    transition: all 0.4s ease-in-out 0s;
+    width: 5.5rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    background-image: linear-gradient(to right, rgb(201, 196, 196), rgb(5, 55, 80), rgb(201, 196, 196));
+    animation: 1s linear 0s infinite normal none running animationBtn;
+    margin: 0px 1rem !important;
+}
+
+.Configuration .tableRouter .row.lastrowBtn .saveBtn_Quagga:hover {
+    background: var(--blueBorder);
+    transition: all 0.4s ease-in-out 0s;
+    transform: scale(1.05);
+}
+
+.Configuration .tableRouter .row.lastrowBtn .cancelBtn_Quagga:hover {
+    background: var(--danger);
+    transition: all 0.4s ease-in-out 0s;
+    transform: scale(1.05);
+}
+
+.Configuration .tableRouter .row.lastrowBtn .saveBtn_Quagga button:hover {
+    color: rgb(1, 76, 188);
+}
+
+.Configuration .tableRouter .row.lastrowBtn .cancelBtn_Quagga button:hover {
+    color: rgb(194, 21, 0);
+}
+
+.Configuration .tableRouter .row.lastrowBtn button {
+    width: calc(5.5rem - 4px);
+    height: calc(2rem - 4px);
+    background: white;
+    border-radius: 5px;
+    color: rgb(57, 55, 55);
+    outline: none;
+    font-family: opensan;
+    font-weight: bold;
+    border: none;
+}
+
+.Configuration .nameRouter {
+    color: white;
+    letter-spacing: 2px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 7rem;
+    height: 3rem;
+    font-size: 120%;
+    background-color: rgb(79, 147, 237);
+    position: absolute;
+    top: 1.7rem;
+    left: calc(8.33% + 1.5rem);
+    border: 1px solid rgb(218, 220, 224);
+    z-index: 2;
+    font-family: opensan;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.Configuration .OSPF_IPv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.3rem !important;
+}
+
+.Configuration .OSPF_IPv span {
+    border: 1px solid rgb(218, 220, 224);
+    border-radius: 5px;
+    background: white;
+    padding: 0.3rem 1.3rem !important;
+}
+
+.Configuration .OSPF_IPv input {
+    margin-left: 1rem !important;
+}
+
+.Configuration .btn4_OSPF {
+    width: auto;
+    display: flex;
+    align-items: center;
+    margin-right: 3rem !important;
+}
+
+.Configuration .btn4_OSPF span {
+    border: 1px solid rgb(218, 220, 224);
+    background: white;
+    border-radius: 5px;
+    padding: 0.1rem 1rem !important;
+    margin-right: 0.5rem !important;
+}
+
+.Configuration .btn4_OSPF input {}
+
+@keyframes animationBtn {
+    0% {
+        background-position: 0px center;
+    }
+
+    100% {
+        background-position: 5.5rem center;
+    }
+}
+
+#SIP_SETTINGS .form-content {
+    width: 90%;
+    height: 100%;
+    font-family: opensan;
+    margin-left: 5% !important;
+}
+
+.tab-item_SIP {
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 48.5px;
+    z-index: 3;
+    margin-top: 1.8rem !important;
+}
+
+.tab-item_SIP button {
+    color: rgb(71, 124, 167);
+    outline: none;
+    background-color: rgb(220, 220, 220);
+    font-size: 85%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: 1px solid rgba(153, 153, 153, 0.72);
+    border-right: 1px solid rgba(153, 153, 153, 0.72);
+    border-left: 1px solid rgba(153, 153, 153, 0.72);
+    border-image: initial;
+    border-bottom: none;
+    padding: 0.2rem 1rem !important;
+}
+
+.tab-item_SIP button.tablinks.active {
+    font-weight: bold;
+    border-bottom: none;
+    background-color: rgb(239, 239, 239) !important;
+}
+
+form.Form_SIP_Settings {
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 3.5rem;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+form.Form_SIP_Settings {}
+
+#SIP_SETTINGS .lineInput:nth-child(1) {
+    margin-top: 2rem !important;
+}
+
+#SIP_SETTINGS .lineInput {
+    width: 100%;
+    float: right;
+    height: 25px;
+    margin: 0px !important;
+}
+
+#SIP_SETTINGS .nameInput {
+    height: 80%;
+}
+
+#SIP_SETTINGS .nameInput1 {
+    width: auto;
+    float: right !important;
+}
+
+#SIP_SETTINGS .nameInput i {
+    font-size: 80%;
+    color: rgb(1, 132, 195);
+}
+
+#SIP_SETTINGS .nameInput span {
+    font-family: opensan;
+    font-size: 80%;
+}
+
+#SIP_SETTINGS .contentInput {
+    height: 80%;
+    width: 25%;
+    outline: none;
+    font-size: 80%;
+    margin-left: 10px !important;
+}
+
+#SIP_SETTINGS .contentInput option {
+    text-align: center;
+}
+
+#SIP_SETTINGS .nameInput1 span.checkbox-enable {
+    padding-right: 50px !important;
+}
+
+#General .saveAndCancelBtn_SIP {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 4.5rem !important;
+}
+
+#SIP_SETTINGS .saveBtn,
+.cancelBtn,
+.btnStart-child {
+    width: 80px;
+    height: 25px;
+    border: 1px solid grey;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 0px 1rem !important;
+}
+
+#SIP_SETTINGS .saveBtn .child1,
+.cancelBtn .child1,
+.btnStart-child .child1 {
+    width: 30%;
+    height: 100%;
+    background-image: linear-gradient(white, rgb(186, 187, 187));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease 0s;
+}
+
+#SIP_SETTINGS .saveBtn .child2,
+.cancelBtn .child2,
+.btnStart-child .child2 {
+    background-image: linear-gradient(white, rgb(231, 231, 230));
+    width: 70%;
+    height: 100%;
+    font-family: opensan;
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease 0s;
+}
+
+#SIP_SETTINGS .saveBtn img,
+.cancelBtn img,
+.btnStart-child img {
+    width: 50%;
+    height: 50%;
+}
+
+#SIP_SETTINGS .saveBtn:hover .child2,
+.cancelBtn:hover .child2 {
+    background-image: linear-gradient(white, rgb(180, 212, 227));
+    transition: all 0.2s ease 0s;
+}
+
+#SIP_SETTINGS .saveBtn:hover .child1,
+.cancelBtn:hover .child1 {
+    transition: all 0.2s ease 0s;
+    background-image: linear-gradient(white, rgb(122, 189, 224));
+}
+
+#General .Form_SIP_Settings {
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    width: 100%;
+    height: 44rem;
+    position: relative;
+    top: 3.5rem;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#NAT .Form_SIP_Settings {
+    width: 100%;
+    height: 25rem;
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    position: relative;
+    top: 3.5rem;
+}
+
+#NAT .saveAndCancel_Btn_SIP {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 4.5rem !important;
+}
+
+#QOS .Form_SIP_Settings {
+    width: 100%;
+    height: 9rem;
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    position: relative;
+    top: 3.5rem;
+}
+
+#QOS .contentInput_QOS {
+    height: 90%;
+    width: 60%;
+    outline: none;
+    font-size: 80%;
+    margin-left: 10px !important;
+}
+
+#QOS .row {
+    margin: 0.3rem 0px !important;
+}
+
+#QOS .saveAndCancel_Btn_SIP {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 4.5rem !important;
+}
+
+#T_38 .Form_SIP_Settings {
+    width: 100%;
+    height: 10rem;
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    position: relative;
+    top: 3.5rem;
+}
+
+#T_38 .saveAndCancel_Btn_SIP {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 4.5rem !important;
+}
+
+#Advanced_Settings .Form_SIP_Settings {
+    width: 100%;
+    height: 29rem;
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    position: relative;
+    top: 3.5rem;
+}
+
+#Advanced_Settings .checkbox {
+    display: flex;
+    align-items: center;
+}
+
+#Advanced_Settings .contentInput1 {
+    width: 1rem;
+    height: 50%;
+    margin-left: 10px !important;
+}
+
+#Advanced_Settings .checkbox span {
+    font-family: opensan;
+    font-size: 80%;
+    margin-left: 0.3rem !important;
+    margin-right: 0.5rem !important;
+}
+
+#Advanced_Settings .saveAndCancel_Btn_SIP {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 4.5rem !important;
+}
+
+#Codes .btnCodes {
+    height: 60%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10% !important;
+}
+
+#Codes .btnCodes button {
+    width: 50%;
+    height: 2rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    margin: 0.2rem 0px !important;
+}
+
+#Codes .btnCodes button i {
+    font-size: 60%;
+}
+
+#Codes .saveAndCancel_Btn_SIP {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    margin-top: 4.5rem !important;
+}
+
+#Codes .Form_SIP_Settings {
+    width: 100%;
+    height: 20rem;
+    border: 1px solid rgba(153, 153, 153, 0.72);
+    position: relative;
+    top: 3.5rem;
+}
+
+#Available_Codes,
+#Allowed_Codes {
+    height: 14rem;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block;
+}
+
+#Available_Codes tbody,
+#Allowed_Codes tbody {
+    width: inherit;
+    display: block;
+    height: inherit;
+}
+
+#Available_Codes tr,
+#Allowed_Codes tr {
+    width: 100%;
+    height: 20px;
+    display: block;
+    background-color: white;
+    font-size: 90%;
+    padding-left: 5px !important;
+}
+
+
+.form.Firmware_Download_Source {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 200px;
+    border: 1px solid gray;
+    position: relative;
+    margin-top: 2rem !important;
+    margin-left: 40% !important;
+}
+
+.form.Firmware_Download_Source .titleFirmware {
+    position: absolute;
+    top: -1rem;
+    height: 2rem;
+    background-color: white;
+    width: auto;
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+    padding: 0px 0.5rem !important;
+}
+
+.form.Firmware_Download_Source .radioBtnFirmware {
+    position: absolute;
+    top: 1.5rem;
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form.Firmware_Download_Source .radioBtnFirmware1,
+.radioBtnFirmware2 {
+    width: 6.5rem;
+}
+
+.radioBtnFirmware1 span,
+.radioBtnFirmware2 span {
+    padding-left: 0.5rem !important;
+}
+
+.form.Firmware_Download_Source .importURL {
+    position: absolute;
+    top: 4.5rem;
+    width: 100%;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form.Firmware_Download_Source .importURL span {
+    width: 3rem;
+    height: inherit;
+    font-family: opensan;
+    font-weight: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form.Firmware_Download_Source .importURL input {
+    width: 14rem;
+    height: 80%;
+    outline: none;
+    border: 1.5px solid rgb(73, 151, 198);
+    border-radius: 3px;
+}
+
+.form.Firmware_Download_Source .resetFirmware {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 7rem;
+}
+
+.resetFirmware span {
+    font-family: opensan;
+    font-weight: 500;
+    font-size: 90%;
+    padding-right: 5px !important;
+    padding-left: 0.5rem !important;
+}
+
+.form.Firmware_Download_Source .btnStart {
+    position: absolute;
+    top: 9.5rem;
+}
+
+.btnStart-child:hover .child1 {
+    background-image: linear-gradient(rgb(115, 222, 79), rgb(87, 194, 60));
+}
+
+.btnStart-child:hover .child2 {
+    background-image: linear-gradient(rgb(103, 208, 69), rgb(47, 135, 26));
+    color: rgb(243, 240, 240);
+}
+
+.form.Firmware_Download_Source #newWindow {
+    position: absolute;
+    z-index: 1;
+    top: 10rem;
+    left: 5rem;
+    width: 200px;
+    height: 200px;
+    display: none;
+    background-color: darkgreen;
+}
+
+.row.footer {
+    height: 3rem;
+    background: white;
+    border-top: 2px solid rgb(220, 211, 211);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: opensan;
+    font-size: 60%;
+}
+
+#Add_User .form-content.form1 {
+    width: 90%;
+    height: auto;
+    border: 1px solid rgb(73, 151, 198);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-left: 5% !important;
+    margin-top: 1.5rem !important;
+}
+
+#Add_User .form-content.form1 .row.row1 {
+    height: 30px;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+#Add_User .form-content.form1 .row.row1 span {
+    color: white;
+    margin-left: 5px !important;
+}
+
+#Add_User .form-content.form1 .row.row2 .nameTitle {
+    width: 50%;
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem !important;
+}
+
+#Add_User .form-content.form1 .row.row2 .nameTitle span {
+    margin-right: 5px !important;
+}
+
+#Add_User .form-content.form1 .row.row2 .nameInput {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem !important;
+}
+
+#Add_User .form-content.form1 .row.row2 .nameInput select {
+    width: 30%;
+    border-radius: 5px;
+    border: 1px solid rgb(206, 212, 218);
+    font-family: opensan;
+    font-size: 90%;
+    outline: none !important;
+}
+
+#Add_User .form-content.form1 .row.row2 .nameInput select:focus {
+    border: 2px solid rgb(26, 115, 232);
+}
+
+#Add_User .form-content.form1 .row.row2 .nameInput select option {
+    border: 2px solid rgb(26, 115, 232);
+}
+
+#Add_User .form-content.form11 .row.row2 .nameInput select {
+    width: 15%;
+    border-radius: 5px;
+    border: 1px solid rgb(206, 212, 218);
+    font-family: opensan;
+    font-size: 90%;
+    outline: none !important;
+}
+
+#Add_User .form-content.form11 .row.row2 .nameInput select:focus {
+    border: 2px solid rgb(26, 115, 232);
+}
+
+#Add_User .form-content.form1 .row.row2 .nameInput input {
+    width: 30%;
+    border-radius: 5px;
+    border: 1px solid rgb(206, 212, 218);
+    font-family: opensan;
+    font-size: 90%;
+    outline: none;
+    padding: 0px 5px !important;
+}
+
+#Add_User .form-content.form1 .row.row2 .nameInput input:focus {
+    border: 2px solid rgb(26, 115, 232);
+}
+
+#Add_User .checkStrongPass {
+    width: 20%;
+    height: 0.7rem;
+    margin-left: 1rem !important;
+}
+
+#Add_User .checkStrongPass .progress {
+    border: 1px solid rgb(206, 212, 218);
+    height: inherit;
+}
+
+#infoPass_AddUser {
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 80%;
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem !important;
+}
+
+#verybad_AddUser {
+    background-color: var(--danger);
+}
+
+#medium_AddUser {
+    background-color: var(--warning);
+}
+
+#strong_AddUser {
+    background-color: var(--success);
+}
+
+#Change_Password .form-content.form1 {
+    width: 90%;
+    height: auto;
+    border: 1px solid rgb(73, 151, 198);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-left: 5% !important;
+    margin-top: 1.5rem !important;
+}
+
+#Change_Password .form-content.form1 .row.row1 {
+    height: 30px;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+#Change_Password .form-content.form1 .row.row1 span {
+    color: white;
+    margin-left: 5px !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameTitle {
+    width: 50%;
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameTitle span {
+    margin-right: 5px !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameInput {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameInput select {
+    width: 30%;
+    border-radius: 5px;
+    border: 1px solid rgb(206, 212, 218);
+    font-family: opensan;
+    font-size: 90%;
+    outline: none !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameInput select:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#Change_Password .form-content.form11 .row.row2 .nameInput select {
+    width: 15%;
+    border-radius: 5px;
+    border: 1px solid rgb(206, 212, 218);
+    font-family: opensan;
+    font-size: 90%;
+    outline: none !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameInput input {
+    width: 30%;
+    border-radius: 5px;
+    border: 1px solid rgb(206, 212, 218);
+    font-family: opensan;
+    font-size: 90%;
+    outline: none;
+    padding: 0px 5px !important;
+}
+
+#Change_Password .form-content.form1 .row.row2 .nameInput input:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#Change_Password .form-content.form11 .row.row2 .nameInput select:focus {
+    border: 2px solid var(--blueBorder);
+}
+
+#notificationNewPass_ChangePassword,
+#notificationOldPass_ChangePassword,
+#notificationOldPass_AddUser,
+#notificationNewPass_AddUser {
+    font-family: opensan;
+    color: var(--danger);
+    font-size: 75%;
+    display: flex;
+    align-items: center;
+}
+
+#notificationNewPass_ChangePassword i,
+#notificationOldPass_ChangePassword i,
+#notificationOldPass_AddUser i,
+#notificationNewPass_AddUser i {
+    color: var(--danger);
+    margin-right: 0.3rem !important;
+}
+
+#Change_Password .checkStrongPass {
+    width: 20%;
+    height: 0.7rem;
+    margin-left: 1rem !important;
+}
+
+#Change_Password .checkStrongPass .progress {
+    border: 1px solid rgb(206, 212, 218);
+    height: inherit;
+}
+
+#infoPass_ChangePassword {
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 80%;
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem !important;
+}
+
+#verybad_ChangePassword {
+    background-color: var(--danger);
+}
+
+#medium_ChangePassword {
+    background-color: var(--warning);
+}
+
+#strong_ChangePassword {
+    background-color: var(--success);
+}
+
+#Reset_and_Reboot_Options .container {
+    width: 96%;
+    height: 200px;
+    border: 1px solid var(--blueBorder);
+    border-radius: 6px;
+    box-shadow: var(--box-shadow-custom);
+    font-family: opensan;
+    margin: 1rem 2% !important;
+}
+
+#Reset_and_Reboot_Options .container .row.nav {
+    width: 100%;
+    height: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-image: linear-gradient(var(--toolbarLinear));
+}
+
+#Reset_and_Reboot_Options .container .row.nav span {
+    font-weight: bold;
+    color: white;
+    font-size: 90%;
+    padding-left: 1rem !important;
+}
+
+#Reset_and_Reboot_Options .container .row.content {
+    flex-direction: column;
+    height: calc(100% - 2rem);
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#Reset_and_Reboot_Options .container .row.content p:nth-child(1) {
+    font-weight: bold;
+    font-size: 120%;
+    opacity: 0.5;
+}
+
+#Reset_and_Reboot_Options .container .row.content p:nth-child(2) {
+    font-weight: bold;
+    font-size: 90%;
+    opacity: 0.5;
+}
+
+#Reset_and_Reboot_Options .container .row.content button {
+    min-width: 5.5rem;
+    height: 2rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-size: 90%;
+    font-weight: bold;
+    background-image: linear-gradient(var(--linearGray));
+    opacity: 0.9;
+    outline: none;
+    padding: 0px 1rem !important;
+}
+
+#Reset_and_Reboot_Options .container .row.content button:active {
+    opacity: 0.6;
+}
+
+#sip_status_table tr th,
+#sip_status_table tr td {
+    text-align: center;
+    font-size: 90%;
+    padding: 2px 0px !important;
+}
+
+#sip_status_table tr:nth-child(even) {
+    background-color: white;
+}
+
+#sip_status_table tr th:nth-child(1),
+#sip_status_table tr td:nth-child(1) {
+    width: 5%;
+}
+
+#sip_status_table tr th:nth-child(2),
+#sip_status_table tr td:nth-child(2) {
+    width: 25%;
+}
+
+#sip_status_table tr th:nth-child(3),
+#sip_status_table tr td:nth-child(3) {
+    width: 10%;
+}
+
+#container_PJSIP_STATUS1 {
+    display: block !important;
+}
+
+#ATA_STATUS table {
+    border-bottom: 2px solid #808080;
+}
+
+#ATA_STATUS .buttonAtaStatus {
+    margin: 1rem 0 !important;
+    border-radius: 5px !important;
+    border-bottom: 2px solid #2089c3 !important;
+    border-right: 2px solid #2089c3 !important;
+    ;
+    margin-right: 10px !important;
+}
+
+#Advanced_Setting .row {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.advanced_Settings__content {
+    width: 400px;
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.advanced_Settings__content tr td {
+    font-size: 85%;
+    height: 40px;
+}
+
+.advanced_Settings__content tr td:first-child {
+    width: 130px;
+    font-weight: bold;
+    color: #124597;
+}
+
+.advanced_Settings__content button {
+    border: 1px solid grey;
+    background-color: #124597;
+    color: white;
+    font-size: 90%;
+    font-weight: bold;
+    padding: 0.3rem 0.8rem !important;
+    margin: 0 0.5rem !important;
+    border-radius: 5px;
+}
+
+
+
+
+
+#Backup_and_Restore .Btn1,
+#Backup_and_Restore .Btn4 {
+    border: 1px solid gray;
+    font-size: 80%;
+    height: 24px;
+    width: 170px;
+    padding-right: 10px !important;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(whitesmoke, rgb(203, 201, 202));
+    margin-right: 30px !important;
+    border-radius: 3px;
+}
+
+#Backup_and_Restore .Btn1 i,
+#Backup_and_Restore .Btn4 i {
+    height: 100%;
+    background-color: white;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toolbar-Backup_and_Restore {
+    margin-left: 3% !important;
+    display: flex;
+    margin-top: 30px !important;
+}
+
+#Backup_and_Restore .title-table {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0 !important;
+}
+
+#table-Backup_and_Restore {
+    width: 93%;
+    margin-left: 3% !important;
+    border: 2px solid rgb(126, 174, 227);
+    border-spacing: 0px;
+    overflow: hidden;
+    margin-bottom: 1rem !important;
+    border-radius: 6px !important;
+    border-collapse: separate !important;
+
+}
+
+#table-Backup_and_Restore tr th {
+    text-align: center;
+    padding: 3px 0 !important;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+}
+
+#table-Backup_and_Restore tr:nth-child(even) {
+    background-color: white;
+}
+
+#table-Backup_and_Restore tr td:nth-child(1) {
+    width: 5%;
+}
+
+#table-Backup_and_Restore tr td {
+    width: 25%;
+    text-align: center;
+    font-size: 85%;
+    padding: 3px 0 !important;
+}
+
+#newBackUp_table,
+#uploadBackUp_table {
+    height: 200px;
+    width: 500px !important;
+    position: fixed;
+    top: 40%;
+    left: 42%;
+}
+
+#newBackUp_table {
+    width: 400px !important;
+}
+
+#uploadBackUp_table {}
+
+#newBackUp_table table,
+#uploadBackUp_table table {
+    width: 100%;
+    margin-top: 30px !important;
+    font-size: 90%;
+    font-weight: bold;
+}
+
+#newBackUp_table table tr td,
+#uploadBackUp_table table tr td {
+    width: 50%;
+    margin: 5px 0 !important;
+}
+
+#newBackUp_table table tr td:first-child,
+#uploadBackUp_table table tr td:first-child {
+    float: right;
+    width: 70%;
+}
+
+#uploadBackUp_table table tr td {
+    width: 57%;
+    margin: 5px 0 !important;
+}
+
+#uploadBackUp_table table tr td:first-child {
+    float: right;
+    width: 80%;
+}
+
+#uploadBackUp {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}
+
+#newBackUp,
+#uploadBackUp {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#uploadBackUp_table .browser_btn {
+    font-size: 80%;
+    font-weight: bold;
+    padding: 3px 5px !important;
+    margin-left: 5px !important;
+    margin-bottom: 2px !important;
+}
+
+#Informations .form1 {
+    border: 2px solid rgb(73, 151, 198);
+    border-radius: 10px;
+    width: 90%;
+    overflow: hidden;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-left: 5% !important;
+    margin-top: 1.5rem !important;
+    height: auto;
+}
+
+#Informations .form1 .row1 {
+    height: 30px;
+    background-image: linear-gradient(rgb(126, 174, 227), rgb(58, 157, 217));
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+#Informations .form1 .row1 span {
+    margin-left: 10px !important;
+    color: white;
+}
+
+#Informations .form1 .row2 {
+    height: 50px;
+    display: flex;
+    align-items: center;
+
+}
+
+#Informations .form1 .row2 input {
+    height: 30px;
+    margin-left: 10px !important;
+    outline-color: var(--blue1-color);
+}
+
+#Informations .form11 {
+    height: auto;
+}
+
+#Informations .form1 .row2 {
+    display: flex;
+}
+
+#infoDevice {
+    width: 500px !important;
+    height: auto;
+}
+
+#infoDevice tr:last-child {}
+
+#infoDevice span {
+    font-weight: bold;
+    font-size: 90%;
+}
+
+#infoDevice input,
+#infoDevice textarea {
+    width: 100%;
+    outline-color: var(--blue1-color);
+}
+
+#Informations .infoDetails {
+    margin: 20px 0 20px 100px !important;
+    font-size: 90%;
+    font-weight: bold;
+    color: red;
+}
+
+#close_div {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    outline: none;
+}

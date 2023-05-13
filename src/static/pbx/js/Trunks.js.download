@@ -1,0 +1,323 @@
+
+socket.on("RES_TRUNK", msg =>{
+    console.log(msg);
+    table_trunk = msg;
+    trunk_couter_row = msg.length;
+    for (var i = 0; i < msg.length; i++){
+        var table = document.getElementById('table-VoIP_Trunk');
+        var row = table.insertRow(-1);
+        row.id = "row_addTrunk" + trunk_couter_row;
+        var cell1 = row.insertCell(0);cell1.className="cell";
+        var cell2 = row.insertCell(1);cell2.className="cell";
+        var cell3 = row.insertCell(2);cell3.className="cell";
+        var cell4 = row.insertCell(3);cell4.className="cell";
+        var cell5 = row.insertCell(4);cell5.className="cell";
+        var cell6 = row.insertCell(5);cell6.className="cell";
+        cell1.innerHTML = "<input id='\check_trunk" + i + "' type=\"checkbox\"/>";
+        cell2.innerHTML = table_trunk[i].trunk_name;
+        cell3.innerHTML = table_trunk[i].type;
+        cell4.innerHTML = table_trunk[i].host;
+        cell5.innerHTML = table_trunk[i].trunk_name;
+        cell6.innerHTML = "    <button id='\editAddVoid" + i + "' class=\"acceptBtn\" onclick=\"clickBtnTrunkEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+            "      <button id='\deleteBtnVoIP" + i + "' class=\"cancelBtn\" onclick=\"deleteVoIP_Extension(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+        getPagination('table-VoIP_Trunk','#table_mother_VoIP_Trunk ',24);
+    }
+    if (type_user == "user"){
+            $("input").prop("disabled", true);
+            $("button").not('.tab_links_FXS_VoIP,.tablinks,.toolbar-item-3,#browse').prop("disabled", true);
+            $(".contentInput").prop("disabled", true);
+            $("select").prop("disabled", true);
+            $(".saveBtn").prop("hidden", true);
+            $(".cancelBtn").prop("hidden", true);
+            $(".saveAndCancelBtn").prop("hidden", true);
+            $(".input-group-addon").prop("hidden", true);
+            $(".Btn1").prop("hidden", true);
+            $(".Btn2").prop("hidden", true);
+            $(".Btn3").prop("hidden", true);
+            $(".Btn4").prop("hidden", true);
+            $("textarea").prop("disabled", true);
+            $(".Btn22").prop("hidden", true);
+            $(".Btn11").prop("hidden", true);
+
+        }
+});
+function addTrunkVoIP() {
+    var AddVoIPTrunk = document.getElementById('AddVoIPTrunk');
+    AddVoIPTrunk.style.display = "block";
+    // addExtensionVoIP.style.position = "fixed";
+    AddVoIPTrunk.style.position = "absolute";
+    AddVoIPTrunk.style.zIndex = '10';
+    AddVoIPTrunk.style.top = "4rem";
+
+
+}
+
+function myCreateTableTrunkFunction() {
+
+    var table = document.getElementById('table-VoIP_Trunk');
+    var row = table.insertRow(-1);
+    row.id = "row_addTrunk" + trunk_couter_row;
+    var cell1 = row.insertCell(0);cell1.className="cell";
+    var cell2 = row.insertCell(1);cell2.className="cell";
+    var cell3 = row.insertCell(2);cell3.className="cell";
+    var cell4 = row.insertCell(3);cell4.className="cell";
+    var cell5 = row.insertCell(4);cell5.className="cell";
+    var cell6 = row.insertCell(5);cell6.className="cell";
+
+
+    var TrunkName_AddVoIP = ObjectListAddTrunkVoIP[ObjectListAddTrunkVoIP.length - 1].TrunkName_AddVoIP;
+    var TypeTrunk_AddVoIP = ObjectListAddTrunkVoIP[ObjectListAddTrunkVoIP.length - 1].TypeTrunk_AddVoIP;
+    var HostnameIP_AddVoIP= ObjectListAddTrunkVoIP[ObjectListAddTrunkVoIP.length - 1].HostnameIP_AddVoIP;
+    var UserName_AddVoIP = ObjectListAddTrunkVoIP[ObjectListAddTrunkVoIP.length - 1].UserName_AddVoIP;
+    if (type_user == 'user') cell1.innerHTML = "<input id='\check_trunk" + trunk_couter_row + "'  disabled type=\"checkbox\"/>";
+    else cell1.innerHTML = "<input id='\check_trunk" + trunk_couter_row + "' type=\"checkbox\"/>";
+    cell2.innerHTML = TrunkName_AddVoIP;
+    cell3.innerHTML = TypeTrunk_AddVoIP;
+    cell4.innerHTML = HostnameIP_AddVoIP;
+    cell5.innerHTML = TrunkName_AddVoIP;
+    cell6.innerHTML = "    <button id='\editAddVoid" + trunk_couter_row + "' class=\"acceptBtn\" onclick=\"clickBtnTrunkEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+        "      <button id='\deleteBtnVoIP" + trunk_couter_row + "' class=\"cancelBtn\" onclick=\"deleteVoIP_Extension(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+
+    trunk_couter_row++;
+    getPagination('table-VoIP_Trunk','#table_mother_VoIP_Trunk ',24);
+    if (type_user == "user"){
+            $("input").prop("disabled", true);
+            $("button").not('.tab_links_FXS_VoIP,.tablinks,.toolbar-item-3,#browse').prop("disabled", true);
+            $(".contentInput").prop("disabled", true);
+            $("select").prop("disabled", true);
+            $(".saveBtn").prop("hidden", true);
+            $(".cancelBtn").prop("hidden", true);
+            $(".saveAndCancelBtn").prop("hidden", true);
+            $(".input-group-addon").prop("hidden", true);
+            $(".Btn1").prop("hidden", true);
+            $(".Btn2").prop("hidden", true);
+            $(".Btn3").prop("hidden", true);
+            $(".Btn4").prop("hidden", true);
+            $("textarea").prop("disabled", true);
+            $(".Btn22").prop("hidden", true);
+            $(".Btn11").prop("hidden", true);
+
+        }
+}
+function clickBtnTrunkEdit(idBtnEditAddVoIP) {
+
+
+    console.log("idrow"+idBtnEditAddVoIP);
+    var get_idEditAddVoIP =parseInt(idBtnEditAddVoIP.match(/\d+/)[0]);
+    var EditVoIPTrunk=document.getElementById('EditVoIPTrunk');
+    EditVoIPTrunk.style.display="block";
+    EditVoIPTrunk.style.position = "fixed";
+    EditVoIPTrunk.style.zIndex = '10';
+    EditVoIPTrunk.style.top = "5rem";
+
+
+// lay du lieu tu OBJECTLIST len bang
+    $('#Edit_TypeTrunk_AddVoIP ').val(table_trunk[get_idEditAddVoIP].type).change();
+    $('#Edit_TrunkName_AddVoIP').val(table_trunk[get_idEditAddVoIP].trunk_name);
+    $('#Edit_HostnameIP_AddVoIP').val(table_trunk[get_idEditAddVoIP]. host);
+    $('#Edit_Domain_AddVoIP').val(table_trunk[get_idEditAddVoIP].fromdomain);
+    $('#Edit_UserName_AddVoIP').val(table_trunk[get_idEditAddVoIP]. username);
+    $('#Edit_Password_AddVoIP').val(table_trunk[get_idEditAddVoIP].secret);
+    //$('#Edit_FromUser_AddVoIP').val(table_trunk[get_idEditAddVoIP].FromUser_AddVoIP);
+    $('#Edit_EnableOutboundPrSer').prop('checked',table_trunk[get_idEditAddVoIP].nat);
+    $('#Edit_Transport_Trunk').val(table_trunk[get_idEditAddVoIP].transport).change();
+    $('#Edit_EnableSRTP').prop('checked',table_trunk[get_idEditAddVoIP].en_srtp);
+    $('#Edit_Qualify_Trunk').prop('checked',table_trunk[get_idEditAddVoIP].quality);
+    $('#Edit_DTMFModeTrunk_AddVoIP').val(table_trunk[get_idEditAddVoIP].dtmfmode).change();
+    $('#edit_codec_trunk').val(table_trunk[get_idEditAddVoIP].codec).change();
+    document.querySelector("#Edit_SRTP_Mode").value = table_trunk[get_idEditAddVoIP].srtp_mode;
+
+
+
+    console.log(get_idEditAddVoIP);
+    console.log(idBtnEditAddVoIP);
+    var idRow= "row_addVoIP"+get_idEditAddVoIP;
+    $('#SaveTrunkEdit_VoIP_Btn').bind( "click",function() {
+        $('#SaveTrunkEdit_VoIP_Btn').unbind( "click");
+        Save_EditTrunkVoIP(get_idEditAddVoIP);
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[1].innerHTML = $('#Edit_TrunkName_AddVoIP').val();
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[2].innerHTML = $('#Edit_TypeTrunk_AddVoIP option:selected').val();
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[3].innerHTML = $('#Edit_HostnameIP_AddVoIP').val();
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[4].innerHTML = $('#Edit_TrunkName_AddVoIP').val();
+       $('#EditVoIPTrunk').hide();
+    })
+    /*  
+    $('#SaveTrunkEdit_VoIP_Btn').click(function (){
+        Save_EditTrunkVoIP(get_idEditAddVoIP);
+        // clickBtnEdit(idBtnEditAddVoIP);
+
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[1].innerHTML = $('#TrunkName_AddVoIP').val();
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[2].innerHTML = $('#TypeTrunk_AddVoIP option:selected').val();
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[3].innerHTML = $('#HostnameIP_AddVoIP').val();
+        document.getElementById(idBtnEditAddVoIP).parentElement.parentElement.getElementsByTagName("td")[4].innerHTML = $('#TrunkName_AddVoIP').val();
+
+        $('#EditVoIPTrunk').hide();
+    })*/
+
+
+}
+
+var ObjectListAddTrunkVoIP = [];
+function createObjectTrunk(TypeTrunk_AddVoIP,TrunkName_AddVoIP, HostnameIP_AddVoIP, Domain_AddVoIP,UserName_AddVoIP, Password_AddVoIP,
+                           FromUser_AddVoIP, EnableOutboundPrSer,Transport_Trunk,EnableSRTP, Qualify_Trunk,  DTMFModeTrunk_AddVoIP,) {
+    return {
+        TypeTrunk_AddVoIP: TypeTrunk_AddVoIP,
+        TrunkName_AddVoIP: TrunkName_AddVoIP,
+        HostnameIP_AddVoIP: HostnameIP_AddVoIP,
+        Domain_AddVoIP: Domain_AddVoIP,
+        UserName_AddVoIP: UserName_AddVoIP,
+        Password_AddVoIP:Password_AddVoIP,
+        FromUser_AddVoIP: FromUser_AddVoIP,
+        EnableOutboundPrSer: EnableOutboundPrSer,
+        Transport_Trunk:Transport_Trunk,
+        EnableSRTP:EnableSRTP,
+        Qualify_Trunk:Qualify_Trunk,
+        DTMFModeTrunk_AddVoIP: DTMFModeTrunk_AddVoIP,
+    };
+}
+
+// console.log(ObjectList[0].id);
+
+
+function Save_AddTrunk_VoIP() {
+    var  TypeTrunk_AddVoIP = $('#TypeTrunk_AddVoIP option:selected').val();
+    var TrunkName_AddVoIP = $('#TrunkName_AddVoIP').val();
+    var HostnameIP_AddVoIP = $('#HostnameIP_AddVoIP').val();
+    var  Domain_AddVoIP = $('#Domain_AddVoIP').val();
+    var UserName_AddVoIP= $('#UserName_AddVoIP').val();
+    var  Password_AddVoIP=$('#Password_AddVoIP').val();
+    var FromUser_AddVoIP = $('#FromUser_AddVoIP').val();
+    var EnableOutboundPrSer = $('#EnableOutboundPrSer').prop('checked');
+    var  Transport_Trunk=$('#Transport_Trunk option:selected').val();
+    var EnableSRTP=$('#EnableSRTP').prop('checked');
+    var Codec_Trunk = $('#codec_trunk option:selected').val();
+    var Qualify_Trunk = $('#Qualify_Trunk').prop('checked');
+    var DTMFModeTrunk_AddVoIP= $('#DTMFModeTrunk_AddVoIP option:selected').val();
+
+    data.add_trunk[add_trunk_number].trunk_name = TrunkName_AddVoIP;
+    data.add_trunk[add_trunk_number].type = TypeTrunk_AddVoIP;
+    data.add_trunk[add_trunk_number].host = HostnameIP_AddVoIP;
+    data.add_trunk[add_trunk_number].secret = Password_AddVoIP;
+    data.add_trunk[add_trunk_number].username = UserName_AddVoIP;
+    data.add_trunk[add_trunk_number].dtmfmode = DTMFModeTrunk_AddVoIP;
+    data.add_trunk[add_trunk_number].fromdomain = Domain_AddVoIP;
+    data.add_trunk[add_trunk_number].codec = Codec_Trunk;
+    data.add_trunk[add_trunk_number].transport = Transport_Trunk;
+    data.add_trunk[add_trunk_number].nat = EnableOutboundPrSer;
+    data.add_trunk[add_trunk_number].en_srtp = EnableSRTP;
+    data.add_trunk[add_trunk_number].srtp_mode = document.querySelector("#Trunk_SRTP_Mode").value;
+    data.add_trunk[add_trunk_number].quality = Qualify_Trunk;
+    table_trunk[trunk_couter_row] = data.add_trunk[add_trunk_number];
+    add_trunk_number++;
+    data.add_trunk.push({});
+
+    
+    var ArrAddVoIP = [];
+    ArrAddVoIP[0] =  TypeTrunk_AddVoIP;
+    ArrAddVoIP[1] = TrunkName_AddVoIP;
+    ArrAddVoIP[2] = HostnameIP_AddVoIP;
+    ArrAddVoIP[3] =  Domain_AddVoIP;
+    ArrAddVoIP[4] = UserName_AddVoIP;
+    ArrAddVoIP[5] = Password_AddVoIP;
+    ArrAddVoIP[6] = FromUser_AddVoIP;
+    ArrAddVoIP[7] = EnableOutboundPrSer;
+    ArrAddVoIP[8] = Transport_Trunk;
+    ArrAddVoIP[9] = EnableSRTP;
+    ArrAddVoIP[10] = Qualify_Trunk;
+    ArrAddVoIP[11] = DTMFModeTrunk_AddVoIP;
+
+    ObjectListAddTrunkVoIP.push(createObjectTrunk(ArrAddVoIP[0], ArrAddVoIP[1], ArrAddVoIP[2], ArrAddVoIP[3], ArrAddVoIP[4], ArrAddVoIP[5],
+        ArrAddVoIP[6], ArrAddVoIP[7],
+        ArrAddVoIP[8], ArrAddVoIP[9], ArrAddVoIP[10], ArrAddVoIP[11]));
+    // console.log(ObjectListAddVoIP[0].name);
+    // console.log(ObjectListAddVoIP[0].id);
+    myCreateTableTrunkFunction()
+    var buttonChange = document.getElementById('buttonChange');
+    buttonChange.style.display = 'block';
+
+    closeTable('AddVoIPTrunk');
+
+}
+
+// lay gia tri tu bang EditAdd luu vao ObjectList[] tai vi tri idEdit
+function Save_EditTrunkVoIP(get_idEditAddVoIP){
+    var  Edit_TypeTrunk_AddVoIP = $('#Edit_TypeTrunk_AddVoIP option:selected').val();
+    var Edit_TrunkName_AddVoIP = $('#Edit_TrunkName_AddVoIP').val();
+    var Edit_HostnameIP_AddVoIP = $('#Edit_HostnameIP_AddVoIP').val();
+    var  Edit_Domain_AddVoIP = $('#Edit_Domain_AddVoIP').val();
+    var Edit_UserName_AddVoIP= $('#Edit_UserName_AddVoIP').val();
+    var  Edit_Password_AddVoIP=$('#Edit_Password_AddVoIP').val();
+    var Edit_FromUser_AddVoIP = $('#Edit_FromUser_AddVoIP').val();
+    var Edit_EnableOutboundPrSer = $('#Edit_EnableOutboundPrSer').prop('checked');
+    var  Edit_Transport_Trunk=$('#Edit_Transport_Trunk option:selected').val();
+    var Edit_EnableSRTP=$('#Edit_EnableSRTP').prop('checked');
+    var Edit_Qualify_Trunk = $('#Edit_Qualify_Trunk').prop('checked');
+    var Edit_DTMFModeTrunk_AddVoIP= $('#Edit_DTMFModeTrunk_AddVoIP option:selected').val();
+
+    data.modify_trunk[modify_trunk_number].trunk_name = Edit_TrunkName_AddVoIP;
+    data.modify_trunk[modify_trunk_number].type = Edit_TypeTrunk_AddVoIP;
+    data.modify_trunk[modify_trunk_number].host = Edit_HostnameIP_AddVoIP;
+    data.modify_trunk[modify_trunk_number].secret = Edit_Password_AddVoIP;
+    data.modify_trunk[modify_trunk_number].username = Edit_UserName_AddVoIP;
+    data.modify_trunk[modify_trunk_number].dtmfmode = Edit_DTMFModeTrunk_AddVoIP;
+    data.modify_trunk[modify_trunk_number].fromdomain = Edit_Domain_AddVoIP;
+    data.modify_trunk[modify_trunk_number].codec = $('#edit_codec_trunk').val();
+    data.modify_trunk[modify_trunk_number].transport = Edit_Transport_Trunk;
+    data.modify_trunk[modify_trunk_number].nat = Edit_EnableOutboundPrSer;
+    data.modify_trunk[modify_trunk_number].en_srtp = Edit_EnableSRTP;
+    data.modify_trunk[modify_trunk_number].srtp_mode = document.querySelector("#Edit_SRTP_Mode").value;
+    data.modify_trunk[modify_trunk_number].quality = Edit_Qualify_Trunk;
+    table_trunk[get_idEditAddVoIP] = data.modify_trunk[modify_trunk_number];
+    modify_trunk_number++;
+    data.modify_trunk.push({});
+
+
+
+
+    // console.log('changed Name= '+ObjectListAddVoIP[get_idEditAddVoIP].Name_VoIP);
+
+    var buttonChange = document.getElementById('buttonChange');
+    buttonChange.style.display = 'block';
+
+}
+function deleteVoIP_Extension(r){
+    var i = r.parentNode.parentNode.rowIndex;
+        r.parentNode.parentNode.parentNode.parentNode.deleteRow(i);
+        i = r.id.match(/\d+/)[0];
+        i = parseInt(i);
+        console.log(i);
+        console.log(table_trunk[i]);
+        data.delete_trunk[delete_trunk_number] =  table_trunk[i];
+        delete_trunk_number++;
+        data.delete_trunk.push({});
+        table_trunk[i] = {};
+        var buttonChange = document.getElementById('buttonChange');
+        buttonChange.style.display = 'block';
+}
+
+function check_all_trunk(check_all){
+    for (var i = 0; i < trunk_couter_row; i++){
+            if (check_all.checked) document.getElementById("check_trunk" + i).checked = true;
+            else document.getElementById("check_trunk" + i).checked = false;
+    }
+}
+function delete_selected_trunk(){
+    for (var i = 0; i <= trunk_couter_row; i++){
+        try {
+            var check_box = document.getElementById("check_trunk" + i);
+            if (check_box.checked){
+                var row_index = check_box.parentNode.parentNode.rowIndex;
+                console.log(row_index);
+                check_box.parentNode.parentNode.parentNode.parentNode.deleteRow(row_index);
+                data.delete_trunk[delete_trunk_number] =  table_trunk[i];
+                delete_trunk_number++;
+                data.delete_trunk.push({});
+                table_trunk[i] = {};
+            }
+        } catch (error) { 
+        }
+    }
+    document.querySelector("#totalRow").innerHTML = "Total: " + (document.querySelector("#table-id-VoIP").rows.length - 1);
+    var buttonChange = document.getElementById('buttonChange');
+    buttonChange.style.display = 'block';
+}

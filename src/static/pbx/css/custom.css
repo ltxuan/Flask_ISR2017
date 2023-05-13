@@ -1,0 +1,98 @@
+@font-face {
+    font-family: opensan;
+    src: url(./Font/Open_Sans/OpenSans-Regular.ttf);
+}
+
+* {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#container_PJSIP_CONFIGURE > .row {
+    margin-top: 2rem !important;
+}
+
+#container_PJSIP_CONFIGURE .form-group {
+    padding: 7.5px 15px !important;
+    display: inline-block;
+}
+
+#container_PJSIP_CONFIGURE .form-group b {
+    font-family: opensan;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+#container_PJSIP_CONFIGURE .form-group label {
+    font-family: opensan;
+    font-weight: bold;
+    font-size: 90%;
+    margin-bottom: 5px !important;
+}
+
+#container_PJSIP_CONFIGURE .form-group input[type='text'],
+#container_PJSIP_CONFIGURE .form-group select{
+    height: 34px;
+    padding: 6px 12px !important;
+    font-size: 85%;
+    margin-bottom: 1px !important;
+}
+
+#container_PJSIP_CONFIGURE .form-group input[type='checkbox'] {
+
+}
+
+#container_PJSIP_CONFIGURE .input-group {
+    height: 34px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#container_PJSIP_CONFIGURE .input-group input {
+    height: 100%;
+    padding: 6px 12px !important;
+    border: none !important;
+    outline: none;
+}
+
+#container_PJSIP_CONFIGURE .input-group input:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none;
+}
+
+#container_PJSIP_CONFIGURE .input-group .input-group-addon {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: none;
+}
+
+#container_PJSIP_CONFIGURE .input-group .input-group-addon i {
+    font-size: 90%;
+    margin-right: 2px !important;
+}
+
+#container_PJSIP_CONFIGURE .form-group.col-2 input[type="text"]:focus {
+    border: 2px solid #1a73e8;
+    box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
+}
+
+
+#container_PJSIP_CONFIGURE .form-group.col-2 select:focus {
+    border: 2px solid #1a73e8;
+    box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
+}
+#container_PJSIP_CONFIGURE .form-group.col-3 input[type="text"]:focus{
+    border: 2px solid #1a73e8;
+    box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
+}
+#container_PJSIP_CONFIGURE .form-group.col-2 .input-group.active{
+    border: 2px solid #1a73e8!important;
+    box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 12px !important;
+}

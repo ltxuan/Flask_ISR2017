@@ -1,0 +1,227 @@
+
+socket.on("RES_DATE_TIME", msg =>{
+    console.log(msg);
+    date_time_data = false;
+    document.querySelector("#timeGMT").innerHTML = msg.time.thu +"  "+msg.time.day + "/" + msg.time.month + "/" + msg.time.year + "   " + msg.time.hour + ":" + msg.time.minute + ":" + msg.time.second;
+    document.querySelector("#timezone").value = msg.data.timezone;
+    document.querySelector("#AutomaticallySynchronize").checked = msg.data.sync;
+    document.querySelector("#NTPSever").value = msg.data.NTP;
+    document.querySelector("#SetDate_TimeManually").checked = msg.data.manual;
+    document.querySelector("#calendar").value = msg.time.year + "-" + msg.time.month + "-" + msg.time.day;
+    console.log(msg.time.year + "-" + msg.time.month + "-" + msg.time.day)
+    document.querySelector("#hour").value = msg.time.hour;
+    document.querySelector("#minute").value = msg.time.minute;
+    if (msg.data.sync){
+            document.getElementById("NTPSever").disabled = false;
+            document.getElementById("calendar").disabled = true;
+            document.getElementById("hour").disabled = true;
+            document.getElementById("minute").disabled = true;
+    }
+    else {
+            document.getElementById("NTPSever").disabled = true;
+            document.getElementById("calendar").disabled = false;
+            document.getElementById("hour").disabled = false;
+            document.getElementById("minute").disabled = false;
+    }
+    if (type_user == "user"){
+            $("input").prop("disabled", true);
+            $("button").not('.tab_links_FXS_VoIP,.tablinks,.toolbar-item-3').prop("disabled", true);
+            $(".contentInput").prop("disabled", true);
+            $("select").prop("disabled", true);
+            $(".saveBtn").prop("hidden", true);
+            $(".cancelBtn").prop("hidden", true);
+            $(".saveAndCancelBtn").prop("hidden", true);
+            $(".input-group-addon").prop("hidden", true);
+            $(".Btn1").prop("hidden", true);
+            $(".Btn2").prop("hidden", true);
+            $(".Btn3").prop("hidden", true);
+            $(".Btn4").prop("hidden", true);
+            $("textarea").prop("disabled", true);
+            $(".Btn22").prop("hidden", true);
+            $(".Btn21").prop("hidden", true);
+
+        }
+});
+$(document).ready(function () {
+    $(function () {
+        let i;
+        let j;
+        for (i = 0; i < 60; i++) {
+            $('#minute').append('<option value="' + i + '">' + i + '</option>');
+        }
+        for (j = 0; j < 24; j++) {
+            $('#hour').append('<option value="' + j + '">' + j + '</option>');
+        }
+    })
+
+
+
+})
+// window.onload=function (){
+//     $('#FXS_table_col32').html('acv');
+// }
+
+
+function reload_page() {
+    window.location.reload();
+}
+
+
+
+
+// function GetCellValues() {
+//     var table = document.getElementById('table-FXS_VoIP_Extensions');
+//     for (var r = 0, n = table.rows.length; r < n; r++) {
+//         for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+//             // console.log(table.rows[r].cells[c].innerHTML);
+//         }
+//     }
+//     table.rows[1].cells[0].innerHTML="1234";   // gán giá trị vào ô
+// }
+
+
+$(document).ready(function () {
+
+
+})
+function getSelectDate(param) {    // param là id của select option DATE
+    var getSelectDate = document.getElementById(param);
+    console.log(+getSelectDate + " =" + getSelectDate.value);
+    return getSelectDate.value;
+}
+
+function submitDate() {
+    var getSelectDate1 = document.getElementById('hour');
+    if (getSelectDate('AM_PM') === 'AM') {
+        // console.log('AM');
+        if (getSelectDate('hour') > 12) {
+            // console.log('hour am: '+(getSelectDate('hour') - 12));
+            getSelectDate1.value = (getSelectDate('hour') - 12);
+        } else {
+            // console.log('hour am: '+getSelectDate('hour'));
+            getSelectDate1.value = (getSelectDate('hour'));
+        }
+    } else {
+        console.log('PM');
+    }
+}
+
+function HandleStrTime(str, char) {
+    var date1 = str.split(char);
+    return date1;
+}
+
+function convertDay(strNum) {
+    var dayNumber = ["0","1","2", "3", "4", "5", "6"];
+    var dayChar = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var cc;
+    let i;
+    for (i = 0; i < 12; i++) {
+        if (strNum === parseInt(dayNumber[i])) {
+            dayNumber[i] = dayChar[i];
+            cc = dayChar[i];
+        }
+    }
+    return cc;
+}
+
+
+function convertMonth(strMonth) {
+    var monthNumber = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+    var monthsChar = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var cc;
+    let i;
+    for (i = 0; i < 12; i++) {
+        if (strMonth === monthsChar[i]) {
+            monthsChar[i] = monthNumber[i];
+            cc = monthNumber[i];
+        }
+    }
+    return cc;
+}
+function checkMonth(month, year) {
+    if (year % 4 === 0) {
+        if (month % 2 === 0 && month !== 2) {
+            return 30;
+        } else if (month === 2) {
+            return 29;
+        } else {
+            return 31;
+        }
+    } else {
+        if (month % 2 === 0 && month !== 2) {
+            return 30;
+        } else if (month === 2) {
+            return 28;
+        } else {
+            return 31;
+        }
+    }
+}
+function checkDayMonthYear(day, month, year) {
+    // ý tưởng như sau: làm một mảng có độ rộng là 365 với năm ko nhuận và 366 với năm nhuận.
+    //      khi nhập giá trị ngày tháng năm của mảng sẽ biết được ngày đó nằm ở vị trí nào từ đó
+    //  luận ngược ra ngày tháng năm của chúng ứng dụng cho function bên dưới
+
+    let arrDate=0;
+    for (let i= 1; i < month; i++) {
+        for (let j = 1; j <= checkMonth(i, year); j++) {
+            arrDate=arrDate+1;
+        }
+    }
+    arrDate = arrDate + day;
+    console.log(arrDate);
+    return arrDate;
+}
+function counterNum(num,year){
+    var day,month;
+    let arrDate=0;
+    for (let i= 1; i <=12; i++) {
+        for (let j = 1; j <= checkMonth(i, year); j++) {
+            arrDate=arrDate+1;
+            if(num===arrDate){
+                // alert('day'+j+'month'+(i));
+                day=j;month=i;
+                break;
+            }
+        }
+    }
+    return [day,month];
+}
+
+function Save_time(){
+    data.time_setting.timezone = document.getElementById("timezone").value;
+    data.time_setting.sync     = document.getElementById("AutomaticallySynchronize").checked;
+    data.time_setting.NTP      = document.getElementById("NTPSever").value;
+    data.time_setting.manual   = document.getElementById("SetDate_TimeManually").checked;
+    data.time_setting.date     = document.getElementById("calendar").value;
+    data.time_setting.time     = document.getElementById("hour").value + ":" + document.getElementById("minute").value;
+    var buttonChange = document.getElementById('buttonChange');
+    buttonChange.style.display = 'block';
+}
+function sync_time(el){
+    if (el.value == "on"){
+        document.getElementById("NTPSever").disabled = false;
+        document.getElementById("calendar").disabled = true;
+        document.getElementById("hour").disabled = true;
+        document.getElementById("minute").disabled = true;
+    }
+}
+function manual_time(el){
+    if (el.value == "on"){
+        document.getElementById("NTPSever").disabled = true;
+        document.getElementById("calendar").disabled = false;
+        document.getElementById("hour").disabled = false;
+        document.getElementById("minute").disabled = false;
+    }
+}
+function getTimeGMT() {
+    //Get timestamp in locale
+    var tDate = new Date();
+    //Convert timestamp in GMT/UTC format
+    var utcDate = tDate.toUTCString();
+    console.log('hour: ' + tDate.toUTCString());
+    // alert(utcDate);
+}
+
+

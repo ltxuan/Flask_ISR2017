@@ -1,0 +1,1205 @@
+var data = {
+    add_sip         : [{}],
+    delete_sip      : [{}],
+    modify_sip      : [{}],
+    add_trunk       : [{}],
+    modify_trunk    : [{}],
+    delete_trunk    : [{}],
+    ge_setting      : [{},{},{},{},{}],
+    quagga_setting  : [{},{},{}],
+    audio_setting   : {priotiy : []},
+    dial_plan       : {},
+    make_cer        : {},
+    call_forward    : {},
+    sip_configure   : [],
+    general_setting : {},
+    nat_setting     : {},
+    codec_setting   : {avail_codec:[], allow_codec:[]},
+    qos_setting     : {},
+    t38_setting     : {},
+    advanced_setting: {},
+    time_setting    : {},
+    infor            : {},
+    account         : {}
+};
+var sip_status_data = [];
+var message = [];
+/* refresh data */
+var date_time_data = true;
+var dial_plan_status = true;
+var network_status = true
+var quagga_status = true;
+var sip_configure_status = true;
+var audio_setting_status = true;
+var asterisk_key_file_status = true;
+var general_setting_status = true;
+var nat_setting_status = true;
+var qos_setting_status = true;
+var t38_setting_status = true;
+var codec_setting_status = true;
+var advanced_setting_status = true;
+var call_forward_status = true;
+var make_cer_status = true;
+var infor_status = true;
+
+var table_extension = [];
+var table_trunk = [];
+var add_trunk_number = 0;
+var ip_phone_number = 0;
+var counterRow = 0;
+var trunk_couter_row = 0;
+
+/* sip */
+var add_sip_number = 0;
+var delete_sip_number = 0;
+var modify_sip_number = 0;
+/* trunk */
+var add_trunk_number = 0;
+var delete_trunk_number = 0;
+var modify_trunk_number = 0;
+
+socket.on('sip_state', msg =>{
+    var arr = [];
+    arr = msg.split("$");
+    var sip_table = document.getElementById('sip_status_table');
+    for (var i = 0; i < 24; i++){
+        sip_table.rows[i + 1].cells[5].innerHTML = state_text(arr[i + 1]);
+    }
+});
+
+socket.on('database_change', msg =>{
+    var sip_table = document.getElementById('sip_status_table');
+    console.log(msg);
+    if (msg.status != undefined){
+      if (msg.status == "checked"){
+          sip_table.rows[parseInt(msg.id) + 1].cells[2].innerHTML = "YES";
+          sip_table.rows[parseInt(msg.id) + 1].cells[2].style="color:#34eb64";
+      }
+      else{
+        sip_table.rows[parseInt(msg.id) + 1].cells[2].innerHTML = "NO";
+        sip_table.rows[parseInt(msg.id) + 1].cells[2].style="";
+      }
+    }
+    if (msg.sip_uri != undefined){
+        sip_table.rows[parseInt(msg.id) + 1].cells[1].innerHTML = msg.sip_uri;
+    }
+  });
+
+socket.on('call_state', msg =>{
+    var sip_table = document.getElementById('sip_status_table');
+    var index = msg.slice(msg.indexOf("$") + 1, msg.lastIndexOf("$"));
+    var state = msg.slice(msg.lastIndexOf("$") + 1);
+    sip_table.rows[parseInt(index) + 1].cells[3].innerHTML = state_text(state);
+});
+socket.on("RES_SIP", msg =>{
+    console.log(msg);
+    sip_status_data = msg;
+    for (var i = 0; i < sip_status_data.length; i++){
+        var table = document.getElementById('sip_status_table');
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = i;
+        cell2.innerHTML = sip_status_data[i].sip_uri;
+        if (sip_status_data[i].status == "checked"){
+            cell3.innerHTML = "YES";
+            cell3.style="color:#34eb64";
+        }
+        else {
+            cell3.innerHTML = "NO";
+        }
+    }
+    socket.emit("sip_status");
+    
+});
+socket.on("RES_FSX", msg =>{
+    table_extension = msg;
+    counterRow = table_extension.length;
+    for (var i = 0; i < table_extension.length; i++){
+        if (table_extension[i].callerid.includes('ATA')){
+            var table = document.getElementById('table-id-VoIP');
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            cell1.innerHTML = "<input id='\check_Void" + i + "' type=\"checkbox\"/>";
+            cell2.innerHTML = table_extension[i].name;
+            cell3.innerHTML = 'ATA';
+            cell4.innerHTML = table_extension[i].name;
+            cell5.innerHTML = table_extension[i].name;
+            cell6.innerHTML = "    <button id='\editAddVoid" + i + "' class=\"acceptBtn\" onclick=\"clickBtnEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+        "      <button id='\delAddVoid" + i + "'class=\"cancelBtn\" onclick=\"clickBtndel(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+            getPagination('table-id-VoIP','#tableMother_VoIP_Extensions ',24);
+        }
+        if (table_extension[i].callerid.includes('IP_PHONE')){
+            ip_phone_number++;
+            var table = document.getElementById('table-FXS_VoIP_Extensions');
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5)
+            cell1.innerHTML = ip_phone_number;
+            cell2.innerHTML = table_extension[i].name;
+            cell3.innerHTML = table_extension[i].name;
+            cell4.innerHTML = table_extension[i].name;
+            cell6.innerHTML = "    <button id='\editAddVoid" + i + "' class=\"acceptBtn\" onclick=\"clickBtnEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+        "      <button id='\delAddVoid" + i + "'class=\"cancelBtn\" onclick=\"clickBtndel(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+        }
+        document.querySelector("#totalRow").innerHTML = "Total: " + (document.querySelector("#table-id-VoIP").rows.length - 1);
+        if (type_user == "user"){
+            $("input").prop("disabled", true);
+            $("button").not('.tab_links_FXS_VoIP,.tablinks,.toolbar-item-3,#browse').prop("disabled", true);
+            $(".contentInput").prop("disabled", true);
+            $("select").prop("disabled", true);
+            $(".saveBtn").prop("hidden", true);
+            $(".cancelBtn").prop("hidden", true);
+            $(".saveAndCancelBtn").prop("hidden", true);
+            $(".input-group-addon").prop("hidden", true);
+            $(".Btn1").prop("hidden", true);
+            $(".Btn2").prop("hidden", true);
+            $(".Btn3").prop("hidden", true);
+            $(".Btn4").prop("hidden", true);
+            $("textarea").prop("disabled", true);
+            $(".Btn22").prop("hidden", true);
+            $(".Btn11").prop("hidden", true);
+
+        }
+}
+});
+socket.on("RES_ASTERIK_KEY", msg =>{
+    console.log(msg);
+     // var table = document.getElementById('table-Data_File_DownloadCertificate');
+    // var row = table.insertRow(-1); row.id = "row_addDownload" + counterRow;
+    // var cell1 = row.insertCell(0); cell1.className = "cell"; cell1.innerHTML=counterRow + '1';
+    // var cell2 = row.insertCell(1); cell2.className = "cell"; cell2.innerHTML=counterRow + '2';
+    // var cell3 = row.insertCell(2); cell3.className = "cell"; cell3.innerHTML=counterRow + '3';
+    // var cell4 = row.insertCell(3); cell4.className = "cell"; cell4.innerHTML=counterRow + '4';
+    for (let i = 0; i < msg.length; i = i + 4){
+        $('#table-Data_File_DownloadCertificate').append(
+            '                            <tr id="row_addDownload' + i + '">\n' +
+            '                            <td class="cell" ' + (msg[i]?"":"hidden disabled") + ' onclick="chose(this)"><i class="far fa-file"'+ (msg[i]?"":"hidden disabled") +'></i>'+ (msg[i]?msg[i]:"") +'</td>\n' +
+            '                            <td class="cell" ' + (msg[i + 1]?"":"hidden disabled") + ' onclick="chose(this)"><i class="far fa-file"'+ (msg[i + 1]?"":"hidden disabled") +'></i>'+ (msg[i + 1]?msg[i + 1]:"") +'</td>\n' +
+            '                            <td class="cell" ' + (msg[i + 2]?"":"hidden disabled") + ' onclick="chose(this)"><i class="far fa-file"'+ (msg[i + 2]?"":"hidden disabled") +'></i>'+ (msg[i + 2]?msg[i + 2]:"") +'</td>\n' +
+            '                            <td class="cell" ' + (msg[i + 3]?"":"hidden disabled") + ' onclick="chose(this)"><i class="far fa-file"'+ (msg[i + 3]?"":"hidden disabled") +'></i>'+ (msg[i + 3]?msg[i + 3]:"") +'</td>\n' +
+    
+            '                        </tr>');
+    }
+
+
+    $('#table-Data_File_DownloadCertificate .cell').click(function(){
+        console.log(this.innerHTML.replace('<i class="far fa-file"></i> ',''));
+    })
+
+    getPagination('table-Data_File_DownloadCertificate','#Data_File_DownloadCertificate ',10);
+    
+})
+$(document).ready(function () {
+    
+      $('#optionLocalDialPlan').bind('click',function (e){
+        if(e.target.closest('.General_Preferences-btn')){
+            $('#General_Preferences-table1').show();
+            $('#Call_Forwarding_Preferences-table').hide();
+ 
+            $('.General_Preferences_MultiBtn').show();
+            $('.Call_Forwarding_Preferences_MultiBtn').hide();
+ 
+            $('.General_Preferences-btn').addClass('active');
+            $('.Call_Forwarding_Preferences-btn').removeClass('active');
+        }
+        else if(e.target.closest('.Call_Forwarding_Preferences-btn')){
+            $('#General_Preferences-table1').hide();
+            $('#Call_Forwarding_Preferences-table').show();
+ 
+              $('.General_Preferences_MultiBtn').hide();
+              $('.Call_Forwarding_Preferences_MultiBtn').show();
+ 
+            $('.General_Preferences-btn').removeClass('active');
+            $('.Call_Forwarding_Preferences-btn').addClass('active');
+        }
+      })
+ 
+ 
+      $('#Download_Certificate').bind('click',function (e){
+          console.log(e.target.className);
+          if(String(e.target.className).match('title_Download_Certificate')){
+              $('#Download_Certificate .content1').show();
+              $('#Download_Certificate .title_Download_Certificate').addClass('active');
+              $('#Download_Certificate .title_Make_Certificate').removeClass('active');
+              $('#Download_Certificate .content2').hide();
+ 
+          }
+          else if(String(e.target.className).match('title_Make_Certificate')){
+              if (make_cer_status) socket.emit("GET_MAKE_CER");
+              $('#Download_Certificate .content1').hide();
+              $('#Download_Certificate .content2').show();
+              $('#Download_Certificate .title_Make_Certificate').addClass('active');
+              $('#Download_Certificate .title_Download_Certificate').removeClass('active');
+ 
+          }
+      })
+    if (sessionStorage.getItem("tabName") != null) PBX_child1(null, sessionStorage.getItem("tabName"));
+    else PBX_child1(null, "Informations");
+    $('.accordion-item').click(function (e) {
+
+        $(window).scroll(function (event){
+            var pos_body=$('html,body').scrollTop();
+            // console.log('pos_body: '+pos_body);
+            if(pos_body>1){
+                $('.row.toolbar').addClass('active');
+                $('.row.spaceBlack').addClass('active');
+            }else{
+                $('.row.toolbar').removeClass('active');
+                $('.row.spaceBlack').removeClass('active');
+            }
+
+        })
+
+
+        e.preventDefault();
+        var iconArrow = document.getElementsByClassName('icon-arrow');
+        var $this = $(this);
+
+        if ($this.next().hasClass('show')) {
+            $this.next().removeClass('show');
+            $this.next().slideUp(350);
+
+        } else {
+            $this.parent().parent().find('.accordion-body').removeClass('show');
+            $this.parent().parent().find('.accordion-body').slideUp(350);
+            $this.next().toggleClass('show');
+            $this.next().slideToggle(350);
+        }
+        var iconArrow = document.getElementsByClassName('icon-arrow');
+        var accBody = document.getElementsByClassName('accordion-body');
+        for (i = 0; i < iconArrow.length; i++) {
+            if (accBody[i].className === 'accordion-body show') {
+                iconArrow[i].className = 'icon-arrow fas fa-caret-square-down';
+            } else {
+                iconArrow[i].className = 'icon-arrow fas fa-caret-square-right';
+            }
+        }
+    });
+    var tabContent = document.getElementsByClassName('tabContent');
+    var i;
+    for (let i = 1; i < tabContent.length; i++) {
+        tabContent[i].style.display = 'none';
+    }
+
+
+    // var clientHeight = document.getElementById('table-FXS_VoIP_Extensions').clientHeight;
+    // alert(clientHeight);
+
+
+
+    // $(function () {
+    //     var table = document.getElementById('table-FXS_VoIP_Extensions');
+    //     for (var i = 0, n = table.rows.length; i < n; i++) {
+    //         for (var j = 0, m = table.rows[i].cells.length; j < m; j++) {
+    //             // console.log(table.rows[r].cells[c].innerHTML);
+    //             table.rows[i + 1].cells[0].innerHTML=(i+1);   // gán giá trị vào ô
+    //         }
+    //     }
+    // })
+})
+// window.onload=function (){
+//     $('#FXS_table_col32').html('acv');
+// }
+
+function tabItem_SIP(evt, tabName) {
+    var i;
+    let tabContent = document.getElementsByClassName('tabContent');
+    let tabLinks = document.getElementsByClassName('tablinks');
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = 'none';
+    }
+    for (i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = 'block';
+    //evt.currentTarget.className += " active";
+    if (tabName == 'General'){
+        if (general_setting_status) socket.emit("GET_GENERAL_SETTING");
+    }
+    if (tabName == 'NAT') {
+        if (nat_setting_status) socket.emit("GET_NAT_SETTING");
+    }
+    if (tabName == 'Codes') {
+        if (codec_setting_status) socket.emit("GET_CODEC_SETTING");
+    }
+    if (tabName == 'QOS'){
+        if (qos_setting_status) socket.emit("GET_QOS_SETTING")
+    }
+    if (tabName == 'T_38'){
+        if (t38_setting_status) socket.emit("GET_T38_SETTING")
+    }
+    if (tabName == 'Advanced_Settings'){
+        if (advanced_setting_status) socket.emit("GET_ADVANCED_SETTING")
+    }
+}
+
+function PBX_child1(evt, tabName) {
+    sessionStorage.setItem("tabName", tabName);
+    if (tabName.includes("FXS_VoIP_Extensions")){
+        if (table_extension.length == 0) socket.emit("GET_FXS");
+    }
+    else if (tabName.includes("ATA_STATUS")){
+        console.log("SIP_STATUS");
+        if (sip_status_data.length == 0) socket.emit("GET_SIP");
+    }
+    else if (tabName.includes("Date")){
+        console.log("date_time");
+        if (date_time_data) socket.emit("GET_DATE_TIME");
+    }
+    else if (tabName.includes("VoIP_Trunk")){
+        console.log("VoIP_Trunk");
+        if (table_trunk.length == 0) socket.emit("GET_TRUNK");
+    }
+    else if (tabName.includes("LocalDialPlan")){
+        console.log("LocalDialPlan");
+        if (dial_plan_status) socket.emit("GET_DIAL_PLAN");
+    }
+    else if (tabName.includes("Setting")){
+        //let flag = false;
+        if (network_status) socket.emit("GET_GE_SETTING");
+    }
+    else if (tabName.includes("Configuration_OSPF") || tabName.includes("Configuration_RIP")){
+        if (quagga_status) socket.emit("GET_QUAGGA_SETTING");
+    }
+    else if (tabName.includes("ATA_CONFIGURE")){
+        if (sip_configure_status) socket.emit("GET_PJSIP_CONFIGURE");
+    }
+    else if (tabName.includes("Audio_Set")){
+        if (audio_setting_status) socket.emit("GET_AUDIO_SETTING");
+    }
+    else if (tabName.includes("Informations")){
+        if (infor_status) socket.emit("GET_INFOR");    
+    }
+    else if (tabName.includes("Backup_and_Restore")){
+        socket.emit("GET_BACKUP");  
+    }
+    else if (tabName.includes("Sip_settings")){
+        tabItem_SIP(null, 'General');    
+    }
+    else if (tabName.includes("Reset_and_Reboot_Options")){
+        if (sessionStorage.getItem('reboot') == "true") toastr.warning('You has uploaded a backup. To apply change you need to reboot!');
+        sessionStorage.setItem("reboot", false);
+    }
+    else if (tabName.includes("Download_Certificate")){
+        if (type_user == "user"){
+            $("input").prop("disabled", true);
+            $("button").not('.tab_links_FXS_VoIP,.tablinks,.toolbar-item-3,#browse').prop("disabled", true);
+            $(".contentInput").prop("disabled", true);
+            $("select").prop("disabled", true);
+            $(".saveBtn").prop("hidden", true);
+            $(".cancelBtn").prop("hidden", true);
+            $(".saveAndCancelBtn").prop("hidden", true);
+            $(".input-group-addon").prop("hidden", true);
+            $(".Btn1").prop("hidden", true);
+            $(".Btn2").prop("hidden", true);
+            $(".Btn3").prop("hidden", true);
+            $(".Btn4").prop("hidden", true);
+            $("textarea").prop("disabled", true);
+            $(".Btn22").prop("hidden", true);
+            $(".Btn11").prop("hidden", true);
+
+        }
+    }
+    var i;
+    let tabContent = document.getElementsByClassName('tab_content_FXS_VoIP');
+    let tabLinks = document.getElementsByClassName('tab_links_FXS_VoIP');
+
+    document.getElementById("title-tabTool-PBX").innerHTML = tabName;
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = 'none';
+    }
+    for (i = 0; i < tabLinks; i++) {
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = 'block';
+    //evt.currentTarget.className += " active";
+    sessionStorage.setItem("tabName", tabName);
+    //sessionStorage.setItem("event", evt);
+}
+
+
+// function GetCellValues() {
+//     var table = document.getElementById('table-FXS_VoIP_Extensions');
+//     for (var r = 0, n = table.rows.length; r < n; r++) {
+//         for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+//             // console.log(table.rows[r].cells[c].innerHTML);
+//         }
+//     }
+//     table.rows[1].cells[0].innerHTML="1234";   // gán giá trị vào ô
+// }
+
+
+$(document).ready(function () {
+
+})
+//var my_table;
+$(".form-group").hide();
+
+function getPagination(table, tableMother,maxRows) {
+    var lastPage = 1;
+    var table1='#'+table;    // chu y la tuyet doi ko thay doi id tuy tien ko la sai nhe
+    console.log(table1);
+
+    // $('#maxRows'+table).on('change', function (evt) {
+    $(function(){
+        //$('.paginationprev').html('');						// reset pagination
+        console.log('#maxRows'+table);
+        lastPage = 1;
+        $(tableMother+'.pagination').find('li').slice(1, -1).remove();   // slice(1,-1)  la ham lua chon dau tien va cuoi cung
+        var trnum = 0; // reset tr counter
+        // var maxRows = parseInt($(this).val()); // lay gia tri select cua #maxRows
+
+        if (maxRows == 5000) {
+            $(tableMother+'.pagination').hide();
+        } else {
+            $(tableMother+'.pagination').show();
+        }
+
+        var totalRows = $(table1 + ' tbody tr').length; // tong so hang cua bang
+        $(table1 + ' tr:gt(0)').each(function () {
+            // duyet toan bo hang tru tieu de || gt(0)
+            trnum++; //  bat dau dem so hang
+            if (trnum > maxRows) {
+                //  số hàng thực tế lớn hơn số hàng cho phép thì ẩn đi
+
+                $(this).hide(); // fade it out
+            }
+            if (trnum <= maxRows) {           // số hàng thực tế nhỏ hơn bằng số hàng cho phép thì hiển thị
+                $(this).show();
+            } // else fade in Important in case if it ..
+        }); //  was fade out to fade it in
+        if (totalRows > maxRows) {
+            //nếu tổng số hàng lớn hơn số hàng cho phép thì phải chia lấy nguyên làm tròn lên
+            var pagenum = Math.ceil(totalRows / maxRows);
+            //	số trang
+            for (var i = 1; i <= pagenum;) {
+                // for each page append pagination li  // duyệt toàn bộ trang của bảng
+                // chèn vào đoạn mã trước id:prev vào ;sẽ in ra từng trang
+                $(tableMother+'.pagination #prev'+table).before('<li data-page="' + i + '">\<span>' + i++ + '<span class="sr-only">(current)</span></span>\</li>').show();
+            } // end for i
+        } // end if row count > max rows
+        $(tableMother+'.pagination [data-page="1"]').addClass('active'); // add active class to the first li
+        $(tableMother+'.pagination li').on('click', function (evt) {
+            // on click each page
+            evt.stopImmediatePropagation();
+            evt.preventDefault();
+            var pageNum = $(this).attr('data-page'); // nhận vị trí của trang
+
+            // var maxRows = parseInt($('#maxRows'+table).val()); // nhận giá trị cho phép của hàng $('#maxRows'+table)
+
+            if (pageNum == 'prev') {    // nếu nhấn vào ô 'prev' sẽ thực hiện lệnh trong if
+
+                if (lastPage == 1) {     // nếu đúng thì sẽ thoát khỏi if và ko thực hiện lệnh kia nữa
+                    return;
+                }
+                pageNum = --lastPage;   // lệnh này cho phép lastPage trừ đi 1 (giảm dần mà :))
+            }
+            if (pageNum == 'next') {  // nếu vị trí của trang bằng vs 'next'
+                if (lastPage == $(tableMother+'.pagination li').length - 2) {
+                    return;
+                }
+                pageNum = ++lastPage;    // tương tự như prev
+            }
+
+            lastPage = pageNum;
+            var trIndex = 0; // reset tr counter
+            $(tableMother+'.pagination li').removeClass('active'); // remove active class from all li
+            $(tableMother+'.pagination [data-page="' + lastPage + '"]').addClass('active'); // add active class to the clicked
+            // $(this).addClass('active');					// add active class to the clicked
+            limitPagging(tableMother);
+            $(table1 + ' tr:gt(0)').each(function () {
+                // duyệt hết hàng trừ hàng số 0 dến hết
+                trIndex++; // tr index counter
+                // if tr index gt maxRows*pageNum or lt maxRows*pageNum-maxRows fade if out
+                if (
+                    trIndex > maxRows * pageNum ||
+                    trIndex <= maxRows * pageNum - maxRows       // chi hien thi cac hang nam trong pageNum
+                ) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                } //else fade in
+            }); // end of for each tr in table
+        }); // end of on click pagination list
+        limitPagging(tableMother);
+    })
+        .val(5)
+        .change();
+
+    // end of on select change
+
+    // END OF PAGINATION
+}
+function limitPagging(tableMother) {
+    // alert($('.pagination li').length)
+
+    if ($(tableMother+'.pagination li').length > 7) {
+        if ($(tableMother+'.pagination li.active').attr('data-page') <= 3) {
+            $(tableMother+'.pagination li:gt(5)').hide();
+            $(tableMother+'.pagination li:lt(5)').show();
+            $(tableMother+'.pagination [data-page="next"]').show();
+        } if ($(tableMother+'.pagination li.active').attr('data-page') > 3) {
+            $(tableMother+'.pagination li:gt(0)').hide();
+            $(tableMother+'.pagination [data-page="next"]').show();
+            for (let i = (parseInt($(tableMother+'.pagination li.active').attr('data-page')) - 2); i <= (parseInt($(tableMother+'.pagination li.active').attr('data-page')) + 2); i++) {
+                $(tableMother+'.pagination [data-page="' + i + '"]').show();
+
+            }
+
+        }
+    }
+}
+//
+// $(function() {
+//     // Just to append id number for each row
+//     $('table tr:eq(0)').prepend('<th> ID </th>');
+//
+//     var id = 0;
+//
+//     $('table tr:gt(0)').each(function() {
+//         id++;
+//         $(this).prepend('<td>' + id + '</td>');
+//     });
+// });
+
+//  Developed By Yasser Mas
+// yasser.mas2@gmail.com
+    function addBulkExtensionVoIP() {
+        var addBulk = document.getElementById('addBulkVoIP');
+        addBulk.style.display = "block";
+        addBulk.style.position = "fixed";
+        addBulk.style.zIndex = '10';
+        addBulk.style.top = "5rem";
+    }
+
+    function addExtensionVoIP() {
+        var addExtensionVoIP = document.getElementById('addExtensVoID');
+        addExtensionVoIP.style.display = "block";
+        addExtensionVoIP.style.position = "fixed";
+        addExtensionVoIP.style.zIndex = '10';
+        addExtensionVoIP.style.top = "5rem";
+    }
+
+
+    function closeTable(tableId) {
+        var tableId1= document.getElementById(tableId);
+        tableId1.style.display = 'none';
+    }
+
+
+function myCreateTableFunction() {
+
+    var table = document.getElementById('table-id-VoIP');
+    var row = table.insertRow(-1);
+    row.id = "row_addVoIP" + counterRow;
+    var cell1 = row.insertCell(0);cell1.className="cell";
+    var cell2 = row.insertCell(1);cell2.className="cell";
+    var cell3 = row.insertCell(2);cell3.className="cell";
+    var cell4 = row.insertCell(3);cell4.className="cell";
+    var cell5 = row.insertCell(4);cell5.className="cell";
+    var cell6 = row.insertCell(5);cell6.className="cell";
+
+
+    var Type_VoIP = ObjectListAddVoIP[ObjectListAddVoIP.length - 1].Type_VoIP;
+    var Name_VoIP = ObjectListAddVoIP[ObjectListAddVoIP.length - 1].Name_VoIP;
+    var CallID_VoIP = ObjectListAddVoIP[ObjectListAddVoIP.length - 1].CallID_VoIP;
+    cell1.innerHTML = "<input type=\"checkbox\"/>";
+    cell2.innerHTML = CallID_VoIP;
+    cell3.innerHTML = Type_VoIP;
+    cell4.innerHTML = Name_VoIP;
+    cell5.innerHTML = CallID_VoIP;
+    cell6.innerHTML = "    <button id='\editAddVoid" + counterRow + "'class=\"acceptBtn\" onclick=\"clickBtnEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+        "      <button id='\delAddVoid" + counterRow + "'class=\"cancelBtn\" onclick=\"clickBtndel(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+    counterRow++;
+    document.querySelector("#totalRow").innerHTML = "Total: " + (document.querySelector("#table-id-VoIP").rows.length - 1)
+    getPagination('table-id-VoIP','#tableMother_VoIP_Extensions ',24);
+
+}
+
+ // edit thong so cua bang addEx , lay du lieu id row sau do lay gia tri ObjectList day len bang
+function clickBtnEdit(idBtnEditAddVoIP) {
+
+    console.log("idrow"+idBtnEditAddVoIP)
+    var i =parseInt(idBtnEditAddVoIP.match(/\d+/)[0]);
+    var EditExtension_VoID=document.getElementById('EditExtension_VoID');
+    EditExtension_VoID.style.display="block";
+    EditExtension_VoID.style.position = "fixed";
+    EditExtension_VoID.style.zIndex = '10';
+    EditExtension_VoID.style.top = "5rem";
+
+    var nameIdEitVoIP=document.getElementById('nameIdEitVoIP');
+    nameIdEitVoIP.innerHTML =  "Edit Extension VoIP - " + table_extension[i].name;
+// lay du lieu tu OBJECTLIST len bang
+    $('#Edit_Type_VoIP ').val(table_extension[i].callerid.slice(0, table_extension[i].callerid.indexOf("<") - 1)).change();
+    $('#Edit_Password_VoIP').val(table_extension[i].secret);
+    $('#Edit_Name_VoIP').val(table_extension[i].name);
+    $('#Edit_CallID_VoIP').val(table_extension[i].name);
+    $('#Edit_Register_VoIP').val(table_extension[i].name);
+    $('#Edit_EnableVoicemail_VoIP').prop('checked',table_extension[i].en_voice_mail);
+    $('#Edit_Voicemail_VoIP').val(table_extension[i].mailbox);
+    $('#Edit_codec_VoIP').val(table_extension[i].codec).change();
+    if (table_extension[i].nat == "no") $('#Edit_NAT_VoIP').prop('checked',false);
+    else $('#Edit_NAT_VoIP').prop('checked',true);
+    if (table_extension[i].qualify == "no") $('#Edit_qualify_VoIP').prop('checked',false);
+    else $('#Edit_qualify_VoIP').prop('checked',true);
+    //$('#Edit_SRTP_VoIP').prop('checked',table_extension[i].SRTP_VoIP);
+    $('#Edit_transport_VoIP').val(table_extension[i].transport).change();
+    $('#Edit_DTMF_Mode_VoIP').val(table_extension[i].dtmfmode).change();
+    document.querySelector("#Edit_SRTP_VoIP").checked = table_extension[i].srtp_enable;
+    document.querySelector("#Edit_SRTP_Mode_VoIP").value = table_extension[i].srtp_mode;
+    //$('#Edit_registerRemotely_VoIP').prop('checked',table_extension[i].registerRemotely_VoIP);
+
+    console.log(i);
+    console.log(idBtnEditAddVoIP);
+    var idRow= "row_addVoIP"+i;
+    $('#Save_EditVoIP_Btn').bind( "click",function() {
+        console.log("gia tri i = " + i);
+        $('#Save_EditVoIP_Btn').unbind( "click");
+       Save_EditVoIP(i);
+       $('#EditExtension_VoID').hide();
+    })
+    /*
+   $('#Save_EditVoIP_Btn').click(function (){
+    console.log("gia tri i = " + i);
+    Save_EditVoIP(i)
+       // clickBtnEdit(idBtnEditAddVoIP);
+       $('#EditExtension_VoID').hide();
+   })*/
+
+
+}
+
+    var ObjectListAddVoIP = [];
+    function createObject(Type_VoIP, Password_VoIP, Name_VoIP, CallID_VoIP, Register_VoIP, EnableVoicemail_VoIP,
+                          Voicemail_VoIP, EnableSendVoicemail_VoIP, EmailAddress_VoIP, codec_VoIP, NAT_VoIP, qualify_VoIP, SRTP_VoIP, transport_VoIP,
+                          DTMF_Mode_VoIP, registerRemotely_VoIP) {
+        return {
+            Type_VoIP: Type_VoIP,
+            Password_VoIP: Password_VoIP,
+            Name_VoIP: Name_VoIP,
+            CallID_VoIP: CallID_VoIP,
+            Register_VoIP: Register_VoIP,
+            EnableVoicemail_VoIP: EnableVoicemail_VoIP,
+            Voicemail_VoIP: Voicemail_VoIP,
+            EnableSendVoicemail_VoIP: EnableSendVoicemail_VoIP,
+            EmailAddress_VoIP: EmailAddress_VoIP,
+            codec_VoIP: codec_VoIP,
+            NAT_VoIP: NAT_VoIP,
+            qualify_VoIP: qualify_VoIP,
+            SRTP_VoIP: SRTP_VoIP,
+            transport_VoIP: transport_VoIP,
+            DTMF_Mode_VoIP: DTMF_Mode_VoIP,
+            registerRemotely_VoIP: registerRemotely_VoIP
+        };
+    }
+
+// console.log(ObjectList[0].id);
+
+function DataFile_DownloadCertificate(){
+    if (asterisk_key_file_status) {
+        socket.emit("GET_ASTERIK_KEY");
+        asterisk_key_file_status = false;
+    }
+    var DataFile_DownloadCertificate=document.getElementById('Data_File_DownloadCertificate');
+    DataFile_DownloadCertificate.style.display = "block";
+    DataFile_DownloadCertificate.style.position = "absolute";
+    DataFile_DownloadCertificate.style.zIndex = '8';
+    DataFile_DownloadCertificate.style.top = "4rem";
+}
+function Download(){
+    if (document.querySelector("#type_Download_Certificate").value == "PBX_Certificate"){
+        window.location.href = "download/asterisk.crt|asterisk.csr|asterisk.key|asterisk.pem";
+    }
+    else {
+        window.location.href = "download/" +  document.querySelector("#FileName_Certificate").value;
+    }
+}
+function chose(el){
+    if (el.value != "OK") {
+        el.value = "OK";
+        el.classList.toggle('active');
+        el.getElementsByTagName('i')[0].classList.toggle('far');
+        el.getElementsByTagName('i')[0].classList.toggle('fas');
+    }
+    else {
+        el.value = "";
+        el.classList.toggle('active');
+        el.getElementsByTagName('i')[0].classList.toggle('far');
+        el.getElementsByTagName('i')[0].classList.toggle('fas');
+    }
+}
+function get_list_file(){
+    var table =document.querySelector("#table-Data_File_DownloadCertificate");
+    for (let i = 1, row; row = table.rows[i]; i++) {
+        for (var j = 0, col; col = row.cells[j]; j++) {
+            if (col.value == "OK") document.querySelector("#FileName_Certificate").value += '|' + col.innerText;
+        }  
+     }
+     document.querySelector("#FileName_Certificate").value = document.querySelector("#FileName_Certificate").value.slice(1)
+}
+function  Btn_Submit_DataFile() {
+    // lay gia tri cua cac column duoc click
+    get_list_file()
+    CancelTable('Data_File_DownloadCertificate');
+}
+
+    function Save_AddVoIP() {
+        var Type_VoIP = $('#Type_VoIP option:selected').val();
+        var Password_VoIP = $('#Password_VoIP').val();
+        var Name_VoIP = $('#Name_VoIP').val();
+        var CallID_VoIP = $('#CallID_VoIP').val();
+        var Register_VoIP = $('#Register_VoIP').val();
+        var EnableVoicemail_VoIP = $('#EnableVoicemail_VoIP').prop('checked');
+        var Voicemail_VoIP = $('#Voicemail_VoIP').val()
+        var EnableSendVoicemail_VoIP = $('#EnableSendVoicemail_VoIP').prop('checked');
+        var EmailAddress_VoIP = $('#EmailAddress_VoIP').val();
+        var codec_VoIP = $('#codec_VoIP option:selected').val();
+        var NAT_VoIP = $('#NAT_VoIP').prop('checked');
+        var qualify_VoIP = $('#qualify_VoIP').prop('checked');
+        var SRTP_VoIP = $('#SRTP_VoIP').prop('checked');
+        var transport_VoIP = $('#transport_VoIP option:selected').val();
+        var DTMF_Mode_VoIP = $('#DTMF_Mode_VoIP option:selected').val();
+        var registerRemotely_VoIP = $('#registerRemotely_VoIP').prop('checked');
+        var add_flag = true;
+        var name_add_voip = document.getElementById('add_voip_id');
+        for (var i = 0; i < counterRow; i++){
+            if (table_extension[i].name == CallID_VoIP){
+                add_flag = false;
+                name_add_voip.innerHTML = "Add VoIP Extension    already exists number: " + CallID_VoIP;
+            }
+        }
+        if (add_flag){
+            data.add_sip[add_sip_number].name = CallID_VoIP;
+            data.add_sip[add_sip_number].callerid = Type_VoIP + " <" + CallID_VoIP + ">";
+            data.add_sip[add_sip_number].secret = Password_VoIP;
+            data.add_sip[add_sip_number].dtmfmode = DTMF_Mode_VoIP;
+            data.add_sip[add_sip_number].en_voice_mail = EnableVoicemail_VoIP;
+            data.add_sip[add_sip_number].mailbox = Voicemail_VoIP;
+            data.add_sip[add_sip_number].codec = codec_VoIP;
+            data.add_sip[add_sip_number].transport = transport_VoIP;
+            data.add_sip[add_sip_number].srtp_enable = document.querySelector("#SRTP_VoIP").checked;
+            data.add_sip[add_sip_number].srtp_mode = document.querySelector("#SRTP_Mode_VoIP").value;
+            if (NAT_VoIP) data.add_sip[add_sip_number].nat = "yes";
+            else data.add_sip[add_sip_number].nat = "no";
+            if (qualify_VoIP) data.add_sip[add_sip_number].qualify = "yes";
+            else data.add_sip[add_sip_number].qualify = "no";
+            table_extension[counterRow] = data.add_sip[add_sip_number];
+            data.add_sip.push({});
+            add_sip_number++;
+            console.log(data);
+
+    // console.log('Type_VoIP='+Type_VoIP+'Password_VoIP='+Password_VoIP);
+    // console.log('Name_VoIP='+Name_VoIP+'CallID_VoIP='+CallID_VoIP+ 'Register_VoIP='+Register_VoIP);
+    // console.log('EnableVoicemail_VoIP='+EnableVoicemail_VoIP);
+    // console.log('Voicemail_VoIP='+Voicemail_VoIP);
+    // console.log('EnableSendVoicemail_VoIP='+EnableSendVoicemail_VoIP);
+    // console.log('EmailAddress_VoIP='+EmailAddress_VoIP);
+    // console.log('codec_VoIP='+codec_VoIP+ 'NAT_VoIP='+NAT_VoIP);
+    // console.log('qualify_VoIP='+qualify_VoIP+'SRTP_VoIP='+SRTP_VoIP);
+    // console.log('transfort='+transport_VoIP+ ' DTMF_Mode='+DTMF_Mode_VoIP);
+    // console.log('registerRemotely_VoIP='+registerRemotely_VoIP);
+
+
+            var ArrAddVoIP = [];
+            ArrAddVoIP[0] = Type_VoIP;
+            ArrAddVoIP[1] = Password_VoIP;
+            ArrAddVoIP[2] = Name_VoIP;
+            ArrAddVoIP[3] = CallID_VoIP;
+            ArrAddVoIP[4] = Register_VoIP;
+            ArrAddVoIP[5] = EnableVoicemail_VoIP;
+            ArrAddVoIP[6] = Voicemail_VoIP;
+            ArrAddVoIP[7] = EnableSendVoicemail_VoIP;
+            ArrAddVoIP[8] = EmailAddress_VoIP;
+            ArrAddVoIP[9] = codec_VoIP;
+            ArrAddVoIP[10] = NAT_VoIP;
+            ArrAddVoIP[11] = qualify_VoIP;
+            ArrAddVoIP[12] = SRTP_VoIP;
+            ArrAddVoIP[13] = transport_VoIP;
+            ArrAddVoIP[14] = DTMF_Mode_VoIP;
+            ArrAddVoIP[15] = registerRemotely_VoIP;
+
+            ObjectListAddVoIP.push(createObject(ArrAddVoIP[0], ArrAddVoIP[1], ArrAddVoIP[2], ArrAddVoIP[3], ArrAddVoIP[4], ArrAddVoIP[5],
+                ArrAddVoIP[6], ArrAddVoIP[7],
+                ArrAddVoIP[8], ArrAddVoIP[9], ArrAddVoIP[10], ArrAddVoIP[11], ArrAddVoIP[12],
+                ArrAddVoIP[13], ArrAddVoIP[14], ArrAddVoIP[15]));
+            // console.log(ObjectListAddVoIP[0].name);
+            // console.log(ObjectListAddVoIP[0].id);
+            if (Type_VoIP == "ATA") myCreateTableFunction();
+            else {
+                ip_phone_number++;
+                var table = document.getElementById('table-FXS_VoIP_Extensions');
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+                cell1.innerHTML = ip_phone_number;
+                cell2.innerHTML = CallID_VoIP;
+                cell3.innerHTML = CallID_VoIP;
+                cell4.innerHTML = CallID_VoIP;
+                cell6.innerHTML = "    <button id='\editAddVoid" + counterRow+ "' class=\"acceptBtn\" onclick=\"clickBtnEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+            "      <button id='\delAddVoid" + counterRow + "'class=\"cancelBtn\" onclick=\"clickBtndel(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+                counterRow++;
+            }
+            var buttonChange = document.getElementById('buttonChange');
+            buttonChange.style.display = 'block';
+            console.log("hello");
+            closeTable('addExtensVoID');
+
+            for(i=0;i<ObjectListAddVoIP.length;i++){
+                console.log('-----'+i)
+                console.log(ObjectListAddVoIP[i].CallID_VoIP);
+                console.log(ObjectListAddVoIP[i].Name_VoIP);
+                console.log(ObjectListAddVoIP[i].Type_VoIP);
+                console.log('----');
+            }
+        }
+
+    }
+    // save add bulk
+    function Save_AddBulkVoIP(){
+        console.log("Save_AddBulkVoIP");
+        var Type_BulkVoIP = $('#Type_BulkVoIP option:selected').val();
+        var Password_BulkVoIP = parseInt($('#Password_BulkVoIP').val());;
+        var Name_BulkVoIP = $('#Name_BulkVoIP').val();
+        var CallID_BulkVoIP = $('#CallID_BulkVoIP').val();
+        var Register_BulkVoIP = $('#Register_BulkVoIP').val();
+        var EnableVoicemail_BulkVoIP = $('#EnableVoicemail_BulkVoIP').prop('checked');
+        var Voicemail_BulkVoIP = parseInt($('#Voicemail_BulkVoIP').val());
+        var EnableSendVoicemail_BulkVoIP = $('#EnableSendVoicemail_BulkVoIP').prop('checked');
+        var EmailAddress_BulkVoIP = $('#EmailAddress_BulkVoIP').val();
+        var codec_BulkVoIP = $('#codec_BulkVoIP option:selected').val();
+        var NAT_BulkVoIP = $('#NAT_BulkVoIP').prop('checked');
+        var qualify_BulkVoIP = $('#qualify_BulkVoIP').prop('checked');
+        var SRTP_BulkVoIP = $('#SRTP_BulkVoIP').prop('checked');
+        var transport_BulkVoIP = $('#transport_BulkVoIP option:selected').val();
+        var DTMF_Mode_BulkVoIP = $('#DTMF_Mode_BulkVoIP option:selected').val();
+        var registerRemotely_BulkVoIP = $('#registerRemotely_BulkVoIP').prop('checked');
+        var start = parseInt(CallID_BulkVoIP.slice(0, CallID_BulkVoIP.indexOf('-')));
+        var end = parseInt(CallID_BulkVoIP.slice(CallID_BulkVoIP.indexOf('-') + 1));
+        var name_add_range = document.getElementById('add_range_extension');
+        var add_bulk_flag = true;
+        for (var i = start; i <= end; i++){
+            for (var j = 0; j < counterRow; j++){
+                //console.log("=========");
+                //console.log(i.toString());
+                //console.log(table_extension[j].name);
+                if (i.toString() == table_extension[j].name){
+                    add_bulk_flag = false;
+                    if (!name_add_range.innerHTML.includes("already exists")) name_add_range.innerHTML = "Add VoIP Extension Range    already exists number: ";
+                    name_add_range.innerHTML +=  table_extension[j].name + " ";
+                }
+            }
+        }
+        if (add_bulk_flag){
+            //console.log(start);
+            //console.log(end);
+            for (var i = start; i <= end; i++){ 
+                console.log(i);
+                data.add_sip[add_sip_number].name = i.toString();
+                data.add_sip[add_sip_number].callerid = Type_BulkVoIP + " <" + i + ">";
+                data.add_sip[add_sip_number].secret = Password_BulkVoIP.toString();
+                data.add_sip[add_sip_number].dtmfmode = DTMF_Mode_BulkVoIP;
+                data.add_sip[add_sip_number].en_voice_mail = EnableVoicemail_BulkVoIP;
+                data.add_sip[add_sip_number].mailbox = Voicemail_BulkVoIP.toString();
+                data.add_sip[add_sip_number].codec = codec_BulkVoIP;
+                data.add_sip[add_sip_number].transport = transport_BulkVoIP;
+                data.add_sip[add_sip_number].srtp_enable = document.querySelector("#SRTP_BulkVoIP").checked;
+                data.add_sip[add_sip_number].srtp_mode = document.querySelector("#SRTP_Mode_BulkVoIP").value;
+                if (NAT_BulkVoIP) data.add_sip[add_sip_number].nat = "yes";
+                else data.add_sip[add_sip_number].nat = "no";
+                if (qualify_BulkVoIP) data.add_sip[add_sip_number].qualify = "yes";
+                else data.add_sip[add_sip_number].qualify = "no";
+                table_extension[counterRow] = data.add_sip[add_sip_number];
+                data.add_sip.push({});
+                add_sip_number++;
+                Password_BulkVoIP++;
+                Voicemail_BulkVoIP++;
+                if (Type_BulkVoIP == "ATA") {
+                    var table = document.getElementById('table-id-VoIP');
+                    var row = table.insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    cell1.innerHTML = "<input type=\"checkbox\"/>";
+                    cell2.innerHTML = i;
+                    cell3.innerHTML = 'ATA';
+                    cell4.innerHTML = i;
+                    cell5.innerHTML = i;
+                    cell6.innerHTML = "    <button id='\editAddVoid" + counterRow + "' class=\"acceptBtn\" onclick=\"clickBtnEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+                "      <button id='\delAddVoid" + counterRow + "'class=\"cancelBtn\" onclick=\"clickBtndel(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+                     getPagination('table-id-VoIP','#tableMother_VoIP_Extensions ',24);
+                    counterRow++;
+                    document.querySelector("#totalRow").innerHTML = "Total: " + (document.querySelector("#table-id-VoIP").rows.length - 1)
+                }
+                else {
+                    ip_phone_number++;
+                    var table = document.getElementById('table-FXS_VoIP_Extensions');
+                    var row = table.insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    cell1.innerHTML = ip_phone_number;
+                    cell2.innerHTML = i;
+                    cell3.innerHTML = i;
+                    cell4.innerHTML = i;
+                    cell5.innerHTML = "    <button id='\editAddVoid" + counterRow+ "' class=\"acceptBtn\" onclick=\"clickBtnEdit(this.id)\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button>\n" +
+                "      <button id='\delAddVoid" + counterRow + "'class=\"cancelBtn\" onclick=\"clickBtndel(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>"
+                    counterRow++;
+                }
+                //console.log("hello");
+                var buttonChange = document.getElementById('buttonChange');
+                buttonChange.style.display = 'block';
+                closeTable('addBulkVoIP');
+            }
+            }
+    }
+
+    // lay gia tri tu bang EditAdd luu vao ObjectList[] tai vi tri idEdit
+    function Save_EditVoIP(get_idEditAddVoIP){
+        console.log("chay");
+        var Edit_Type_VoIP = $('#Edit_Type_VoIP option:selected').val();
+        var Edit_Password_VoIP = $('#Edit_Password_VoIP').val();
+        var Edit_Name_VoIP = $('#Edit_Name_VoIP').val();
+        var Edit_CallID_VoIP = $('#Edit_CallID_VoIP').val();
+        var Edit_Register_VoIP = $('#Edit_Register_VoIP').val();
+        var Edit_EnableVoicemail_VoIP = $('#Edit_EnableVoicemail_VoIP').prop('checked');
+        var Edit_Voicemail_VoIP = $('#Edit_Voicemail_VoIP').val()
+        var Edit_EnableSendVoicemail_VoIP = $('#Edit_EnableSendVoicemail_VoIP').prop('checked');
+        var Edit_EmailAddress_VoIP = $('#Edit_EmailAddress_VoIP').val();
+        var Edit_codec_VoIP = $('#Edit_codec_VoIP option:selected').val();
+        var Edit_NAT_VoIP = $('#Edit_NAT_VoIP').prop('checked');
+        var Edit_qualify_VoIP = $('#Edit_qualify_VoIP').prop('checked');
+        var Edit_SRTP_VoIP = $('#Edit_SRTP_VoIP').prop('checked');
+        var Edit_transport_VoIP = $('#Edit_transport_VoIP option:selected').val();
+        var Edit_DTMF_Mode_VoIP = $('#Edit_DTMF_Mode_VoIP option:selected').val();
+        var Edit_registerRemotely_VoIP = $('#Edit_registerRemotely_VoIP').prop('checked');
+
+        data.modify_sip[modify_sip_number].name = Edit_CallID_VoIP;
+        data.modify_sip[modify_sip_number].callerid = Edit_Type_VoIP + " <" + Edit_CallID_VoIP + ">";
+        data.modify_sip[modify_sip_number].secret = Edit_Password_VoIP;
+        data.modify_sip[modify_sip_number].dtmfmode = Edit_DTMF_Mode_VoIP;
+        data.modify_sip[modify_sip_number].en_voice_mail = Edit_EnableVoicemail_VoIP;
+        data.modify_sip[modify_sip_number].mailbox = Edit_Voicemail_VoIP;
+        data.modify_sip[modify_sip_number].codec = Edit_codec_VoIP;
+        data.modify_sip[modify_sip_number].transport = Edit_transport_VoIP;
+        data.modify_sip[modify_sip_number].srtp_enable = document.querySelector("#Edit_SRTP_VoIP").checked;
+        data.modify_sip[modify_sip_number].srtp_mode = document.querySelector("#Edit_SRTP_Mode_VoIP").value;
+        if (Edit_NAT_VoIP) data.modify_sip[modify_sip_number].nat = "yes";
+        else data.modify_sip[modify_sip_number].nat = "no";
+        if (Edit_qualify_VoIP) data.modify_sip[modify_sip_number].qualify = "yes";
+        else data.modify_sip[modify_sip_number].qualify = "no";
+        /*
+        console.log("id=====");
+        console.log(get_idEditAddVoIP);
+        console.log("gai tri data.modify");
+        console.log(data.modify_sip);
+        console.log("gai tri table");
+        console.log(table_extension);*/
+        table_extension[get_idEditAddVoIP] = data.modify_sip[modify_sip_number];
+        console.log("gai tri table2");
+        console.log(table_extension);
+        data.modify_sip.push({});
+        modify_sip_number++;
+
+
+        // ObjectListAddVoIP[get_idEditAddVoIP]=createObject(ArrAddVoIP[0], ArrAddVoIP[1], ArrAddVoIP[2], ArrAddVoIP[3], ArrAddVoIP[4],
+        //     ArrAddVoIP[5], ArrAddVoIP[6], ArrAddVoIP[7], ArrAddVoIP[8], ArrAddVoIP[9], ArrAddVoIP[10], ArrAddVoIP[11], ArrAddVoIP[12],
+        //     ArrAddVoIP[13], ArrAddVoIP[14], ArrAddVoIP[15]);
+
+        console.log("do dai= "+ObjectListAddVoIP.length);
+
+        // console.log('changed Name= '+ObjectListAddVoIP[get_idEditAddVoIP].Name_VoIP);
+
+        var buttonChange = document.getElementById('buttonChange');
+        buttonChange.style.display = 'block';
+
+    }
+    function clickBtndel(r){
+        var i = r.parentNode.parentNode.rowIndex;
+        r.parentNode.parentNode.parentNode.parentNode.deleteRow(i);
+        document.querySelector("#totalRow").innerHTML = "Total: " + (document.querySelector("#table-id-VoIP").rows.length - 1)
+        i = r.id.match(/\d+/)[0];
+        i = parseInt(i);
+        console.log(i);
+        console.log(table_extension[i]);
+        data.delete_sip[delete_sip_number] =  table_extension[i];
+        delete_sip_number++;
+        data.delete_sip.push({});
+        table_extension[i] = {};
+        var buttonChange = document.getElementById('buttonChange');
+        buttonChange.style.display = 'block';
+    }
+    function delete_selected(){
+        for (var i = 0; i <= counterRow; i++){
+            try {
+                var check_box = document.getElementById("check_Void" + i);
+                if (check_box.checked){
+                    var row_index = check_box.parentNode.parentNode.rowIndex;
+                    console.log(row_index);
+                    check_box.parentNode.parentNode.parentNode.parentNode.deleteRow(row_index);
+                    data.delete_sip[delete_sip_number] =  table_extension[i];
+                    delete_sip_number++;
+                    data.delete_sip.push({});
+                    table_extension[i] = {};
+                }
+            } catch (error) { 
+            }
+        }
+        document.querySelector("#totalRow").innerHTML = "Total: " + (document.querySelector("#table-id-VoIP").rows.length - 1);
+        var buttonChange = document.getElementById('buttonChange');
+        buttonChange.style.display = 'block';
+    }
+    function CancelTable(idTable) {
+        closeTable(idTable);
+    } 
+
+    function buttonChange() {
+        var buttonChange = document.getElementById('buttonChange');
+        buttonChange.style.display = 'none';
+        socket.emit('web_data',data);
+        var reboot = false;
+        for (var i = 0; i < 5; i++){
+            if (!isEmpty(data.ge_setting[i])){
+                reboot = true;
+            }
+        }
+        if (reboot) {
+            toastr.warning('You has changed setting for network. To apply change you need to reboot!');
+            PBX_child1(null, "Reset_and_Reboot_Options");
+            /* socket.emit("reboot"); */
+        }
+        console.log(data);
+        delete_data(); 
+    }
+    function reboot(){
+        var r = confirm("Reboot the system will terminate all active calls, do you want to continue");
+        if (r){
+            toastr.warning('Reboot after 5 seconds!');
+            setTimeout(function(){
+                socket.emit("reboot");
+            },5000);
+        }
+    }
+    function delete_data(){
+        data = {
+            add_sip         : [{}],
+            delete_sip      : [{}],
+            modify_sip      : [{}],
+            add_trunk       : [{}],
+            modify_trunk    : [{}],
+            delete_trunk    : [{}],
+            ge_setting      : [{},{},{},{},{}],
+            quagga_setting  : [{},{},{}],
+            audio_setting   : {priotiy : []},
+            dial_plan       : {},
+            make_cer        : {},
+            call_forward    : {},
+            sip_configure   : [],
+            general_setting : {},
+            nat_setting     : {},
+            codec_setting   : {avail_codec:[], allow_codec:[]},
+            qos_setting     : {},
+            t38_setting     : {},
+            advanced_setting: {},
+            time_setting    : {},
+            infor           : {},
+            account         : {}
+        };;
+        message.splice(0, message.length);
+        add_sip_number = 0;
+        delete_sip_number = 0;
+        modify_sip_number = 0;
+        add_trunk_number = 0;
+        delete_trunk_number = 0;
+        modify_trunk_number = 0;
+    }
+    function check_all(check_all){
+        for (var i = 0; i < counterRow; i++){
+            if (table_extension[i].callerid.includes('ATA')){
+                if (check_all.checked) document.getElementById("check_Void" + i).checked = true;
+                else document.getElementById("check_Void" + i).checked = false;
+            }
+        }
+    }
+    function isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+      }
+    function state_text(state){
+        switch(state) {
+            case '0':
+                return "IDLE";
+            case '1':
+                return "CALLING";
+            case '2':
+                return "IN COMING";
+            case '3':
+                return "EARLY";
+            case '4':
+                return "CONNECTING";
+            case '5':
+                return "CONFIRM";
+            case '6':
+                return "DISCONNECTED";
+            default:
+                return "IDLE";
+        }
+    }
+    function pos(idDiv) {
+        // idDiv la id cua the div truyen vao de dung duoc nhieu lan
+        var isDown = false;
+        var offset = [0, 0];
+        var mousePosition;
+        div_contain = document.getElementById(idDiv);
+    
+    
+        div_contain.addEventListener('mousedown', function (e) {
+            isDown = true;
+            offset = [
+                div_contain.offsetLeft - e.clientX,
+                div_contain.offsetTop - e.clientY
+            ];
+        }, true);
+    
+        document.addEventListener('mouseup', function () {
+            isDown = false;
+        }, true);
+        document.addEventListener('mousemove', function (e) {
+            e.preventDefault();
+            if (isDown) {
+                mousePosition = {
+                    x: e.clientX,
+                    y: e.clientY
+                };
+                div_contain.style.left = (mousePosition.x + offset[0]) + 'px';
+                div_contain.style.top = (mousePosition.y + offset[1]) + 'px';
+            }
+        }, true)
+    }   
+
+
+
+

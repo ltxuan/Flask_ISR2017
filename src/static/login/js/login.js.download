@@ -1,0 +1,12 @@
+$(document).ready(function (){
+    $('#Login .iconEye').click(function (){
+        if( $(this).attr("class")==='iconEye fa fa-eye'){
+            $(this).removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            $('#Login .password input').prop('type','text');
+        }else{
+            $(this).removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            $('#Login .password input').prop('type','password');
+        }
+
+    })
+})
