@@ -145,11 +145,12 @@ def Qos_Setting():
 	print (db.all())
 	emit("RES_ADVANCED_SETTING", db.search(User.type=="advanced_setting")[0]['data'])
 
-@socketio.on('GET_SIP')
+# @socketio.on('GET_SIP')
 def Sip_State():
-	db = TinyDB('../NE_db/system_setting')
+	db = TinyDB('../NE_db/sip1_db')
 	User = Query()
-	print (db.all())
+	list = db.all()
+	print('\n',sorted(list, key=lambda i: int(i['id'])))
 	# emit("RES_SIP", sorted(db.all()))
 	
 
@@ -181,4 +182,5 @@ def register():
 
 # run the application
 if __name__ == "__main__":
-	socketio.run(app, host="0.0.0.0", port=80)
+	# socketio.run(app, host="0.0.0.0", port=60)
+	Sip_State()
