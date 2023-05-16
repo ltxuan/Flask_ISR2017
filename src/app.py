@@ -17,6 +17,8 @@ def home():
 
 @app.route('/login', methods =['GET', 'POST'])
 def login():
+	db = TinyDB('../NE_db/user_db')
+	User = Query()
 	msg = ''
 	if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
 		username = request.form['username']
@@ -145,14 +147,41 @@ def Qos_Setting():
 	print (db.all())
 	emit("RES_ADVANCED_SETTING", db.search(User.type=="advanced_setting")[0]['data'])
 
-# @socketio.on('GET_SIP')
-def Sip_State():
+
+@socketio.on('GET_PJSIP_CONFIGURE')
+def Pjsip_Config():
 	db = TinyDB('../NE_db/sip1_db')
 	User = Query()
-	list = db.all()
-	print('\n',sorted(list, key=lambda i: int(i['id'])))
-	# emit("RES_SIP", sorted(db.all()))
-	
+	emit("GET_PJSIP_CONFIGURE", sorted(db.all(), key=lambda i: int(i['id'])))
+
+@socketio.on('GET_FXS')
+def sip_extension():
+	db = TinyDB('../NE_db/sip_extension')
+	User = Query()
+	emit("RES_FSX", sorted(db.all(), key=lambda i: i['name']))
+
+@socketio.on('GET_SIP')
+def Get_sip():
+	db = TinyDB('../NE_db/sip1_db')
+	User = Query()
+	emit("RES_SIP", sorted(db.all(), key=lambda i: int(i['id'])))
+
+@socketio.on('GET_ATA_STATUS')
+def ATA_Status():
+	db = TinyDB('../NE_db/sip_status')
+	User = Query()
+	emit("RES_ATA_STATUS", sorted(db.all(), key=lambda i: int(i['id'])))
+ 
+@socketio.on('GET_FXS_STATUS')
+def FXS_Status():
+	db = TinyDB('../NE_db/fxs_status')
+	User = Query()
+	emit("RES_FX_STATUS", sorted(db.all(), key=lambda i: int(i['id'])))
+
+
+
+
+
 
 
 @app.route('/logout')
@@ -182,5 +211,6 @@ def register():
 
 # run the application
 if __name__ == "__main__":
-	# socketio.run(app, host="0.0.0.0", port=60)
-	Sip_State()
+	socketio.run(app, host="0.0.0.0", port=60)
+	# sip_extension()
+
