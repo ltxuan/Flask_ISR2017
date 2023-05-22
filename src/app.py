@@ -5,6 +5,7 @@ from flask_socketio import SocketIO, emit, disconnect
 import json
 import datetime
 from flask_session import Session
+import subprocess
 # creates a Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -161,7 +162,6 @@ def Qos_Setting():
 @socketio.on('GET_PJSIP_CONFIGURE')
 def Pjsip_Config():
 	db = TinyDB('../NE_db/sip1_db')
-	User = Query()
 	emit("GET_PJSIP_CONFIGURE", sorted(db.all(), key=lambda i: int(i['id'])))
 
 @socketio.on('GET_FXS')
@@ -173,7 +173,6 @@ def sip_extension():
 @socketio.on('GET_SIP')
 def Get_sip():
 	db = TinyDB('../NE_db/sip1_db')
-	User = Query()
 	emit("RES_SIP", sorted(db.all(), key=lambda i: int(i['id'])))
 
 @socketio.on('GET_ATA_STATUS')
@@ -185,7 +184,6 @@ def ATA_Status():
 @socketio.on('GET_FXS_STATUS')
 def FXS_Status():
 	db = TinyDB('../NE_db/fxs_status')
-	User = Query()
 	emit("RES_FX_STATUS", sorted(db.all(), key=lambda i: int(i['id'])))
 
 def get_eth_address(eth):
@@ -234,8 +232,57 @@ def checkAdress():
 			if ip3.strip() in Key_RIP[i]: data['GE4'] = 'RIP'
 	emit("RES_ROUTER_STATUS", data)
 
+@socketio.on('GET_DASHBOARD')
+def dashboard():
+	db = TinyDB('../NE_db/status')
+	User = Query()
+	docs = db.search(User.type=="dasboard")[0]
+	print (docs)
+	process = subprocess.Popen(['sensors'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	output, _ = process.communicate()
+	cpu_temp = output.decode()
+	print(cpu_temp)
+	cpu_temp = cpu_temp[cpu_temp.find("Core 0:") + len("Core 0:") + 1:cpu_temp.find("(high")].strip()
+	docs['data']['cpu_temp'] = cpu_temp
+	ipconfig = subprocess.Popen(['ifconfig'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	output, _ = ipconfig.communicate()
+	net_arr = output.decode()
+	print(net_arr)
+	net_arr = net_arr.split("\neth")
+	docs['data']['arr'] = []
+	i = 5
+	for element in net_arr:
+		temp = get_eth_address('eth' + str(i))
+		docs['data']['arr'].append(temp)
+		temp = element[element.index('netmask ') + len('netmask '):element.find(' ', element.index('netmask ') + len('netmask '))]
+		docs['data']['arr'].append(temp)
+		temp = element[element.index('broadcast ') + len('broadcast '):element.find('\n', element.index('broadcast ') + len('broadcast ')) - 1]
+		docs['data']['arr'].append(temp)
+		temp = element[element.index('\n        ether ') + len('\n        ether '):element.find(' ', element.index('\n        ether ') + len('\n        ether '))]
+		docs['data']['arr'].append(temp)
+		i -= 1
+	print (docs['data'])
+	emit('RES_DASHBOARD', docs['data'])
+
+@socketio.on('get_cpu_usage')
+def cpu_usage():
+	cpu_usage = subprocess.check_output(['top', '-b', '-n', '1', '-i'])
+	str = cpu_usage.decode()
+	emit('cpu_usage', str)
+	print(str)
+
+#   socket.on("get_cpu_usage", msg => {
+#     var cpu_uasge = spawn('top', ['-b', '-n', '1', '-i'], { shell: true });
+#     cpu_uasge.stdout.on('data', (data) => {
+#       var str = `${data}`;
+#       socket.emit("cpu_usage", str);
+#     });
+#   });
+
 @app.route('/status')
 def status():
+	if not session.get("username"):
+		return redirect(url_for('login'))
 	return render_template('status.html')
 
 
