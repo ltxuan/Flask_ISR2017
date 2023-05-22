@@ -1,0 +1,332 @@
+
+
+$(document).ready(function () {
+
+    if (sessionStorage.getItem("status_tabName") != null) Status_child(null, sessionStorage.getItem("status_tabName"));
+    else Status_child(null, "Dashboard_OSS");
+    $('.accordion-item').click(function (e) {
+
+        $(window).scroll(function (event){
+            var pos_body=$('html,body').scrollTop();
+            // console.log('pos_body: '+pos_body);
+            if(pos_body>1){
+                $('.row.toolbar').addClass('active');
+                $('.row.spaceBlack').addClass('active');
+            }else{
+                $('.row.toolbar').removeClass('active');
+                $('.row.spaceBlack').removeClass('active');
+            }
+
+        })
+
+
+        e.preventDefault();
+        var iconArrow = document.getElementsByClassName('icon-arrow');
+        var $this = $(this);
+
+        if ($this.next().hasClass('show')) {
+            $this.next().removeClass('show');
+            $this.next().slideUp(350);
+
+        } else {
+            $this.parent().parent().find('.accordion-body').removeClass('show');
+            $this.parent().parent().find('.accordion-body').slideUp(350);
+            $this.next().toggleClass('show');
+            $this.next().slideToggle(350);
+        }
+        var iconArrow = document.getElementsByClassName('icon-arrow');
+        var accBody = document.getElementsByClassName('accordion-body');
+        for (i = 0; i < iconArrow.length; i++) {
+            if (accBody[i].className === 'accordion-body show') {
+                iconArrow[i].className = 'icon-arrow fas fa-caret-square-down';
+            } else {
+                iconArrow[i].className = 'icon-arrow fas fa-caret-square-right';
+            }
+        }
+    });
+    var tabContent = document.getElementsByClassName('tabContent');
+    var i;
+    for (let i = 1; i < tabContent.length; i++) {
+        tabContent[i].style.display = 'none';
+    }
+
+
+    const numberRowTablePhone= 20;
+    for(let i=0;i<numberRowTablePhone;i++){
+        myCreateTableFunction_tablePhone();
+    }
+
+
+    // add data tu mang (ong add thu nhe)
+    for(let i=0;i<=4;i++){
+        for(let j=0;j<numberRowTablePhone;j++){
+            $('#row_addPhone'+j+' .cell_'+j+i).append("  <div id=\"id_EditTableVoIPEx\" class=\"content_FXS_SIP\">\n" +
+                "                                                                   <div class=\"img_phone\"></div>\n" +
+                "                                                                    <div class=\"content_phone\"> SIP or FXS </div>\n" +
+                "                                                              </div>");
+            // o day se phai co thong so type_phone o data de biet no la loai nao
+            // toi su dung tam ham randum de mo phong truoc
+            const type_phone=Math.floor(Math.random()*5);
+            $('#row_addPhone'+j+' .cell_'+j+i+' .img_phone').append(checkImg(type_phone));
+
+            $('#row_addPhone'+j+' .cell_'+j+i).click(function(){
+                $('#EditExtension_VoID').show();
+            })
+
+        }
+    }
+
+
+
+
+
+})
+
+function  checkImg(typeContent){
+    // ham nay de check xem img_phone nao phu hop
+    // vi du: 1 --> Free  2-->Busy  3-->Hold 4-->Unavailable 5-->Ringing
+    if(typeContent===0){
+        return " <img src=\"/static/status/images/phone_free.png\">";
+    }
+    else if(typeContent===1){
+        return " <img src=\"/static/status/images/phone_busy.png\">";
+    }
+    else if(typeContent===2){
+        return " <img src=\"/static/status/images/phone_hold.png\">";
+    }
+    else if(typeContent===3){
+        return " <img src=\"/static/status/images/phone_unavailable.png\">";
+    }
+    else if(typeContent===4){
+        return " <img src=\"/static/status/images/phone_ringing.png\">";
+    }
+}
+
+
+function Status_child(evt, tabName) {
+    sessionStorage.setItem("status_tabName", tabName);
+    console.log(tabName);
+    var i;
+    let tabContent = document.getElementsByClassName('tab_content_Status');
+    let tabLinks = document.getElementsByClassName('tab_links_Status');
+    var tabNameChange=tabName.replaceAll('_',' ');
+    document.getElementById("title-tabTool-Status").innerHTML = tabNameChange;
+    if (tabName.includes("ATA_Status")){
+        console.log("SIP_STATUS");
+        socket.emit("GET_SIP");
+    }
+    if (tabName.includes("Dashboard_OSS")){
+        socket.emit("GET_DASHBOARD");
+    }
+    if (tabName.includes("FXS_Status")){
+        socket.emit("GET_FXS_STATUS");
+    }
+    if (tabName.includes("Router_Status")){
+        socket.emit("GET_ROUTER_STATUS");
+    }
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = 'none';
+    }
+    for (i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].className = tabLinks[i].className.replaceAll(' active','');
+    }
+    document.getElementById(tabName).style.display ='block';
+    //evt.currentTarget.className += ' active';
+}
+
+function CancelTable(idTable) {
+    closeTable(idTable);
+}
+
+function buttonChange() {
+    var buttonChange = document.getElementById('buttonChange');
+    buttonChange.style.display = 'none';
+    var ApplyChangeSuccess=document.getElementById('ApplyChangeSuccess');
+    ApplyChangeSuccess.style.display="block";
+    setTimeout(function (){
+        ApplyChangeSuccess.style.display="none";
+    },1500);
+}
+
+
+function pos(idDiv) {
+    // idDiv la id cua the div truyen vao de dung duoc nhieu lan
+    var isDown = false;
+    var offset = [0, 0];
+    var mousePosition;
+    div_contain = document.getElementById(idDiv);
+
+
+    div_contain.addEventListener('mousedown', function (e) {
+        isDown = true;
+        offset = [
+            div_contain.offsetLeft - e.clientX,
+            div_contain.offsetTop - e.clientY
+        ];
+    }, true);
+
+    document.addEventListener('mouseup', function () {
+        isDown = false;
+    }, true);
+    document.addEventListener('mousemove', function (e) {
+        e.preventDefault();
+        if (isDown) {
+            mousePosition = {
+                x: e.clientX,
+                y: e.clientY
+            };
+            div_contain.style.left = (mousePosition.x + offset[0]) + 'px';
+            div_contain.style.top = (mousePosition.y + offset[1]) + 'px';
+        }
+    }, true)
+}
+
+var counterRow=0;
+function myCreateTableFunction_tablePhone() {
+
+    var table = document.getElementById('table_phone');
+    var row = table.insertRow(-1);
+    row.id = "row_addPhone" + counterRow;
+    var cell1 = row.insertCell(0); cell1.className = "cell_"+counterRow+"0";
+    var cell2 = row.insertCell(1); cell2.className = "cell_"+counterRow+"1";
+    var cell3 = row.insertCell(2); cell3.className = "cell_"+counterRow+"2";
+    var cell4 = row.insertCell(3); cell4.className = "cell_"+counterRow+"3";
+    var cell5 = row.insertCell(4); cell5.className = "cell_"+counterRow+"4";
+
+
+
+    getPagination('table_phone','#tableMother_tablePhone ',10);
+    counterRow++;
+}
+
+
+
+
+function getPagination(table, tableMother,maxRows) {
+    var lastPage = 1;
+    var table1='#'+table;    // chu y la tuyet doi ko thay doi id tuy tien ko la sai nhe
+    console.log(table1);
+
+    // $('#maxRows'+table).on('change', function (evt) {
+    $(function(){
+        //$('.paginationprev').html('');						// reset pagination
+        console.log('#maxRows'+table);
+        lastPage = 1;
+        $(tableMother+'.pagination').find('li').slice(1, -1).remove();   // slice(1,-1)  la ham lua chon dau tien va cuoi cung
+        var trnum = 0; // reset tr counter
+        // var maxRows = parseInt($(this).val()); // lay gia tri select cua #maxRows
+
+        if (maxRows == 5000) {
+            $(tableMother+'.pagination').hide();
+        } else {
+            $(tableMother+'.pagination').show();
+        }
+
+        var totalRows = $(table1 + ' tbody tr').length; // tong so hang cua bang
+        $(table1 + ' tr:gt(0)').each(function () {
+            // duyet toan bo hang tru tieu de || gt(0)
+            trnum++; //  bat dau dem so hang
+            if (trnum > maxRows) {
+                //  số hàng thực tế lớn hơn số hàng cho phép thì ẩn đi
+
+                $(this).hide(); // fade it out
+            }
+            if (trnum <= maxRows) {           // số hàng thực tế nhỏ hơn bằng số hàng cho phép thì hiển thị
+                $(this).show();
+            } // else fade in Important in case if it ..
+        }); //  was fade out to fade it in
+        if (totalRows > maxRows) {
+            //nếu tổng số hàng lớn hơn số hàng cho phép thì phải chia lấy nguyên làm tròn lên
+            var pagenum = Math.ceil(totalRows / maxRows);
+            //	số trang
+            for (var i = 1; i <= pagenum;) {
+                // for each page append pagination li  // duyệt toàn bộ trang của bảng
+                // chèn vào đoạn mã trước id:prev vào ;sẽ in ra từng trang
+                $(tableMother+'.pagination #prev'+table).before('<li data-page="' + i + '">\<span>' + i++ + '<span class="sr-only">(current)</span></span>\</li>').show();
+            } // end for i
+        } // end if row count > max rows
+        $(tableMother+'.pagination [data-page="1"]').addClass('active'); // add active class to the first li
+        $(tableMother+'.pagination li').on('click', function (evt) {
+            // on click each page
+            evt.stopImmediatePropagation();
+            evt.preventDefault();
+            var pageNum = $(this).attr('data-page'); // nhận vị trí của trang
+
+            // var maxRows = parseInt($('#maxRows'+table).val()); // nhận giá trị cho phép của hàng $('#maxRows'+table)
+
+            if (pageNum === 'prev') {    // nếu nhấn vào ô 'prev' sẽ thực hiện lệnh trong if
+
+                if (lastPage === 1) {     // nếu đúng thì sẽ thoát khỏi if và ko thực hiện lệnh kia nữa
+                    return;
+                }
+                pageNum = --lastPage;   // lệnh này cho phép lastPage trừ đi 1 (giảm dần mà :))
+            }
+            if (pageNum === 'next') {  // nếu vị trí của trang bằng vs 'next'
+                if (lastPage === $(tableMother+'.pagination li').length - 2) {
+                    return;
+                }
+                pageNum = ++lastPage;    // tương tự như prev
+            }
+
+            lastPage = pageNum;
+            var trIndex = 0; // reset tr counter
+            $(tableMother+'.pagination li').removeClass('active'); // remove active class from all li
+            $(tableMother+'.pagination [data-page="' + lastPage + '"]').addClass('active'); // add active class to the clicked
+            // $(this).addClass('active');					// add active class to the clicked
+            limitPagging(tableMother);
+            $(table1 + ' tr:gt(0)').each(function () {
+                // duyệt hết hàng trừ hàng số 0 dến hết
+                trIndex++; // tr index counter
+                // if tr index gt maxRows*pageNum or lt maxRows*pageNum-maxRows fade if out
+                if (
+                    trIndex > maxRows * pageNum ||
+                    trIndex <= maxRows * pageNum - maxRows       // chi hien thi cac hang nam trong pageNum
+                ) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                } //else fade in
+            }); // end of for each tr in table
+        }); // end of on click pagination list
+        limitPagging(tableMother);
+    })
+        .val(5)
+        .change();
+
+    // end of on select change
+
+    // END OF PAGINATION
+}
+
+function limitPagging(tableMother) {
+    // alert($('.pagination li').length)
+
+    if ($(tableMother+'.pagination li').length > 7) {
+        if ($(tableMother+'.pagination li.active').attr('data-page') <= 3) {
+            $(tableMother+'.pagination li:gt(5)').hide();
+            $(tableMother+'.pagination li:lt(5)').show();
+            $(tableMother+'.pagination [data-page="next"]').show();
+        } if ($(tableMother+'.pagination li.active').attr('data-page') > 3) {
+            $(tableMother+'.pagination li:gt(0)').hide();
+            $(tableMother+'.pagination [data-page="next"]').show();
+            for (let i = (parseInt($(tableMother+'.pagination li.active').attr('data-page')) - 2); i <= (parseInt($(tableMother+'.pagination li.active').attr('data-page')) + 2); i++) {
+                $(tableMother+'.pagination [data-page="' + i + '"]').show();
+
+            }
+
+        }
+    }
+}
+function CancelTable(idTable) {
+    closeTable(idTable);
+}
+
+function closeTable(tableId) {
+    var tableId1 = document.getElementById(tableId);
+    tableId1.style.display = 'none';
+}
+
+
+
+
+

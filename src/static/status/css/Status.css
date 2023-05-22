@@ -1,0 +1,818 @@
+:root {
+    --blueBorder: #1a73e8;
+    --bgGray: #efefef;
+    --toolbarLinear: to bottom, rgb(126, 174, 227), rgb(58, 157, 217);
+    --borderInput: rgb(218, 220, 224);
+    --bgNormal: #f4f2f4;
+    --borderBlack: 1px solid black;
+    --box-shadow-custom: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@font-face {
+    font-family: opensan;
+    src: url("./Font/Open_Sans/OpenSans-Regular.ttf");
+}
+
+* {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+html {
+    font-family: opensan, serif;
+}
+
+body {
+    font-family: opensan, serif;
+}
+
+.tab_links_Status.active {
+    font-weight: bold;
+}
+
+.container {
+    max-width: 100%;
+    height: auto;
+    overflow-y: hidden;
+}
+
+.row.toolbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-grow: 2;
+    background-color: white;
+    justify-content: flex-start;
+    height: 5.5rem !important;
+    transition: all 1s ease 0s !important;
+}
+
+.row.toolbar.active {
+    position: fixed;
+    z-index: 10;
+    background-color: whitesmoke;
+    transition: all 1s ease 0s !important;
+}
+
+.row.toolbar .logo3 {
+    width: 60%;
+    height: 5.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.row.toolbar img {
+    width: auto;
+    height: 100%;
+    margin-left: 2rem !important;
+}
+
+.row.toolbar .HTC-ISR {
+    font-size: 140%;
+    font-family: opensan;
+}
+
+.row.toolbar .text-title {
+    font-family: opensan;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem !important;
+}
+
+.row.toolbar .text-title span {
+    text-align: center;
+    font-family: opensan !important;
+}
+
+.toolbar-item {
+    width: 40%;
+    height: inherit;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 0% !important;
+}
+
+.toolbar-item-1 {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25% !important;
+}
+
+.toolbar-item-1 button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    height: 60%;
+    border: none;
+    background: none;
+    transition: all 0.5s ease 0s;
+}
+
+.toolbar-item-1.status button a {
+    text-decoration: none;
+    color: rgb(79, 108, 222);
+    transform: scale(1.2);
+}
+
+.toolbar-item-1 button a {
+    text-decoration: none;
+    color: black;
+}
+
+.toolbar-item-1:hover button {
+    transform: scale(1.2);
+    transition: all 0.5s ease 0s;
+}
+
+.toolbar-item-1 button svg {
+    font-size: 200%;
+}
+
+.toolbar-item-1 button p {
+    font-family: opensan;
+}
+
+#buttonChange button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(201, 57, 57);
+    border-radius: 0.3rem;
+    color: rgb(228, 234, 236);
+    font-family: opensan;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    margin-top: 0.2rem !important;
+    padding: 0.3rem !important;
+}
+
+#ApplyChangeSuccess {
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+    color: rgb(228, 234, 236);
+    font-family: opensan;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    margin-top: 0.4rem !important;
+    padding: 0.3rem !important;
+}
+
+#ApplyChangeSuccess span {
+    background: rgb(186, 107, 44);
+    border-radius: 0.5rem;
+    padding: 0.5rem !important;
+}
+
+.row.spaceBlack {
+    height: 1rem;
+    width: 100%;
+    background: rgb(48, 50, 49);
+}
+
+.row.spaceBlack.active {
+    position: fixed;
+    z-index: 10;
+    top: 5.5rem;
+}
+
+.row.content-one {
+    width: inherit;
+    height: auto;
+}
+
+.left-menu-content {
+    height: 140rem;
+    background: antiquewhite;
+    border-right: 2px solid white;
+    font-family: opensan;
+}
+
+.left-menu-content-item {
+    width: 100%;
+    height: 50px;
+}
+
+.accordion-item {
+    width: 100%;
+    height: 3rem;
+    background-image: linear-gradient(rgb(46, 168, 226), rgb(32, 137, 195));
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 2px solid whitesmoke;
+    opacity: 0.9;
+    transition: all 0.4s ease 0s;
+}
+
+.accordion-item:hover {
+    opacity: 1;
+    transition: all 0.4s ease 0s;
+    border-bottom: 2px solid white;
+}
+
+.accordion-item:hover i.icon-arrow {
+    color: white;
+    transition: all 0.4s ease 0s;
+}
+
+.accordion-item span {
+    font-family: opensan;
+    font-size: 100%;
+    color: white;
+}
+
+.accordion-item .icon-arrow {
+    font-size: 100%;
+    color: rgb(206, 197, 197);
+    margin: 0px 0.7rem !important;
+}
+
+.accordion-body {
+    width: 100%;
+    height: auto;
+    display: none;
+    background: rgb(213, 223, 232);
+}
+
+.contentBox {
+    transition: all 0.5s ease-out 0s !important;
+}
+
+.contentBox.active .accordion-body {
+    display: block;
+}
+
+.accordion-body ul li {
+    width: 100%;
+    height: 2rem;
+    transition: all 0.4s ease 0s;
+    border-bottom: 1px solid white;
+}
+
+.accordion-body ul li:hover {
+    border-bottom: 1px solid gray;
+    transition: all 0.4s ease 0s;
+    font-size: 110%;
+}
+
+.accordion-body ul li button {
+    font-family: opensan;
+    color: black;
+    text-decoration: none;
+    font-size: 85%;
+    transition: all 0.2s ease 0s;
+    background: none;
+    outline: none;
+    border: none;
+    margin-left: 3rem !important;
+}
+
+.accordion-body ul li button:hover {
+    color: rgb(1, 144, 212);
+    transition: all 0.2s ease 0s;
+    text-decoration: underline;
+}
+
+.tab_links_FXS_VoIP.active {
+    font-weight: bold;
+}
+
+.right-content {
+    border-left: 2px solid gray;
+    width: 100%;
+    height: 140rem;
+    background: rgb(239, 239, 239);
+    overflow: hidden;
+}
+
+.right-content .toolbar-content {
+    height: 3rem;
+    background-image: linear-gradient(white 75%, rgb(235, 233, 234) 100%);
+}
+
+.right-content .toolbar-content .tabTool {
+    background-image: url("../images/title.png");
+    background-size: 100% 100%;
+    /* background-size: cover; */
+    display: flex;
+    align-items: center;
+}
+
+.tabTool span.title-tabTool {
+    font-family: opensan;
+    color: white;
+    font-weight: bold;
+    font-size: 100%;
+    margin-left: 1rem !important;
+}
+
+.row.tab_content_FXS_VoIP {
+    width: 100%;
+    display: none;
+    height: 100% !important;
+    background-color: rgb(239, 239, 239) !important;
+}
+
+.form-content {
+    width: 100%;
+    height: 100%;
+    margin-top: 0rem !important;
+}
+
+.form-content .title-content {
+    width: 100%;
+    font-weight: bold;
+    font-family: opensan;
+    height: 10rem !important;
+}
+
+.form-content .abc {
+    height: 2.5rem !important;
+    padding-top: 0.5rem !important;
+}
+
+.form-content span i {
+    color: rgb(57, 104, 222);
+    padding-left: 1rem !important;
+    padding-right: 0.5rem !important;
+}
+
+.icon_phone {
+    width: 60%;
+    margin-left: 20% !important;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon_phone span {
+    font-size: 90%;
+    font-family: opensan;
+    font-weight: bold;
+}
+
+#tableMother_tablePhone {
+    width: 100%;
+    height: auto !important;
+}
+
+#table_phone {
+    height: auto;
+    width: 94%;
+    margin-left: 3% !important;
+    border: 1px solid var(--blueBorder);
+    border-radius: 6px;
+    border-spacing: 0px;
+    border-collapse: separate !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: hidden;
+}
+
+#table_phone tr:first-child {
+    background-image: linear-gradient(var(--toolbarLinear));
+}
+
+#table_phone tr {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#table_phone tr:nth-child(odd) {
+    background-color: var(--bgGray);
+}
+
+#table_phone tr:nth-child(even) {
+    background-color: var(--white);
+}
+
+#table_phone tr td {
+    width: 20%;
+    height: 100%;
+    font-family: Tahoma;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#table_phone tr td img {}
+
+#table_phone .content_FXS_SIP {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#table_phone .content_phone {
+    font-family: opensan;
+    font-size: 80%;
+}
+
+
+
+.pagination {
+    float: right;
+    height: 1.5rem;
+    width: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 5rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.pagination li {
+    font-size: 80%;
+    width: 1.5rem;
+    height: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(122, 189, 224);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 0.5rem !important;
+    margin: 0.2rem !important;
+}
+
+.pagination li.active {
+    background-image: linear-gradient(rgb(122, 189, 224), rgb(36, 146, 211));
+}
+
+.pagination li:first-child,
+.pagination li:last-child {
+    width: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.2rem !important;
+}
+
+.pagination li:first-child:hover,
+.pagination li:last-child:hover {
+    border: 2px solid rgb(32, 138, 196);
+    color: rgb(36, 146, 211);
+    font-size: 85%;
+}
+
+.pagination li:first-child i {
+    font-size: 90%;
+    margin-right: 0.3rem !important;
+}
+
+.pagination li:last-child i {
+    font-size: 90%;
+    margin-left: 0.3rem !important;
+}
+
+#EditExtension_VoID {
+    position: absolute;
+    top: 0px;
+    background: none !important;
+}
+
+#EditExtension_VoID_table {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+}
+
+
+.form-content {
+    width: 100%;
+    height: 100%;
+    background: rgb(239, 239, 239);
+    margin-top: 0rem !important;
+}
+
+.form-addVoIP_range {
+    height: 615px;
+    position: fixed;
+    border: 1px solid rgb(26, 126, 176);
+    background-color: rgb(225, 225, 225);
+    box-shadow: var(--box-shadow-custom);
+    border-radius: 7px;
+    overflow: hidden;
+    width: 700px !important;
+}
+
+.title-content-1 {
+    width: 100%;
+    height: 2rem;
+    background-color: rgb(51, 152, 208);
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-family: opensan;
+}
+
+.title-content-1 span {
+    font-size: 80%;
+    color: white;
+    font-weight: bold;
+    margin-left: 1rem !important;
+}
+
+.title-content-1 button {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.title-content-1 button i {
+    transition: all 0.2s ease 0s;
+    color: whitesmoke !important;
+}
+
+.title-content-1 button:hover i {
+    font-size: 130%;
+    transition: all 0.2s ease 0s;
+}
+
+#Trunk_Status table {
+    width: 90%;
+    margin-left: 5% !important;
+    margin-top: 2rem !important;
+    border: 1px solid rgb(103, 141, 224);
+    text-align: center;
+    font-size: 90%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-spacing: 0px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 1rem !important;
+    border-collapse: separate !important;
+}
+
+#Trunk_Status table tr:nth-child(odd) {
+    background-color: white;
+}
+
+#Trunk_Status table tr th {
+    width: 12%;
+    height: 30px;
+    color: white;
+    background-image: linear-gradient(var(--toolbarLinear));
+}
+
+#Trunk_Status table tr th:nth-child(6) {
+    width: 28%;
+}
+
+#Trunk_Status table tr td {
+    width: 12%;
+    height: 30px;
+}
+
+#Trunk_Status table tr td:nth-child(6) {
+    width: 28%;
+}
+
+#Trunk_Status table tr td:first-child {
+    color: #7ec22d;
+    font-weight: bold;
+}
+
+#Router_Status .row {
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#routerStatus-table {
+    background: white;
+    margin-top: 5rem !important;
+    width: 550px;
+    text-align: center;
+    font-size: 80%;
+    height: auto;
+    border: 1px solid rgb(103, 141, 224);
+    border-spacing: 0px;
+    border-radius: 5px;
+    overflow: hidden;
+    border-collapse: separate !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: relative;
+}
+
+#routerStatus-table::before {
+    position: absolute;
+    content: "";
+    top: 80px;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: var(--primary);
+}
+
+#routerStatus-table tr th {
+    background-image: linear-gradient(var(--toolbarLinear));
+    color: white;
+    font-size: 90%;
+    height: 35px;
+}
+
+#routerStatus-table tr:nth-child(2) {
+    border-bottom: 1px solid rgb(103, 141, 224) !important;
+    font-size: 100%;
+    height: 50px;
+    font-weight: bold;
+}
+
+#routerStatus-table tr:nth-child(2) td:first-child {
+    width: 33%;
+}
+
+#routerStatus-table tr td:last-child {
+    padding-right: 200px !important;
+}
+
+#routerStatus-table .whitespace {
+    width: 20px;
+}
+
+#routerStatus-table tr {
+    height: 30px;
+}
+
+.content-dashboard {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 90%;
+    margin-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    margin-left: 5% !important;
+    border: 1px solid rgb(103, 141, 224);
+    background: white;
+    border-radius: 5px;
+}
+
+.content-dashboard .row {
+    height: 100%;
+}
+
+.content-dashboard__left,
+.content-dashboard__right {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid gray;
+    margin: 1rem !important;
+    background-color: white;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.content-dashboard__title {
+    height: 35px !important;
+    background-image: linear-gradient(var(--toolbarLinear));
+    display: flex;
+    align-items: center;
+}
+
+.content-dashboard__title span {
+    margin-left: 10px !important;
+    color: white;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.content-dashboard__title span i {
+    color: white;
+}
+
+.content-dashboard__left--item {
+    width: 100%;
+    margin-bottom: 1rem !important;
+}
+
+.content-dashboard__left--item tr td {
+    padding-left: 1rem !important;
+    height: 30px;
+}
+
+.content-dashboard__left--item tr:nth-child(1) td {
+    font-weight: bold;
+    font-size: 105%;
+    height: 40px !important;
+}
+
+.content-dashboard__left--item tr td {
+    font-size: 85%;
+}
+
+.content-dashboard__left--item tr td:last-child {
+    padding-right: 150px !important;
+}
+
+.content-dashboard__right {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid gray;
+    height: auto;
+    border-radius: 5px;
+}
+
+.content-dashboard__right--item {
+    font-size: 85%;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+}
+
+.content-dashboard__right--item tr td:first-child {
+    padding-left: 1rem !important;
+    width: 140px;
+}
+
+.content-dashboard__right--item tr td:last-child {
+    padding-right: 10px !important;
+}
+
+.content-dashboard__right--title {
+    font-weight: bold;
+    font-size: 110%;
+    padding: 0.5rem 0 0.5rem 1rem !important;
+    display: block;
+}
+
+.content-dashboard__right--item tr td {
+    height: 30px;
+}
+
+#sip_status_table tr th,
+#sip_status_table tr td {
+    text-align: center;
+    font-size: 90%;
+    padding: 2px 0px !important;
+}
+
+#sip_status_table tr:nth-child(even) {
+    background-color: white;
+}
+
+#sip_status_table tr th:nth-child(1),
+#sip_status_table tr td:nth-child(1) {
+    width: 5%;
+}
+
+#sip_status_table tr th:nth-child(2),
+#sip_status_table tr td:nth-child(2) {
+    width: 25%;
+}
+
+#sip_status_table tr th:nth-child(3),
+#sip_status_table tr td:nth-child(3) {
+    width: 10%;
+}
+
+
+#FXS_Status table {
+    border: 2px solid #dee2e6;
+    margin-top: 30px !important;
+    width: 80%;
+    margin-left: 10% !important;
+}
+
+#FXS_Status table tr:nth-child(even) {
+    background-color: white;
+}
+
+#FXS_Status table tr {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+
+}
+
+#FXS_Status table tr th,
+#FXS_Status table tr td {
+    text-align: center;
+    padding: 3px 0 !important;
+}
+
+#FXS_Status table tr td:nth-child(1) {
+    width: 20%;
+    font-size: 90%;
+}
+
+#FXS_Status table tr td:nth-child(2),
+#FXS_Status table tr td:nth-child(3) {
+    width: 40%;
+    font-size: 90%;
+}
+
+pre {
+    padding-left: 1rem !important;
+}
