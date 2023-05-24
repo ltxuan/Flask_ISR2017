@@ -6,6 +6,7 @@ import json
 import datetime
 from flask_session import Session
 import subprocess
+from sip import addsip
 # creates a Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -271,13 +272,49 @@ def cpu_usage():
 	emit('cpu_usage', str)
 	print(str)
 
-#   socket.on("get_cpu_usage", msg => {
-#     var cpu_uasge = spawn('top', ['-b', '-n', '1', '-i'], { shell: true });
-#     cpu_uasge.stdout.on('data', (data) => {
-#       var str = `${data}`;
-#       socket.emit("cpu_usage", str);
-#     });
-#   });
+@socketio.on('reboot')
+def reboot():
+	child = subprocess.Popen(["reboot"], stdin=subprocess.PIPE)
+	child.stdin.write(b"reboot\n")
+	child.stdin.close()
+	child.wait()
+
+  
+@socketio.on('web_data')
+def web_data(msg):
+	print(msg)
+	if msg.get("account") is not None:
+		db = TinyDB('../NE_db/user_db')
+		User = Query()
+		if msg["account"].get("user_name") is not None:
+			docs = db.search(User.username == msg["account"].get("user_name"))
+			if len(docs) == 0:
+				db.insert({'type': 'admin', 'username': msg["account"].get("user_name"), 'password': msg["account"].get("pass_word")})
+			else : 
+				emit('user_exist')
+		if msg['account'].get('change_user_name') is not None:
+			docs = db.search(User.username == msg["account"].get("change_user_name"))
+			if len(docs) == 0:
+				emit('user_not_exist')
+			else:
+				if docs[0]['password'] == msg['account'].get('old_pass_word'):
+					db.update(User.username == msg["account"].get("change_user_name"), {'password': msg['account'].get('new_pass_word'), })
+				else:
+					emit('wrong_pass')
+	# if len(msg)
+
+	# if (msg.add_sip.length > 1) {
+    #   console.log('add_sip');
+    #   re_asterik = true;
+    #   for (var i = 0; i < msg.add_sip.length - 1; i++) {
+    #     if (!isEmpty(msg.add_sip[i])) {
+    #       console.log(msg.add_sip[i]);
+    #       add_sip(msg.add_sip[i]);
+    #       db.sip_extension.insert([msg.add_sip[i]], function (err) { });
+    #     }
+    #   }
+    # }
+	
 
 @app.route('/status')
 def status():
@@ -319,9 +356,12 @@ def register():
 	return render_template('register.html', msg = msg)
 
 
+def test():
+	print(addsip(3))
 
 # run the application
 if __name__ == "__main__":
-	socketio.run(app, host="0.0.0.0", port=60)
-	# checkAdress()
+	# socketio.run(app, host="0.0.0.0", port=60)
+	test()
+
 
