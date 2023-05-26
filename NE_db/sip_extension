@@ -447,6 +447,20 @@
             "srtp_enable": false,
             "codec": "all",
             "_id": "zV0cQWPoP6EZB3jS"
+        },
+        "33": {
+            "name": "958296",
+            "callerid": "ATA <958296>",
+            "secret": "958296",
+            "dtmfmode": "inband",
+            "en_voice_mail": false,
+            "mailbox": "",
+            "codec": "all",
+            "transport": "udp",
+            "srtp_enable": false,
+            "srtp_mode": "sdes",
+            "nat": "no",
+            "qualify": "no"
         }
     }
 }

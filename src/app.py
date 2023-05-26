@@ -6,7 +6,7 @@ import json
 import datetime
 from flask_session import Session
 import subprocess
-from sip import addsip
+from sip_process import *
 # creates a Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -301,19 +301,37 @@ def web_data(msg):
 					db.update(User.username == msg["account"].get("change_user_name"), {'password': msg['account'].get('new_pass_word'), })
 				else:
 					emit('wrong_pass')
-	# if len(msg)
 
-	# if (msg.add_sip.length > 1) {
-    #   console.log('add_sip');
-    #   re_asterik = true;
-    #   for (var i = 0; i < msg.add_sip.length - 1; i++) {
-    #     if (!isEmpty(msg.add_sip[i])) {
-    #       console.log(msg.add_sip[i]);
-    #       add_sip(msg.add_sip[i]);
-    #       db.sip_extension.insert([msg.add_sip[i]], function (err) { });
+	if len(msg['add_sip']) > 1:
+		db = TinyDB('../NE_db/sip_extension')
+		User = Query()
+		print('add_sip')
+		re_asterik = True
+		for i in range(len(msg['add_sip']) - 1):
+			if msg['add_sip'][i] is not None:
+				print(msg['add_sip'][i])
+				add_sip(msg['add_sip'][i])
+				db.insert(msg['add_sip'][i])
+		db.close()
+	if len(msg['modify_sip']) > 1:
+		db = TinyDB('../NE_db/test')
+		User = Query()
+		re_asterik = True
+		for i in range(len(msg['modify_sip']) - 1):
+			if msg['modify_sip'][i] is not None:
+				print('update')
+				print(msg['modify_sip'][i])
+				modify_sip(msg['modify_sip'][i])
+				print(msg['modify_sip'][i]['name'])
+				db.update(msg['modify_sip'][i], doc_ids = [db.get(User.name == msg['modify_sip'][i]['name']).doc_id])
+    #       console.log("update")
+    #       console.log(msg.modify_sip[i]);
+    #       modify_sip(msg.modify_sip[i]);
+    #       //db.sip_extension.update({ name: msg.modify_sip[i].name }, { $set: msg.modify_sip[i] }, {}, function () { });
     #     }
     #   }
     # }
+
 	
 
 @app.route('/status')
@@ -355,13 +373,9 @@ def register():
 		msg = 'Please fill out the form !'
 	return render_template('register.html', msg = msg)
 
-
-def test():
-	print(addsip(3))
-
 # run the application
 if __name__ == "__main__":
-	# socketio.run(app, host="0.0.0.0", port=60)
-	test()
+	socketio.run(app, host="0.0.0.0", port=60)
+
 
 
