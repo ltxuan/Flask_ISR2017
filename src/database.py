@@ -35,5 +35,11 @@ def update():
     print('id = \n', tmp.doc_id)
     db.update(data, doc_ids = [tmp.doc_id])
     print('done \n', db.search(User.name == data['name']))
+
+def table():
+    arr = ['item1', 'item2', 'item3', 'item4']  # Danh sách arr
+    for i in reversed(range(len(arr))):
+        print(arr[i])
+
 if __name__ == "__main__":
-    update()
+    table()

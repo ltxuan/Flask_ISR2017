@@ -119,6 +119,149 @@ context = myphones\n\
                 write_data = write_data.replace("media_encryption = dtls", ";media_encryption = dtls")
                 write_data = write_data.replace("media_encryption = sdes", ";media_encryption = sdes")
             write_data = read_data.replace(arr[i], write_data)
-            # with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
-            #     file.write(write_data)
+            with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
+                file.write(write_data)
 
+
+def delete_sip(data):
+    with open('/etc/asterisk/sip.conf','r', encoding='utf-8') as file:
+        read_data = file.read()
+    arr = read_data.replace(";sip_account\n", ', ').replace(';trunk\n', ', ').split(', ')
+    for i in range(len(arr)):
+        if "[" + data['name'] + "]" in arr[i]:
+            print(data['name'])
+            write_data = read_data.replace(";sip_account\n[" + data['name'] + "]", "[" + data['name'] + "]")
+            write_data = write_data.replace(arr[i], "")
+            with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
+                file.write(write_data)
+# Cac ham xu ly trunk
+def add_trunk(data):
+    with open('/etc/asterisk/sip.conf','r', encoding='utf-8') as file:
+        read_data = file.read()
+    trunk_config = 'username = htc-isr2017\n' +\
+    'type = peer\n' +\
+    'secret = 123456\n' +\
+    'host = 192.168.2.1\n' +\
+    'fromdomain = 192.168.2.1\n' +\
+    'dtmfmode = rfc2833\n'
+    write_data = "\n;trunk\n[" + data['trunk_name'] + "]\n" + trunk_config
+    if data['codec'] == 'all':
+        if 'disallow = all' in write_data:
+            write_data = write_data + 'disallow = all\n' +\
+            'allow = ulaw\n' +\
+            'allow = alaw\n' +\
+            'allow = g729\n' +\
+            'allow = g722\n'
+    else:
+        if "disallow = all" in write_data:
+            write_data = write_data + "allow = " + data['codec'] + "\n"            
+    write_data = write_data + 'transport = udp\n' +\
+    'nat=yes\n' +\
+    'qualify = yes\n' +\
+    'encryption = yes\n'
+    if data['username'] != "":
+        write_data = modify_key_custom(write_data, "username", "=", 1, data['username'])
+    else:
+        write_data = write_data.replace("username", ";username")
+    if data['type'] != "":
+        write_data = modify_key_custom(write_data, "type", "=", 1, data['type'])
+    else:
+        write_data = write_data.replace("type", ";type")
+    if data['secret'] != "":
+        write_data = modify_key_custom(write_data, "secret", "=", 1, data['secret'])
+    else:
+        write_data = write_data.replace("secret", ";secret")
+    if data['dtmfmode'] != "":
+        write_data = modify_key_custom(write_data, "dtmfmode", "=", 1, data['dtmfmode'])
+    else:
+        write_data = write_data.replace("dtmfmode", ";dtmfmode")
+    if data['host'] != "":
+        write_data = modify_key_custom(write_data, "host", "=", 1, data['host'])
+    else:
+         write_data = write_data.replace("host", ";host")
+    if data['fromdomain'] != "":
+        write_data = modify_key_custom(write_data, "fromdomain", "=", 1, data['fromdomain'])
+    else:
+        write_data = write_data.replace("fromdomain", ";fromdomain")
+    if data['nat'] is None:
+        write_data = write_data.replace('nat', ';nat')
+    if data['quality'] is None:
+        write_data = write_data.replace('qualify', ';qualify')
+    if data['en_srtp']:
+        write_data = write_data + 'media_encryption = ' + data['srtp_mode'] + '\n' 
+    else:
+        write_data = modify_key_custom(write_data, "encryption", "=", 1, 'no')
+    write_data = modify_key_custom(write_data, "transport", "=", 1, data['transport'])
+    write_data = write_data + 'context = public\n'
+    print(write_data)
+    write_data = read_data + write_data
+    with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
+        file.write(write_data)
+
+def modify_trunk(data):
+    print(data['trunk_name'])
+    with open('/etc/asterisk/sip.conf','r', encoding='utf-8') as file:
+        read_data = file.read()
+    arr = read_data.replace(";sip_account\n", ', ').replace(';trunk\n', ', ').split(', ')
+    for i in reversed(range(len(arr) - 1)):
+        if "[" + data['trunk_name'] + "]" in arr[i]:
+            print(arr[i])
+            trunk_config = 'username = htc-isr2017\n' +\
+            'type = peer\n' +\
+            'secret = 123456\n' +\
+            'host = 192.168.2.1\n' +\
+            'fromdomain = 192.168.2.1\n' +\
+            'dtmfmode = rfc2833\n'
+            write_data = "[" + data['trunk_name'] + "]\n" + trunk_config   
+            if data['codec'] == 'all':
+                if 'disallow = all' in write_data:
+                    write_data = write_data + 'disallow = all\n' +\
+                    'allow = ulaw\n' +\
+                    'allow = alaw\n' +\
+                    'allow = g729\n' +\
+                    'allow = g722\n'
+            else:
+                if "disallow = all" in write_data:
+                    write_data = write_data + "allow = " + data['codec'] + "\n"            
+            write_data = write_data + 'transport = udp\n' +\
+            'nat=yes\n' +\
+            'qualify = yes\n' +\
+            'encryption = yes\n'
+            if data['username'] != "":
+                write_data = modify_key_custom(write_data, "username", "=", 1, data['username'])
+            else:
+                write_data = write_data.replace("username", ";username")
+            if data['type'] != "":
+                write_data = modify_key_custom(write_data, "type", "=", 1, data['type'])
+            else:
+                write_data = write_data.replace("type", ";type")
+            if data['secret'] != "":
+                write_data = modify_key_custom(write_data, "secret", "=", 1, data['secret'])
+            else:
+                write_data = write_data.replace("secret", ";secret")
+            if data['dtmfmode'] != "":
+                write_data = modify_key_custom(write_data, "dtmfmode", "=", 1, data['dtmfmode'])
+            else:
+                write_data = write_data.replace("dtmfmode", ";dtmfmode")
+            if data['host'] != "":
+                write_data = modify_key_custom(write_data, "host", "=", 1, data['host'])
+            else:
+                    write_data = write_data.replace("host", ";host")
+            if data['fromdomain'] != "":
+                write_data = modify_key_custom(write_data, "fromdomain", "=", 1, data['fromdomain'])
+            else:
+                write_data = write_data.replace("fromdomain", ";fromdomain")
+            if data['nat'] is None:
+                write_data = write_data.replace('nat', ';nat')
+            if data['quality'] is None:
+                write_data = write_data.replace('qualify', ';qualify')
+            if data['en_srtp']:
+                write_data = write_data + 'media_encryption = ' + data['srtp_mode'] + '\n' 
+            else:
+                write_data = modify_key_custom(write_data, "encryption", "=", 1, 'no')
+            write_data = modify_key_custom(write_data, "transport", "=", 1, data['transport'])
+            write_data = write_data + 'context = public\n'
+            print('asdf \n',write_data)
+            write_data = read_data.replace(arr[i], write_data)
+            # with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
+            #     file.write(write_data)                    
