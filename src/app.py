@@ -7,6 +7,7 @@ import datetime
 from flask_session import Session
 import subprocess
 from sip_process import *
+from pjsip import *
 # creates a Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -16,6 +17,7 @@ Session(app)
 
 async_mode = None
 socketio = SocketIO(app, async_mode=async_mode)
+
 
 
 @app.route("/")
@@ -350,25 +352,35 @@ def web_data(msg):
 				print(msg['add_trunk'][i])
 				add_trunk(msg['add_trunk'][i])
 				db.insert(msg['add_trunk'][i])
+		db.close()
 	if len(msg['modify_trunk']) > 1:
+		db = TinyDB('../NE_db/trunk')
+		User = Query()
 		re_asterik = True
 		for i in range(len(msg['modify_trunk']) - 1):
 			print("update")
-			# print(msg['modify_trunk'][i])
+			print(msg['modify_trunk'][i])
 			modify_trunk(msg['modify_trunk'][i])
-    #   for (var i = 0; i < msg.modify_trunk.length - 1; i++) {
-    #     if (!isEmpty(msg.modify_trunk[i])) {
-    #       console.log("update")
-    #       console.log(msg.modify_trunk[i]);
-    #       modify_trunk(msg.modify_trunk[i]);
-    #       db.trunk.update({ trunk_name: msg.modify_trunk[i].trunk_name }, { $set: msg.modify_trunk[i] }, {}, function () { });
-    #     }
-    #   }
-    # }
-
-	
-
-	
+			if db.get(User.trunk_name == msg['modify_trunk'][i]['trunk_name']) is not None:
+				db.update(msg['modify_trunk'][i], doc_ids = [db.get(User.trunk_name == msg['modify_trunk'][i]['trunk_name']).doc_id])
+			else:
+				print('trunk account does not exits')
+		db.close()
+	if len(msg['delete_trunk']) > 1:
+		db = TinyDB('../NE_db/trunk')
+		User = Query()
+		re_asterik = True
+		for i in range(len(msg['delete_trunk']) - 1):
+			if msg['delete_trunk'][i] is not None:
+				print(msg['delete_trunk'][i])
+				delete_trunk(msg['delete_trunk'][i])
+				if db.get(User.trunk_name == msg['delete_trunk'][i]['trunk_name']) is not None:
+					db.remove(doc_ids = [db.get(User.trunk_name == msg['delete_trunk'][i]['trunk_name']).doc_id])
+				else:
+					print('trunk account does not exits')
+		db.close()
+	# if len(msg['sip_configure']) > 0:
+	#     sip_config(msg['sip_configure'])
 
 @app.route('/status')
 def status():
@@ -411,7 +423,8 @@ def register():
 
 # run the application
 if __name__ == "__main__":
-	socketio.run(app, host="0.0.0.0", port=60)
+	abc()
+	# socketio.run(app, host="0.0.0.0", port=60)
 
 
 

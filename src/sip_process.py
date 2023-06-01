@@ -1,4 +1,5 @@
 import re
+import asyncio
 
 def index_near_key(src, start, key):
     i = 0
@@ -199,13 +200,12 @@ def add_trunk(data):
         file.write(write_data)
 
 def modify_trunk(data):
-    print(data['trunk_name'])
     with open('/etc/asterisk/sip.conf','r', encoding='utf-8') as file:
         read_data = file.read()
     arr = read_data.replace(";sip_account\n", ', ').replace(';trunk\n', ', ').split(', ')
-    for i in reversed(range(len(arr) - 1)):
-        if "[" + data['trunk_name'] + "]" in arr[i]:
-            print(arr[i])
+    str_check = "[" + data['trunk_name'] + "]"
+    for i in reversed(range(len(arr))):
+        if str_check in arr[i]:
             trunk_config = 'username = htc-isr2017\n' +\
             'type = peer\n' +\
             'secret = 123456\n' +\
@@ -214,14 +214,14 @@ def modify_trunk(data):
             'dtmfmode = rfc2833\n'
             write_data = "[" + data['trunk_name'] + "]\n" + trunk_config   
             if data['codec'] == 'all':
-                if 'disallow = all' in write_data:
+                if 'disallow = all' not in write_data:
                     write_data = write_data + 'disallow = all\n' +\
                     'allow = ulaw\n' +\
                     'allow = alaw\n' +\
                     'allow = g729\n' +\
                     'allow = g722\n'
             else:
-                if "disallow = all" in write_data:
+                if "disallow = all" not in write_data:
                     write_data = write_data + "allow = " + data['codec'] + "\n"            
             write_data = write_data + 'transport = udp\n' +\
             'nat=yes\n' +\
@@ -246,7 +246,7 @@ def modify_trunk(data):
             if data['host'] != "":
                 write_data = modify_key_custom(write_data, "host", "=", 1, data['host'])
             else:
-                    write_data = write_data.replace("host", ";host")
+                write_data = write_data.replace("host", ";host")
             if data['fromdomain'] != "":
                 write_data = modify_key_custom(write_data, "fromdomain", "=", 1, data['fromdomain'])
             else:
@@ -261,7 +261,20 @@ def modify_trunk(data):
                 write_data = modify_key_custom(write_data, "encryption", "=", 1, 'no')
             write_data = modify_key_custom(write_data, "transport", "=", 1, data['transport'])
             write_data = write_data + 'context = public\n'
-            print('asdf \n',write_data)
             write_data = read_data.replace(arr[i], write_data)
-            # with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
-            #     file.write(write_data)                    
+            with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
+                file.write(write_data) 
+
+def delete_trunk(data):
+    with open('/etc/asterisk/sip.conf','r', encoding='utf-8') as file:
+        read_data = file.read()
+    arr = read_data.replace(";sip_account\n", ', ').replace(';trunk\n', ', ').split(', ')
+    str_check = "[" + data['trunk_name'] + "]"
+    for i in reversed(range(len(arr))):
+        if str_check in arr[i]:
+            write_data = read_data.replace(";trunk\n[" + data['trunk_name'] + "]", "[" + data['trunk_name'] + "]")
+            write_data = write_data.replace(arr[i], "")
+            with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
+                file.write(write_data) 
+
+

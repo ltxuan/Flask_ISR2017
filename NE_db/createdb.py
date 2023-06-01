@@ -99,3 +99,15 @@ with open("../my_db/sip_status") as system_setting:
 tmp = file_contents.splitlines()
 for i in range(len(tmp)):
     sip_status.insert(json.loads(tmp[i]))
+
+
+system_setting.close()
+users.close()
+sip1_config.close()
+network.close()
+sip_extension.close()
+audio_setting.close()
+trunk.close()
+status.close()
+fxs_status.close()
+sip_status.close()
