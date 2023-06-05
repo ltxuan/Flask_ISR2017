@@ -30,39 +30,7 @@
 {"name":"958253","callerid":"ATA <958253>","secret":"958253","dtmfmode":"rfc2833","mailbox":"958253","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"uig9xA3xCTHQsplo"}
 {"name":"958263","callerid":"ATA <958263>","secret":"958263","dtmfmode":"rfc2833","mailbox":"958263","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"xfyvC7Mk1tXgElfR"}
 {"name":"958261","callerid":"ATA <958261>","secret":"958261","dtmfmode":"rfc2833","mailbox":"958261","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"zuKSsipuVyPFKBEM"}
-{"$$deleted":true,"_id":"2vbKQcNXAT7hrP0W"}
-{"$$deleted":true,"_id":"8meFGEmuR6B4c6S6"}
-{"$$deleted":true,"_id":"8tYRJLdfEbFD4mmv"}
-{"$$deleted":true,"_id":"AVF2cuceDe6kvCdF"}
-{"$$deleted":true,"_id":"BdCRfP9B3xfh9ciB"}
-{"$$deleted":true,"_id":"Czc7yt08jYpdGbZD"}
-{"$$deleted":true,"_id":"DI1pBDzhuulDiK6S"}
-{"$$deleted":true,"_id":"DrEKhgP94NgeX7vl"}
-{"$$deleted":true,"_id":"EbgagpYEumbxtvBh"}
-{"$$deleted":true,"_id":"FiGnX48UWKF408oS"}
-{"$$deleted":true,"_id":"GEdnaRYqWkDCwykq"}
-{"$$deleted":true,"_id":"GlSYy7ct8jezyPUH"}
-{"$$deleted":true,"_id":"H9UdNE8ZufiCATPG"}
-{"$$deleted":true,"_id":"IHlpvaxrlElAgum7"}
-{"$$deleted":true,"_id":"MYu1CKpXCIMTiQcc"}
-{"$$deleted":true,"_id":"MePRn7HfSrNtoJMn"}
-{"$$deleted":true,"_id":"NIHefzHCPteHCQRc"}
-{"$$deleted":true,"_id":"Nci7ZIwKcApxAqes"}
-{"$$deleted":true,"_id":"QNtovkbdCZNQ9w1v"}
-{"$$deleted":true,"_id":"X2GPltzHZQOBnY5f"}
-{"$$deleted":true,"_id":"YxlBXhMVzqoXbDAf"}
-{"$$deleted":true,"_id":"ibBtaltvOw7aUirp"}
-{"$$deleted":true,"_id":"jIOtXp2cX01wMHUZ"}
-{"$$deleted":true,"_id":"lkP1RkaqS6x1X1kF"}
-{"$$deleted":true,"_id":"m7hNrBaHzvFEyaWm"}
-{"$$deleted":true,"_id":"nd12pDtDEOwuLCTq"}
-{"$$deleted":true,"_id":"qB6Xxge7jdnV4PTw"}
-{"$$deleted":true,"_id":"qyNi2sLjcr66hjvk"}
-{"$$deleted":true,"_id":"tukxE3SfWiGrNp2y"}
-{"$$deleted":true,"_id":"uig9xA3xCTHQsplo"}
-{"$$deleted":true,"_id":"xfyvC7Mk1tXgElfR"}
-{"$$deleted":true,"_id":"zuKSsipuVyPFKBEM"}
-{"name":"958250","callerid":"ATA <958250>","secret":"958250","dtmfmode":"rfc2833","mailbox":"958250","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"km1qTtWyCT0iDPog"}
+ {"name":"958250","callerid":"ATA <958250>","secret":"958250","dtmfmode":"rfc2833","mailbox":"958250","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"km1qTtWyCT0iDPog"}
 {"name":"958251","callerid":"ATA <958251>","secret":"958251","dtmfmode":"rfc2833","mailbox":"958251","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"L4jAJvxwPyloqaG3"}
 {"name":"958252","callerid":"ATA <958252>","secret":"958252","dtmfmode":"rfc2833","mailbox":"958252","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"A30t95o9xTxRuZ7b"}
 {"name":"958253","callerid":"ATA <958253>","secret":"958253","dtmfmode":"rfc2833","mailbox":"958253","nat":"no","qualify":"no","transport":"udp","srtp_mode":"sdes","srtp_enable":false,"codec":"all","_id":"7fKqKIL0LZaDndo6"}

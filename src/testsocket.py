@@ -1,39 +1,24 @@
-from flask import Flask, render_template,request
-from flask_socketio import SocketIO, emit, disconnect
-
-# Set this variable to "threading", "eventlet" or "gevent" to test the
-# different async modes, or leave it set to None for the application to choose
-# the best option based on installed packages.
-async_mode = None
+from flask import Flask, render_template
+from flask_socketio import SocketIO
+from axuan import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = 'secret_key'
 socketio = SocketIO(app)
+
+
+# @socketio.on('my_event')
+# def handle_my_event(data):
+#     message = data['message']
+#     socketio.emit('my_response', {'message': 'Server says: ' + message})
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-@socketio.event
-def my_event(message):
-    emit('my_response',
-         {'data': message['data']})
-
-@socketio.event
-def disconnect_request():
-    emit('my_response',
-         {'data': 'Disconnected!'})
-
-@socketio.event
-def connect():
-    emit('my_response', {'data': 'abcfdg'})
-
-
-@socketio.on('disconnect')
-def test_disconnect():
-    print('Client disconnected', request.sid)
-
-
 if __name__ == '__main__':
-    socketio.run(app)
+    socket_process(socketio)
+    socketio.run(app, host="0.0.0.0", port=60)
+    
+    
