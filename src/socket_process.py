@@ -25,7 +25,6 @@ def socket_process(socketio):
     #Thong bao connect socketio thanh cong
     @socketio.event
     def connect():
-        emit('my_response', {'data': 'Connected'})
         print('add 1 client connected')
     #Xu ly du lieu trong file system_setting
 

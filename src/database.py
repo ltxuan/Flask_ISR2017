@@ -41,5 +41,27 @@ def table():
     for i in reversed(range(len(arr))):
         print(arr[i])
 
+def update_key():
+    db = TinyDB('db')
+    db.truncate()
+    db.insert_multiple([{"type":"ATA","data":{"id":"21","sip_uri":"sip:958271@10.10.0.182","status":"OK"},"_id":"vqrGlnpyr1aFLj7O"},\
+{"type":"dasboard","data":{"arm_ready":"NO","fpga_ready":"NO","ok_3v":"OK","ok_5v":"OK","arr":[],"cpu_temp":"0 oC","temp":"38.9","humd":"31.4"},"_id":"vrDmRmptXm2atjI4"},\
+{"type":"ATA","data":{"id":"10","sip_uri":"sip:958260@10.10.0.182","status":"OK"},"_id":"vwfT8tpp5g7GVhZO"}])
+    Status = Query()
+    print(db.all())
+
+    # Tìm tài liệu có 'type' là 'dashboard'
+    dashboard_doc = db.get(Status.type == 'dasboard')
+
+    # Kiểm tra xem tài liệu có tồn tại không
+    if dashboard_doc:
+        # Cập nhật trường 'arm_ready' trong trường 'data'
+        dashboard_doc['data']['arm_ready'] = 'YES'
+        db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
+
+    print(db.all())
+
+
+
 if __name__ == "__main__":
-    table()
+    update_key()
