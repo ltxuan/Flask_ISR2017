@@ -1,11 +1,12 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from threading import Thread
-from background import background_task
+from background import background_task, set_socketio
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 socketio = SocketIO(app)
+set_socketio(socketio)
 
 @app.route('/')
 def index():
@@ -21,7 +22,8 @@ def handle_disconnect():
 
 if __name__ == '__main__':
     # Tạo một thread mới để chạy background_task()
-    thread = Thread(target=background_task, args=(socketio,))
+    thread = Thread(target=background_task)
     thread.daemon = True
     thread.start()
+
     socketio.run(app, host="0.0.0.0", port=60)

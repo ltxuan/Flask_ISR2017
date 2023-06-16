@@ -155,7 +155,7 @@ def socket_process(socketio):
     def ATA_Status():
         db = TinyDB('../NE_db/sip_status')
         User = Query()
-        emit("RES_ATA_STATUS", sorted(db.all(), key=lambda i: int(i['id'])))
+        emit("RES_ATA_STATUS", sorted(db.all(), key=lambda i: i['_id']))
     
     @socketio.on('GET_FXS_STATUS')
     def FXS_Status():

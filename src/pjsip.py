@@ -2,22 +2,31 @@ from flask import Flask
 import time
 import subprocess
 import threading
-from flask_socketio import SocketIO, emit, disconnect
+from tinydb import TinyDB, Query
 
 sip1_arr_state = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-from tinydb import TinyDB, Query
+
+
 
 mutex = threading.Lock()
-mutex_status = mutex.acquire(timeout=3)
+
+
+
+socketio = None
+
+def set_socketio(sio):
+    global socketio
+    socketio = sio
+
 
 def handle_message(str):
     if 'msg:account' in str:
         db = TinyDB('../NE_db/sip1_db')
-        User = Query()
         db_status = TinyDB('../NE_db/status')
         Status = Query()
-        # emit('config_1_status', str)
+        if socketio is not None:
+            socketio.emit('config_1_status', str)
         arr = str.split("\n")
         list_acc = db.all()
         for i in range(len(arr) - 1):
@@ -34,13 +43,15 @@ def handle_message(str):
         db_status.close()
         db.close()
     elif 'msg:status' in str:
-        # emit('sip_state', str)
+        if socketio is not None:
+            socketio.emit('sip_state', str)
         arr = str.split("$")
         for i in range(len(arr)):
             sip1_arr_state[i - 1] = arr[i]
         print(sip1_arr_state)
     elif 'msg:call_state' in str:
-        # emit('sip_state', str)
+        if socketio is not None:
+            socketio.emit('sip_state', str)
         index = str[str.index("$") + 1 : str.rindex("$")]
         state = str[str.rindex("$") + 1 :]
         sip1_arr_state[int(index)] = state
@@ -96,59 +107,104 @@ def handle_message(str):
         print('reboot')
         child.stdin.close()
     elif 'msg:arm_ready' in str:
-        # emit('arm_ready', str)
-        if mutex_status:
-            db = TinyDB('../NE_db/status')
-            Status = Query()
-            dashboard_doc = db.get(Status.type == 'dasboard')
-            if dashboard_doc:
-                # Cập nhật trường 'arm_ready' trong trường 'data'
-                dashboard_doc['data']['arm_ready'] = 'YES'
-                db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
-        mutex.release()
+        if socketio is not None:
+            socketio.emit('arm_ready', str)
+        if mutex.acquire(timeout=3):
+            try:
+                db = TinyDB('../NE_db/status')
+                Status = Query()
+                dashboard_doc = db.get(Status.type == 'dasboard')
+                if dashboard_doc:
+                    # Cập nhật trường 'arm_ready' trong trường 'data'
+                    dashboard_doc['data']['arm_ready'] = 'YES'
+                    db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
+            finally:
+                mutex.release()
+        else:
+            pass
     elif 'msg:fpga_ready' in str:
-        # emit('fpga_ready', str)
-        if mutex_status:
-            db = TinyDB('../NE_db/status')
-            Status = Query()
-            dashboard_doc = db.get(Status.type == 'dasboard')
-            if dashboard_doc:
-                # Cập nhật trường 'arm_ready' trong trường 'data'
-                dashboard_doc['data']['fpga_ready'] = 'YES'
-                db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
-        mutex.release()
+        if socketio is not None:
+            socketio.emit('fpga_ready', str)
+        if mutex.acquire(timeout=3):
+            try:
+                db = TinyDB('../NE_db/status')
+                Status = Query()
+                dashboard_doc = db.get(Status.type == 'dasboard')
+                if dashboard_doc:
+                    # Cập nhật trường 'arm_ready' trong trường 'data'
+                    dashboard_doc['data']['fpga_ready'] = 'YES'
+                    db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
+            finally:
+                mutex.release()
+        else:
+            pass
     elif 'msg:3v_ok' in str:
-        emit('3v_ok', str)
-        if mutex_status:
-            db = TinyDB('../NE_db/status')
-            Status = Query()
-            dashboard_doc = db.get(Status.type == 'dasboard')
-            if dashboard_doc:
-                # Cập nhật trường 'arm_ready' trong trường 'data'
-                dashboard_doc['data']['ok_3v'] = 'OK'
-                db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
-        mutex.release()
+        if socketio is not None:
+            socketio.emit('3v_ok', str)
+        if mutex.acquire(timeout=3):
+            try:
+                db = TinyDB('../NE_db/status')
+                Status = Query()
+                dashboard_doc = db.get(Status.type == 'dasboard')
+                if dashboard_doc:
+                    # Cập nhật trường 'arm_ready' trong trường 'data'
+                    dashboard_doc['data']['ok_3v'] = 'OK'
+                    db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
+            finally:
+                mutex.release()
+        else:
+            pass
     elif 'msg:5v_ok' in str:
-        # emit('5v_ok', str)
-        if mutex_status:
-            db = TinyDB('../NE_db/status')
-            Status = Query()
-            dashboard_doc = db.get(Status.type == 'dasboard')
-            if dashboard_doc:
-                # Cập nhật trường 'arm_ready' trong trường 'data'
-                dashboard_doc['data']['ok_5v'] = 'OK'
-                db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
-        mutex.release()
-    
-
-
-
-
-    
-
-
-        
-
+        if socketio is not None:
+            socketio.emit('5v_ok', str)
+        if mutex.acquire(timeout=3):
+            try:
+                db = TinyDB('../NE_db/status')
+                Status = Query()
+                dashboard_doc = db.get(Status.type == 'dasboard')
+                if dashboard_doc:
+                    # Cập nhật trường 'arm_ready' trong trường 'data'
+                    dashboard_doc['data']['ok_5v'] = 'OK'
+                    db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
+            finally:
+                mutex.release()
+        else:
+            pass
+    elif 'msg:sensor' in str:
+        if socketio is not None:
+            socketio.emit('sensor', str)
+        temp = str[str.index("$") + 6:str.rindex("$")]
+        humd = str[str.rindex("$") + 5:].strip()
+        if mutex.acquire(timeout=3):
+            try:
+                db = TinyDB('../NE_db/status')
+                Status = Query()
+                dashboard_doc = db.get(Status.type == 'dasboard')
+                if dashboard_doc:
+                    # Cập nhật trường 'arm_ready' trong trường 'data'
+                    dashboard_doc['data']['temp'] = temp
+                    dashboard_doc['data']['humd'] = humd
+                    db.update(dashboard_doc, doc_ids=[dashboard_doc.doc_id])
+            finally:
+                mutex.release()
+        else:
+            pass
+    elif 'msg:fxs' in str:
+        db_fxs = TinyDB('../NE_db/fxs_status')
+        Fxs_status = Query()
+        if socketio is not None:
+            socketio.emit('fxs', str)
+        index = str[str.index("$index:") + len("$index:"):str.index("$status:")]
+        status = str[str.index("$status:") + len("$status:"):str.index("$value:")]
+        if status == '0':
+            status = 'YES'
+        else:
+            status = 'NO'
+        value = str[str.index("$value:") + len("$value:"):].strip() + ' V'
+        if db_fxs.get(Fxs_status.id==index) is not None:
+            db_fxs.update({'id': index, 'status': status, 'value': value}, Status.id == index)
+        else:
+            db_fxs.insert([{'id': index, 'status': status, 'value': value}])
 
 def restart_pjsip():
     command = ['../RL_uart/app']

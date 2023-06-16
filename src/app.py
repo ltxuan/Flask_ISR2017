@@ -20,8 +20,14 @@ Session(app)
 
 async_mode = None
 socketio = SocketIO(app)
+set_socketio(socketio)
 
 
+
+@app.before_first_request
+def before_first_request():
+    session.clear()  # Xoa het cac phien lam viec cu
+    
 @app.route("/")
 def home():
 	return redirect(url_for('login'))
@@ -86,10 +92,11 @@ def register():
 
 # run the application
 if __name__ == "__main__":
+	
 	socket_process(socketio)
 	thread = threading.Thread(target=schedule_Init_pjsip)
 	thread.start()
-	socketio.run(app, host="0.0.0.0", port=60)
+	socketio.run(app, host="0.0.0.0", port=60, debug=False)
 	# thread2 = threading.Thread(target=delayed_action2)
 
     # # Khởi chạy các thread
