@@ -7,7 +7,7 @@ from socket_process import socket_process
 import threading
 from sip_process import *
 from pjsip import *
-
+from readdata import *
 
 
 
@@ -90,13 +90,29 @@ def register():
 		msg = 'Please fill out the form !'
 	return render_template('register.html', msg = msg)
 
+
+#---------------Rest API ----------------#
+@app.route("/system/date/get", methods=['GET'])
+def get_system_date():
+	db = TinyDB('../NE_db/system_setting')
+	User = Query()
+	data = db.search(User.type == "time_setting")[0]['data']
+	data['object'] = '015' + "_ISR2017_SYS_DATE"
+	data['date'] = data['date'] + " " + data['time']
+	del data['time']
+	print("object gui di")
+	print(data)
+	return jsonify(data)
+
+
 # run the application
 if __name__ == "__main__":
-	
-	socket_process(socketio)
-	thread = threading.Thread(target=schedule_Init_pjsip)
-	thread.start()
-	socketio.run(app, host="0.0.0.0", port=60, debug=False)
+	# socket_process(socketio)
+	# thread = threading.Thread(target=schedule_Init_pjsip)
+	# thread.start()
+	read_network()
+	# socketio.run(app, host="0.0.0.0", port=60, debug=False)
+
 	# thread2 = threading.Thread(target=delayed_action2)
 
     # # Khởi chạy các thread
