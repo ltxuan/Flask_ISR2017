@@ -8,6 +8,8 @@ def index_near_key(src, start, key):
             return start + i + 1
         else:
             i += 1
+    if i == 1000:
+        return 0
 
 def modify_key_custom(src, key, separate, index, value):
     tmp = src[src.index(key):index_near_key(src, src.index(key), '\n')]

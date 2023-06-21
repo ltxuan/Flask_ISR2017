@@ -1,1 +1,1 @@
-{"_default": {}}
+{"_default": {"1": {"trunk_name": "CUCM", "codec": "all", "username": "", "type": "peer", "secret": "", "dtmfmode": "rfc2833", "host": "192.168.2.1", "fromdomain": "192.168.2.1", "nat": true, "quality": true, "transport": "udp", "en_srtp": false}}}

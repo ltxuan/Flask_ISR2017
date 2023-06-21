@@ -111,7 +111,7 @@ if __name__ == "__main__":
 	# thread = threading.Thread(target=schedule_Init_pjsip)
 	# thread.start()
 	read_system()
-	# socketio.run(app, host="0.0.0.0", port=60, debug=False)
+	# socketio.run(app, host="0.0.0.0", port=80, debug=False)
 
 	# thread2 = threading.Thread(target=delayed_action2)
 
