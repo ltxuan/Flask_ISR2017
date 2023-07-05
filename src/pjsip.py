@@ -3,12 +3,11 @@ import time
 import subprocess
 import threading
 from tinydb import TinyDB, Query
+import builtins
+from threading import Timer
+import datetime
 
 sip1_arr_state = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-
-
-
 mutex = threading.Lock()
 
 
@@ -237,46 +236,66 @@ def restart_pjsip():
     print(f"Child process exited with code {exit_code}")
     time.sleep(5)
     restart_pjsip()
+    
+def start_child_process(command, directory, stdout_callback, stderr_callback, close_callback, delay):
+    time.sleep(delay)  # Đợi khoảng thời gian
+    child = subprocess.Popen(command, cwd=directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    def read_stdout():
+        for line in iter(child.stdout.readline, b''):
+            stdout_callback(line.decode().strip())
+    
+    def read_stderr():
+        for line in iter(child.stderr.readline, b''):
+            stderr_callback(line.decode().strip())
+    
+    # Tạo và khởi chạy luồng đọc đầu ra stdout
+    stdout_thread = threading.Thread(target=read_stdout)
+    stdout_thread.start()
+    
+    # Tạo và khởi chạy luồng đọc đầu ra stderr
+    stderr_thread = threading.Thread(target=read_stderr)
+    stderr_thread.start()
+    
+    # Đợi quá trình con kết thúc và gọi hàm callback
+    child.wait()
+    close_callback(child.returncode)
 
-def Init_pjsip():
-    command = ['../RL_uart/app']
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
-    # Xử lý đầu ra của tiến trình con
-    def handle_output(stream):
-        for line in stream:
-            data = line.decode().strip()
-            print(data)
-    
-    # Xử lý lỗi của tiến trình con
-    def handle_error(stream):
-        for line in stream:
-            error_data = line.decode().strip()
-            print("========")
-            print(error_data)
-            handle_message(error_data)  # Gọi handle_message để xử lý lỗi
-    
-    # Tạo các thread để xử lý đầu ra và lỗi của tiến trình con
-    output_thread = threading.Thread(target=handle_output, args=(process.stdout,))
-    output_thread.start()
-    
-    error_thread = threading.Thread(target=handle_error, args=(process.stderr,))
-    error_thread.start()
-    
-    # Chờ tiến trình con kết thúc
-    try:
-        process.wait()
-    except KeyboardInterrupt:
-        process.terminate()
-    
-    # Xử lý sự kiện kết thúc của tiến trình con
-    exit_code = process.returncode
-    print(f"Child process exited with code {exit_code}")
-    time.sleep(5)  # Đợi 5 giây
-    restart_pjsip()
-    
+def start_processes_pjsip():
+    # Quá trình con thứ nhất, chạy sau 10 giây
+    builtins.child = start_child_process(
+        ['../RL_uart/app', ''],
+        None,  # Thư mục hiện tại
+        lambda line: print(line),  # Callback cho stdout
+        lambda line: handle_message(line),  # Callback cho stderr
+        lambda code: restart_pjsip(),  # Callback khi quá trình con kết thúc
+        10  # Khoảng thời gian chờ (10 giây)
+    )
+def start_processes_SNMP():    
+    # Quá trình con thứ hai, chạy sau 15 giây
+    start_child_process(
+        ['./example-demon', ''],
+        '../SNMP',  # Thư mục của quá trình con
+        lambda line: print("SNMP stdout: " + line),  # Callback cho stdout
+        lambda line: print("SNMP stderr: " + line),  # Callback cho stderr
+        lambda code: None,  # Callback khi quá trình con kết thúc
+        15  # Khoảng thời gian chờ (15 giây)
+    )
 
-def schedule_Init_pjsip():
-    # Len lich thuc hien khoi dong pjsip sau 10s
-    time.sleep(10)
-    Init_pjsip()
+def repeat_task():
+    global enable_restart
+    if enable_restart:
+            current_hour = datetime.datetime.now().hour
+            if current_hour == 0 or current_hour == 1:
+                all_off = all(element == 0 for element in sip1_arr_state)
+                if all_off:
+                    enable_restart = False
+                    Timer(7200, enable_restart_callback).start()
+                    builtins.child.kill()
+
+    # Lập lịch thực hiện lại sau một khoảng thời gian (ví dụ: 30 phút)
+    repeat_time = Timer(1800, repeat_task).start()
+
+def enable_restart_callback():
+    global enable_restart
+    enable_restart = True    

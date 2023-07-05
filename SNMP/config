@@ -1,0 +1,54 @@
+/*** General ***/
+general_id=ISR2017_SYS_GENERAL
+
+/*** accountObjID ***/
+#sip account 1
+sip_object_id=ISR2017_ATA_STATUS
+asterisk_object_id=ISR2017_ASTERISK_STATUS
+quadga_object_id=ISR2017_QUADGA_STATUS
+
+/*** isrConfigPortGesTable ***/
+#ethernet port 0
+ip_add=192.168.1.9
+subnet_mask=255.255.255.0
+gateway=192.168.1.1
+port_descrip=eth0
+port_object_id=ISR2017_NET_GE0
+
+#ethernet port 1
+ip_add=10.0.0.8
+subnet_mask=255.255.255.0
+gateway=10.0.0.1
+port_descrip=eth1
+port_object_id=ISR2017_NET_GE1
+
+#ethernet port 2
+ip_add=10.0.0.8
+subnet_mask=255.255.255.0
+gateway=10.0.0.1
+port_descrip=eth2
+port_object_id=ISR2017_NET_GE2
+
+#ethernet port 3
+ip_add=10.0.0.8
+subnet_mask=255.255.255.0
+gateway=10.0.0.1
+port_descrip=eth3
+port_object_id=ISR2017_NET_GE3
+
+
+/*** v7isrInventory ***/
+neSerialNum=ISR ne_serial_num
+neSwVersion=ne_sw_ver
+cpuCardName=001_ISR2017_CPU
+cpuHwVersion=cpu_hw_ver_1_0
+cpuSwVersion=cpu_sw_ver_1_0
+ataCardName=ata_card_name_ATA
+ataHwVersion=ata_hw_ver_1_0
+ataSwVersion=ata_sw_ver_1_0
+description=ISR
+isr_version=ISR2017_CNC_1_0
+
+/*** v7isrPerformance ***/
+ram_info=8Gb
+cpu_info=3.0Hz

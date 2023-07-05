@@ -1,6 +1,13 @@
 from sip_process import index_near_key
 from tinydb import TinyDB, Query
 from socket_process import get_eth_address
+import os
+import re
+import builtins
+import subprocess
+
+
+
 
 def get_key_value(src, key, seperate, index, end):
     if key not in src:
@@ -14,12 +21,61 @@ def get_key_value(src, key, seperate, index, end):
 
 
 def read_system():
+    Init_system()
     # read_network()
     # read_pjsip_config()
     # read_sip_conf()
     # read_sip_setting()
     # read_extension_conf()
-    read_quagga()
+    # read_quagga()
+    # read_infor()
+
+def Init_system():
+    db_status = TinyDB('../NE_db/status')
+    if db_status.get(Query().type== "dasboard") is not None:
+        data = {'arm_ready': 'NO',
+        'fpga_ready': 'NO',
+        'ok_3v': 'OK',
+        'ok_5v': 'OK',
+        'arr': [],
+        'cpu_temp': '0 oC',
+        'temp': '0',
+        'humd': '0'}
+        db_status.update({'data': data}, Query().type== 'dasboard')
+    else:
+        data = {'arm_ready': 'NO',
+        'fpga_ready': 'NO',
+        'ok_3v': 'OK',
+        'ok_5v': 'OK',
+        'arr': [],
+        'cpu_temp': '0 oC',
+        'temp': '0',
+        'humd': '0'}
+        db_status.insert({'type': "dasboard",  'data': data})
+    db_status.close()
+    folder_path = '/etc/backup'
+    list_backup = os.listdir(folder_path)
+
+    db_system_setting = TinyDB('../NE_db/system_setting')
+    if db_system_setting.get(Query().type== 'backup') is not None:
+        send_arr = []
+        for element in list_backup:
+            name = element.replace('.zip', '')
+            date = re.search(r'_(\d+_\d+_\d+)', name).group(1)
+            date = date.replace('_', '/')
+            send_arr.append({'file_name': name, 'date': date})
+        db_system_setting.update({'data': send_arr}, Query().type== 'backup')
+    else:
+        db_system_setting.insert({'type': "backup",  'data': []})
+
+    if db_system_setting.get(Query().type== 'infor') is not None:
+        builtins.NODE_ID = db_system_setting.search(Query().type == 'infor')[0]['data']['node_id']
+    else:
+        builtins.NODE_ID = '999'
+    print(builtins.NODE_ID)
+
+    subprocess.run(['/etc/init.d/snmpd', 'stop'], shell=True)
+
 def read_GE(PortGE):
     db = TinyDB('../NE_db/network_db')
     with open('/etc/network/interfaces','r', encoding='utf-8') as file:
@@ -447,20 +503,18 @@ def read_quagga():
         arr_network = list(filter(lambda a: 'network' in a, arr_network))
         for element in arr_network:
             element = element.replace('network', '').strip()
-        print('len\n', len(arr_network))
-        print(arr_network)
         data['OSPF']['ipv4'] = True
         data['OSPF']['ipv6'] = False
-        if arr_network[0] is not None: data['OSPF']['net_work_1'] = arr_network[0]
-        else: data['OSPF']['net_work_1'] = " area "
-        if arr_network[1] is not None: data['OSPF']['net_work_2'] = arr_network[1]
-        else: data['OSPF']['net_work_2'] = " area "
-        if arr_network[2] is not None: data['OSPF']['net_work_3'] = arr_network[2]
-        else: data['OSPF']['net_work_3'] = " area "
-        if arr_network[3] is not None: data['OSPF']['net_work_4'] = arr_network[3]
-        else: data['OSPF']['net_work_4'] = " area "
-        if arr_network[4] is not None: data['OSPF']['net_work_5'] = arr_network[4]
-        else: data['OSPF']['net_work_5'] = " area "
+        try: data['OSPF']['net_work_1'] = arr_network[0]
+        except IndexError: data['OSPF']['net_work_1'] = " area "
+        try: data['OSPF']['net_work_2'] = arr_network[1]
+        except IndexError: data['OSPF']['net_work_2'] = " area "
+        try: data['OSPF']['net_work_3'] = arr_network[2]
+        except IndexError: data['OSPF']['net_work_3'] = " area "
+        try: data['OSPF']['net_work_4'] = arr_network[3]
+        except IndexError: data['OSPF']['net_work_4'] = " area "
+        try: data['OSPF']['net_work_5'] = arr_network[4]
+        except IndexError: data['OSPF']['net_work_5'] = " area "
         
         if '!redistribute rip' in tmp: data['OSPF']['rip'] = False
         else: data['OSPF']['rip'] = True
@@ -478,36 +532,36 @@ def read_quagga():
         data['OSPF']['ipv6'] = True
         tmp = read_data[read_data.index("!start_net_work"): read_data.index("!end_net_work")]
         list_ipv6 = tmp.split('interface ')
-        # if list_ipv6[1] is not None: 
-        #     eth = list_ipv6[1][0: 4].strip()
-        #     ip = get_eth_address(eth)
-        #     area = list_ipv6[1][list_ipv6[1].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[1], list_ipv6[1].index('0.0.0.'), '\n') - 1]
-        #     data['OSPF']['net_work_1'] = ip + '/' + ' area ' + area
-        # else: data['OSPF']['net_work_1'] = ' area '
-        # if list_ipv6[2] is not None: 
-        #     eth = list_ipv6[2][0: 4].strip()
-        #     ip = get_eth_address(eth)
-        #     area = list_ipv6[2][list_ipv6[2].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[2], list_ipv6[2].index('0.0.0.'), '\n') - 1]
-        #     data['OSPF']['net_work_2'] = ip + '/' + ' area ' + area
-        # else: data['OSPF']['net_work_2'] = ' area '
-        # if list_ipv6[3] is not None: 
-        #     eth = list_ipv6[3][0: 4].strip()
-        #     ip = get_eth_address(eth)
-        #     area = list_ipv6[3][list_ipv6[3].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[3], list_ipv6[3].index('0.0.0.'), '\n') - 1]
-        #     data['OSPF']['net_work_3'] = ip + '/' + ' area ' + area
-        # else: data['OSPF']['net_work_3'] = ' area '
-        # if list_ipv6[4] is not None: 
-        #     eth = list_ipv6[4][0: 4].strip()
-        #     ip = get_eth_address(eth)
-        #     area = list_ipv6[4][list_ipv6[4].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[4], list_ipv6[4].index('0.0.0.'), '\n') - 1]
-        #     data['OSPF']['net_work_4'] = ip + '/' + ' area ' + area
-        # else: data['OSPF']['net_work_4'] = ' area '
-        # if list_ipv6[5] is not None: 
-        #     eth = list_ipv6[5][0: 4].strip()
-        #     ip = get_eth_address(eth)
-        #     area = list_ipv6[5][list_ipv6[5].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[5], list_ipv6[5].index('0.0.0.'), '\n') - 1]
-        #     data['OSPF']['net_work_5'] = ip + '/' + ' area ' + area
-        # else: data['OSPF']['net_work_5'] = ' area '
+        try: 
+            eth = list_ipv6[1][0: 4].strip()
+            ip = get_eth_address(eth)
+            area = list_ipv6[1][list_ipv6[1].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[1], list_ipv6[1].index('0.0.0.'), '\n') - 1]
+            data['OSPF']['net_work_1'] = ip + '/' + ' area ' + area
+        except IndexError: data['OSPF']['net_work_1'] = ' area '
+        try: 
+            eth = list_ipv6[2][0: 4].strip()
+            ip = get_eth_address(eth)
+            area = list_ipv6[2][list_ipv6[2].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[2], list_ipv6[2].index('0.0.0.'), '\n') - 1]
+            data['OSPF']['net_work_2'] = ip + '/' + ' area ' + area
+        except IndexError: data['OSPF']['net_work_2'] = ' area '
+        try: 
+            eth = list_ipv6[3][0: 4].strip()
+            ip = get_eth_address(eth)
+            area = list_ipv6[3][list_ipv6[3].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[3], list_ipv6[3].index('0.0.0.'), '\n') - 1]
+            data['OSPF']['net_work_3'] = ip + '/' + ' area ' + area
+        except IndexError: data['OSPF']['net_work_3'] = ' area '
+        try: 
+            eth = list_ipv6[4][0: 4].strip()
+            ip = get_eth_address(eth)
+            area = list_ipv6[4][list_ipv6[4].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[4], list_ipv6[4].index('0.0.0.'), '\n') - 1]
+            data['OSPF']['net_work_4'] = ip + '/' + ' area ' + area
+        except IndexError: data['OSPF']['net_work_4'] = ' area '
+        try: 
+            eth = list_ipv6[5][0: 4].strip()
+            ip = get_eth_address(eth)
+            area = list_ipv6[5][list_ipv6[5].index('0.0.0.') + len('0.0.0.'): index_near_key(list_ipv6[5], list_ipv6[5].index('0.0.0.'), '\n') - 1]
+            data['OSPF']['net_work_5'] = ip + '/' + ' area ' + area
+        except IndexError: data['OSPF']['net_work_5'] = ' area '
         if '!redistribute rip' in tmp: data['OSPF']['rip'] = False
         else: data['OSPF']['rip'] = True
         if '!redistribute static' in tmp: data['OSPF']['static'] = False
@@ -516,119 +570,114 @@ def read_quagga():
         else: data['OSPF']['kernel'] = True
         if '!redistribute connected' in tmp: data['OSPF']['connected'] = False
         else: data['OSPF']['connected ']= True
+    db_system_setting = TinyDB('../NE_db/system_setting')
+    if db_system_setting.get(Query().type== 'quagga_setting') is not None:
+        db_system_setting.update({'OSPF': data['OSPF']}, Query().type== 'quagga_setting')
+    else:
+        db_system_setting.insert({'type': "quagga_setting",  'OSPF': data['OSPF']})
+    
+    with open('/etc/quagga/ripd.conf', 'r', encoding='utf-8') as file:
+        read_data = file.read()
+        file.close()
+    if '#net.ipv4.ip_forward=1' not in file_sysctr:
+        tmp = read_data[read_data.index("router rip"): read_data.index("log stdout")]
+        arr_network = tmp.split('\n')
+        arr_network = list(filter(lambda a: 'network' in a, arr_network))
+        for element in arr_network:
+            element = element.replace('network', '').strip()
+        data['RIP']['ipv4'] = True
+        data['RIP']['ipv6'] = False
+        try: data['RIP']['net_work_1'] = arr_network[0]
+        except IndexError: data['RIP']['net_work_1'] = ""
+        try: data['RIP']['net_work_2'] = arr_network[1]
+        except IndexError: data['RIP']['net_work_2'] = ""
+        try: data['RIP']['net_work_3'] = arr_network[2]
+        except IndexError: data['RIP']['net_work_3'] = ""
+        try: data['RIP']['net_work_4'] = arr_network[3]
+        except IndexError: data['RIP']['net_work_4'] = ""
+        try: data['RIP']['net_work_5'] = arr_network[4]
+        except IndexError: data['RIP']['net_work_5'] = ""
+
+        if '!redistribute ospf' in tmp: data['RIP']['ospf'] = False
+        else: data['RIP']['ospf'] = True
+        if '!redistribute static' in tmp: data['RIP']['static'] = False
+        else: data['RIP']['static'] = True
+        if'!redistribute kernel' in tmp: data['RIP']['kernel'] = False
+        else: data['RIP']['kernel'] = True
+        if '!redistribute connected' in tmp: data['RIP']['connected'] = False
+        else: data['RIP']['connected ']= True
+    else:
+        with open('/etc/quagga/ripngd.conf', 'r', encoding='utf-8') as file:
+            read_data = file.read()
+            file.close()
+        tmp = read_data[read_data.index("router ripng"): read_data.index("log stdout")]
+        list_tmp = tmp.split('\n')
+        data['RIP']['ipv4'] = False
+        data['RIP']['ipv6'] = True
+        list_tmp = list(filter(lambda a: 'network' in a, list_tmp))
+
+        print(list_tmp)
+        try: 
+            eth = list_tmp[0][list_tmp[0].index('eth'):].strip()
+            ip = get_eth_address(eth)
+            data['RIP']['net_work_1'] = ip + '/'
+        except IndexError:data['RIP']['net_work_1'] = ''
+        try: 
+            eth = list_tmp[1][list_tmp[1].index('eth'):].strip()
+            ip = get_eth_address(eth)
+            data['RIP']['net_work_2'] = ip + '/'
+        except IndexError:data['RIP']['net_work_2'] = ''
+        try: 
+            eth = list_tmp[2][list_tmp[2].index('eth'):].strip()
+            ip = get_eth_address(eth)
+            data['RIP']['net_work_3'] = ip + '/'
+        except IndexError:data['RIP']['net_work_3'] = ''
+        try: 
+            eth = list_tmp[3][list_tmp[3].index('eth'):].strip()
+            ip = get_eth_address(eth)
+            data['RIP']['net_work_4'] = ip + '/'
+        except IndexError:data['RIP']['net_work_4'] = ''
+        try: 
+            eth = list_tmp[4][list_tmp[4].index('eth'):].strip()
+            ip = get_eth_address(eth)
+            data['RIP']['net_work_5'] = ip + '/'
+        except IndexError:data['RIP']['net_work_5'] = ''
+        if '!redistribute ospf' in tmp: data['RIP']['ospf'] = False
+        else: data['RIP']['ospf'] = True
+        if '!redistribute static' in tmp: data['RIP']['static'] = False
+        else: data['RIP']['static'] = True
+        if'!redistribute kernel' in tmp: data['RIP']['kernel'] = False
+        else: data['RIP']['kernel'] = True
+        if '!redistribute connected' in tmp: data['RIP']['connected'] = False
+        else: data['RIP']['connected ']= True
     print(data)
-#     /*  */
-#   }
-#   db.system_setting.findOne({ type: "quagga_setting" }, function (err, docs) {
-#     if (!docs) {
-#       db.system_setting.insert({ type: "quagga_setting", OSPF: data.OSPF }, function (err) {
-#       });
-#     }
-#     else {
-#       db.system_setting.update({ type: "quagga_setting" }, { $set: { OSPF: data.OSPF } }, {}, function () { });
-#     }
-#   });
-#   read_data = fs.readFileSync('/etc/quagga/ripd.conf', 'utf8');
-#   read_data = read_data.toString();
-#   if (!file_sysctr.includes('#net.ipv4.ip_forward=1')) {
-#     var tmp = read_data.slice(read_data.indexOf("router rip"), read_data.indexOf("log stdout"));
-#     let arr_network = tmp.split('\n');
-#     arr_network = arr_network.filter(function (a) {
-#       return a.includes('network');
-#     })
-#     for (let i = 0; i < arr_network.length; i++) {
-#       arr_network[i] = arr_network[i].replace('network', '').trim();
-#     }
-#     data.RIP.ipv4 = true;
-#     data.RIP.ipv6 = false;
-#     console.log(arr_network);
-#     if (arr_network[0] != undefined) data.RIP.net_work_1 = arr_network[0];
-#     else data.RIP.net_work_1 = "";
-#     if (arr_network[1] != undefined) data.RIP.net_work_2 = arr_network[1];
-#     else data.RIP.net_work_2 = "";
-#     if (arr_network[2] != undefined) data.RIP.net_work_3 = arr_network[2];
-#     else data.RIP.net_work_3 = "";
-#     if (arr_network[3] != undefined) data.RIP.net_work_4 = arr_network[3];
-#     else data.RIP.net_work_4 = "";
-#     if (arr_network[4] != undefined) data.RIP.net_work_5 = arr_network[4];
-#     else data.RIP.net_work_5 = "";
-#     if (tmp.includes('!redistribute ospf')) data.RIP.ospf = false;
-#     else data.RIP.ospf = true;
-#     if (tmp.includes('!redistribute static')) data.RIP.static = false;
-#     else data.RIP.static = true;
-#     if (tmp.includes('!redistribute kernel')) data.RIP.kernel = false;
-#     else data.RIP.kernel = true;
-#     if (tmp.includes('!redistribute connected')) data.RIP.connected = false;
-#     else data.RIP.connected = true;
-#   }
-#   else {
-#     read_data = fs.readFileSync('/etc/quagga/ripngd.conf', 'utf8');
-#     read_data = read_data.toString();
-#     var tmp = read_data.slice(read_data.indexOf("router ripng"), read_data.indexOf("log stdout"));
-#     let list = tmp.split('\n');
-#     data.RIP.ipv4 = false;
-#     data.RIP.ipv6 = true;
-#     list = list.filter(function (a) {
-#       return a.includes('network');
-#     })
-#     if (list[0] != undefined) {
-#       let eth = list[0].slice(list[0].indexOf('eth')).trim();
-#       let ip = get_eth_address(eth);
-#       data.RIP.net_work_1 = ip + '/';
-#     }
-#     else {
-#       data.RIP.net_work_1 = '';
-#     }
-#     if (list[1] != undefined) {
-#       let eth = list[1].slice(list[1].indexOf('eth')).trim();
-#       let ip = get_eth_address(eth);
-#       data.RIP.net_work_2 = ip + '/';
-#     }
-#     else {
-#       data.RIP.net_work_2 = '';
-#     }
-#     if (list[2] != undefined) {
-#       let eth = list[2].slice(list[2].indexOf('eth')).trim();
-#       let ip = get_eth_address(eth);
-#       data.RIP.net_work_3 = ip + '/';
-#     }
-#     else {
-#       data.RIP.net_work_3 = '';
-#     }
-#     if (list[3] != undefined) {
-#       let eth = list[3].slice(list[3].indexOf('eth')).trim();
-#       let ip = get_eth_address(eth);
-#       data.RIP.net_work_4 = ip + '/';
-#     }
-#     else {
-#       data.RIP.net_work_4 = '';
-#     }
-#     if (list[4] != undefined) {
-#       let eth = list[4].slice(list[4].indexOf('eht')).trim();
-#       let ip = get_eth_address(eth);
-#       data.RIP.net_work_5 = ip + '/';
-#     }
-#     else {
-#       data.RIP.net_work_5 = '';
-#     }
-#     if (tmp.includes('!redistribute ospf')) data.RIP.ospf = false;
-#     else data.RIP.ospf = true;
-#     if (tmp.includes('!redistribute static')) data.RIP.static = false;
-#     else data.RIP.static = true;
-#     if (tmp.includes('!redistribute kernel')) data.RIP.kernel = false;
-#     else data.RIP.kernel = true;
-#     if (tmp.includes('!redistribute connected')) data.RIP.connected = false;
-#     else data.RIP.connected = true;
-#   }
-#   db.system_setting.findOne({ type: "quagga_setting" }, function (err, docs) {
-#     if (!docs) {
-#       db.system_setting.insert({ type: "quagga_setting", RIP: data.RIP }, function (err) {
-#       });
-#     }
-#     else {
-#       db.system_setting.update({ type: "quagga_setting" }, { $set: { RIP: data.RIP } }, {}, function () { });
-#     }
-#   });
+    if db_system_setting.get(Query().type== 'quagga_setting') is not None:
+        db_system_setting.update({'RIP': data['RIP']}, Query().type== 'quagga_setting')
+    else:
+        db_system_setting.insert({'type': "quagga_setting",  'RIP': data['RIP']})
+    db_system_setting.close()
+
+
+def read_infor():
+    with open('/etc/informations.txt', 'r', encoding='utf-8') as file:
+        read_data = file.read()
+        file.close()
+    data = {}
+    data['node_id'] = get_key_value(read_data, "Node id ", ":", 1, "\n").strip()
+    data['who_apply'] = get_key_value(read_data, "Don vi/ Luc luong trien khai", ":", 1, "\n").strip()
+    data['who_use'] = get_key_value(read_data, "Don vi su dung", ":", 1, "\n").strip()
+    data['date_apply'] = get_key_value(read_data, "Ngay trien khai", ":", 1, "\n").strip()
+    data['number_infor'] = read_data[read_data.index("So thue bao su dung va thong tin cac thue bao : ") + len("So thue bao su dung va thong tin cac thue bao : "): read_data.index("Thong tin khac :") - 1]
+    data['other_infor'] = read_data[read_data.index("Thong tin khac :") + len("Thong tin khac :"):].strip()
+    print(data)
+    db_system_setting = TinyDB('../NE_db/system_setting')
+    if db_system_setting.get(Query().type== 'infor') is not None:
+        db_system_setting.update({'data': data}, Query().type== 'infor')
+    else:
+        db_system_setting.insert({'type': "infor",  'data': data})
+    db_system_setting.close()
+    
+
 
 
 

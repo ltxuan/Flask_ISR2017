@@ -9,8 +9,7 @@ import subprocess
 
 from sip_process import *
 from pjsip import *
-
-
+import asyncio
 
 def get_eth_address(eth):
     with open('/etc/network/interfaces', encoding='utf-8') as fs:
@@ -176,7 +175,6 @@ def socket_process(socketio):
         'GE2': "STATIC",
         'GE3': "STATIC",
         'GE4': "STATIC"}
-        
         # print('\n', ip0)
         # print('\n', ip1)
         # print('\n', ip2)
@@ -248,7 +246,7 @@ def socket_process(socketio):
     
     @socketio.on('web_data')
     def web_data(msg):
-        # print(msg)
+        print(msg)
         if msg.get("account") is not None:
             db = TinyDB('../NE_db/user_db')
             User = Query()
@@ -343,5 +341,8 @@ def socket_process(socketio):
                     else:
                         print('trunk account does not exits')
             db.close()
-        # if len(msg['sip_configure']) > 0:
-        #     sip_config(msg['sip_configure'])
+        if len(msg['sip_configure']) > 0:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(sip_config(msg['sip_configure']))
+            loop.close()

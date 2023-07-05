@@ -8,8 +8,8 @@ import threading
 from sip_process import *
 from pjsip import *
 from readdata import *
-
-
+import builtins
+import asyncio
 
 # creates a Flask application
 app = Flask(__name__)
@@ -107,17 +107,19 @@ def get_system_date():
 
 # run the application
 if __name__ == "__main__":
-	# socket_process(socketio)
-	# thread = threading.Thread(target=schedule_Init_pjsip)
-	# thread.start()
 	read_system()
-	# socketio.run(app, host="0.0.0.0", port=80, debug=False)
+	# print(builtins.NODE_ID)
+	socket_process(socketio)
+	process_thread = threading.Thread(target=start_processes_pjsip)
+	process_thread.start()
+	# process_thread2 = threading.Thread(target=start_processes_SNMP)
+	# process_thread2.start()
 
-	# thread2 = threading.Thread(target=delayed_action2)
+	# repeat_task()
 
-    # # Khởi chạy các thread
-    # thread1.start()
-    # thread2.start()
+	socketio.run(app, host="0.0.0.0", port=80, debug=False)
+	
+
 
 
 

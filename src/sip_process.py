@@ -1,6 +1,6 @@
 import re
 import asyncio
-
+import subprocess
 def index_near_key(src, start, key):
     i = 0
     while i < 1000:
@@ -16,6 +16,15 @@ def modify_key_custom(src, key, separate, index, value):
     tmp1 = src[index_near_key(src, src.index(key), separate) + index:index_near_key(src, src.index(key), '\n')]
     tmp2 = tmp.replace(tmp1, value) + '\n'
     return src.replace(tmp, tmp2)
+
+
+
+def modify_key(src, key, value):
+    tmp = src[src.index(key):index_near_key(src, src.index(key), '\n')]
+    tmp1 = src[index_near_key(src, src.index(key), '='):index_near_key(src, src.index(key), '\n')]
+    tmp2 = tmp.replace(tmp1, value) + '\n'
+    return src.replace(tmp, tmp2)
+
 
 def add_sip(data):
     with open('/etc/asterisk/sip.conf','r', encoding='utf-8') as file:
@@ -278,5 +287,94 @@ def delete_trunk(data):
             write_data = write_data.replace(arr[i], "")
             with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
                 file.write(write_data) 
+async def my_async_function():
+    print("Starting async task")
+    await asyncio.sleep(1)  # Đợi trong 1 giây (tác vụ asynchronous)
+    print("Async task completed")
+async def sip_config(msg):
+    sip_status = False
+    child = subprocess.Popen(['../RL_uart/app'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+    for item in msg:
+        tmp_status = ''
+        tmp_h_status = ''
+        if 'transport' in item or 'port' in item:
+            print('change transport')
+        if item.get('status') == 'checked':
+            tmp_status = '1'
+        elif item.get('status') is None:
+            tmp_status = 'undefined'
+        else:
+            tmp_status = '0'
+        if item.get('h_status') == 'checked':
+            tmp_h_status = '1'
+        elif item.get('h_status') is None:
+            tmp_h_status = 'undefined'
+        else:
+            tmp_h_status = '0'
+        command = "id:{}$domain:{}$status:{}$h_statu:{}$hotline:{}$secret:{}$transport:{}$port:{}$username:{}\n".format(
+            item['id'], item.get('domain', 'undefined'), tmp_status, tmp_h_status, item.get('hotline', 'undefined'), item.get('password', 'undefined'), item.get('transport', 'undefined'), item.get('port', 'undefined'), item.get('caller_id', 'undefined')
+        )
+        # print(command)
+        command_bytes = command.encode()
+        child.stdin.write(command_bytes)
+        await asyncio.sleep(0.07)
+    with open('/etc/pjsip/config', 'r', encoding='utf-8') as file:
+        readed_data = file.read()
+        file.close()
+    arr = readed_data.split('#account\n')
+    tmp = readed_data
+    for item in msg:
+        index = int(item['id']) + 1
+        print("index", index)
+        val = ''
+        buf = arr[index]
+        if 'domain' in item:
+            val = modify_key(arr[index], 'domain', item['domain'])
+            buf = val
+        if 'status' in item:
+            if item['status'] == 'checked':
+                val = modify_key(buf, 'status', "1")
+            else:
+                val = modify_key(buf, 'status', "0")
+            buf = val
+        if 'password' in item:
+            val = modify_key(buf, 'secret', item['password'])
+            buf = val     
+        if 'caller_id' in item:
+            val = modify_key(buf, 'username', item['caller_id'])
+            buf = val
+        if 'transport' in item:
+            val = modify_key(buf, 'transport', item['transport'])
+            buf = val
+        if 'port' in item:
+            val = modify_key(buf, 'sip_port', item['port'])
+            buf = val
+        if 'hotline' in item:
+            val = modify_key(buf, 'hotline', item['hotline'])
+            buf = val 
+        if 'h_status' in item:
+            if item['h_status'] == 'checked':
+                val = modify_key(buf, 'h_status', "1")
+            else:
+                val = modify_key(buf, 'h_status', "0")
+            buf = val
+        tmp = tmp.replace(arr[index], val)
+        print('nahsc \n', val, '\n', arr[index])
+        # with open('/etc/pjsip/config', 'w') as file:
+        #     file.write(tmp)
+        #     file.close()
+    # for element in msg:
+    #     db.sip1_config.update({'id': element['id']}, {'$set': element}, {})
+    #     io.emit('database_change', element)
+
+   
+
+
+        
+        
+        
+        
+        
+
 
 
