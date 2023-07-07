@@ -9,7 +9,7 @@ from sip_process import *
 from pjsip import *
 from readdata import *
 import builtins
-import asyncio
+from EMS import NE
 
 # creates a Flask application
 app = Flask(__name__)
@@ -19,9 +19,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 async_mode = None
-socketio = SocketIO(app)
-set_socketio(socketio)
+builtins.socketio = SocketIO(app)
 
+app.register_blueprint(NE)
 
 
 @app.before_first_request
@@ -90,28 +90,13 @@ def register():
 		msg = 'Please fill out the form !'
 	return render_template('register.html', msg = msg)
 
-
-#---------------Rest API ----------------#
-@app.route("/system/date/get", methods=['GET'])
-def get_system_date():
-	db = TinyDB('../NE_db/system_setting')
-	User = Query()
-	data = db.search(User.type == "time_setting")[0]['data']
-	data['object'] = '015' + "_ISR2017_SYS_DATE"
-	data['date'] = data['date'] + " " + data['time']
-	del data['time']
-	print("object gui di")
-	print(data)
-	return jsonify(data)
-
-
 # run the application
 if __name__ == "__main__":
 	read_system()
 	# print(builtins.NODE_ID)
 	socket_process(socketio)
-	process_thread = threading.Thread(target=start_processes_pjsip)
-	process_thread.start()
+	# process_thread = threading.Thread(target=start_processes_pjsip)
+	# process_thread.start()
 	# process_thread2 = threading.Thread(target=start_processes_SNMP)
 	# process_thread2.start()
 

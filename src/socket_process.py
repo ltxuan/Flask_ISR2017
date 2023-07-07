@@ -31,6 +31,7 @@ def socket_process(socketio):
     def infor():
         db = TinyDB('../NE_db/system_setting')
         User = Query()
+        
         emit("RES_INFOR", db.search(User.type=="infor")[0]['data'])
 
     @socketio.on('GET_BACKUP')

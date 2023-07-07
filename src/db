@@ -1,0 +1,1 @@
+{"_default": {"1": {"id": "0", "status": "checked", "h_status": "", "caller_id": "958250", "domain": "10.10.0.189", "port": "5062", "hotline": "958299", "transport": "TCP", "password": "958250", "sip_uri": "sip:958250@10.10.0.189:5062"}}}

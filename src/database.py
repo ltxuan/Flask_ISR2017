@@ -61,7 +61,14 @@ def update_key():
 
     print(db.all())
 
-
-
+def test_update_all():
+    db = TinyDB('db')
+    db.truncate()
+    data = {"id": "0", "status": "checked", "h_status": "", "caller_id": "958250", "domain": "10.10.0.189", "port": "5062", "hotline": "958299", "transport": "UDP", "password": "958250", "sip_uri": "sip:958250@10.10.0.189:5062"}
+    data1 = {"id": "0", "transport": "TCP"}
+    db.insert(data)
+    print(db.all())
+    db.update(data1, Query().id == data["id"])
+    print(db.all())
 if __name__ == "__main__":
-    update_key()
+    test_update_all()

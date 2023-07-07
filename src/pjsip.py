@@ -10,15 +10,6 @@ import datetime
 sip1_arr_state = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 mutex = threading.Lock()
 
-
-
-socketio = None
-
-def set_socketio(sio):
-    global socketio
-    socketio = sio
-
-
 def handle_message(str):
     if 'msg:account' in str:
         db = TinyDB('../NE_db/sip1_db')

@@ -1,6 +1,9 @@
 import re
 import asyncio
 import subprocess
+from tinydb import TinyDB, Query
+import builtins
+
 def index_near_key(src, start, key):
     i = 0
     while i < 1000:
@@ -287,10 +290,8 @@ def delete_trunk(data):
             write_data = write_data.replace(arr[i], "")
             with open('/etc/asterisk/sip.conf','w', encoding='utf-8') as file:
                 file.write(write_data) 
-async def my_async_function():
-    print("Starting async task")
-    await asyncio.sleep(1)  # Đợi trong 1 giây (tác vụ asynchronous)
-    print("Async task completed")
+
+
 async def sip_config(msg):
     sip_status = False
     child = subprocess.Popen(['../RL_uart/app'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
@@ -359,11 +360,14 @@ async def sip_config(msg):
                 val = modify_key(buf, 'h_status', "0")
             buf = val
         tmp = tmp.replace(arr[index], val)
-        print('nahsc \n', val, '\n', arr[index])
-        # with open('/etc/pjsip/config', 'w') as file:
-        #     file.write(tmp)
-        #     file.close()
-    # for element in msg:
+        with open('/etc/pjsip/config', 'w') as file:
+            file.write(tmp)
+            file.close()
+    
+        db_sip1 = TinyDB('../NE_db/sip1_db')
+        db_sip1.update(item, Query().id== item['id'])
+        socketio.emit('database_change', item)
+
     #     db.sip1_config.update({'id': element['id']}, {'$set': element}, {})
     #     io.emit('database_change', element)
 
