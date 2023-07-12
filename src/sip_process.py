@@ -368,17 +368,68 @@ async def sip_config(msg):
         db_sip1.update(item, Query().id== item['id'])
         socketio.emit('database_change', item)
 
-    #     db.sip1_config.update({'id': element['id']}, {'$set': element}, {})
-    #     io.emit('database_change', element)
 
-   
+def audio_setting(msg):
+    if msg.get('priotiy_change'):
+        with open('/etc/pjsip/config', 'r', encoding='utf-8') as file:
+            readed_data = file.read()
+            file.close()
+        arr = readed_data.split("#codec_set\n")
+        write_data = arr[1]
+        for codec in ["speex/16000/1", "speex/32000/1", "speex/8000/1", "iLBC/8000/1", "GSM/8000/1",
+                      "PCMU/8000/1", "PCMA/8000/1", "G722/16000/1", "AMR/8000/1", "opus/48000/2",
+                      "G729/8000/1", "L16/44100/2", "L16/44100/1"]:
+            write_data = modify_key(write_data, codec, '0')
+        for i, priority in enumerate(msg.get('priotiy', [])):
+            if priority != "":
+                write_data = modify_key(write_data, priority, str(100 - i))
+        
+        write_data = readed_data.replace(arr[1], write_data)
+        with open('/etc/pjsip/config', 'w') as file:
+            file.write(write_data)
+            file.close()
+    if msg.get('dtmf_change'):
+        with open('/etc/pjsip/config', 'r', encoding='utf-8') as file:
+            readed_data = file.read()
+            file.close()
+        if msg.get('in_band'):
+            write_data = modify_key(readed_data, "dtmf", "inband")
+        elif msg.get('rc'):
+            write_data = modify_key(readed_data, "dtmf", "rfc2833")
+        elif msg.get('info'):
+            modify_key(readed_data, "dtmf", "info")
+        with open('/etc/pjsip/config', 'w') as file:
+            file.write(write_data)
+            file.close()
+    if msg.get('srtp_change'):
+         with open('/etc/pjsip/config', 'r+', encoding='utf-8') as file:
+            readed_data = file.read()
+            write_data = modify_key(readed_data, "use_srtp", msg['srtp_mode'])
+            file.write(write_data)
+            file.close()
+#     if msg.get('echo_change'):
+#         print('echo_change')
+#         with open('/etc/pjsip/config', 'r', encoding='utf-8') as file:
+#             readed_data = file.read()
+#             file.close()
+#         if msg.get('echo'):
+#             child = subprocess.Popen(['../RL_uart/app'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=False)
 
 
-        
-        
-        
-        
-        
+#     if (msg.echo_change) {
+#     console.log("echo_change");
+#     var data = fs.readFileSync('/etc/pjsip/config', 'utf8');
+#     var readed_data = data.toString();
+#     if (msg.echo) {
+#       child.stdin.write("msg:echo_enable:1\n");
+#       fs.writeFileSync('/etc/pjsip/config', modify_key(readed_data, "echo_enable", "1"));
+#     }
+#     else {
+#       child.stdin.write("msg:echo_enable:1\n");
+#       fs.writeFileSync('/etc/pjsip/config', modify_key(readed_data, "echo_enable", "0"));
+#     }
+#   }
+      
 
 
 

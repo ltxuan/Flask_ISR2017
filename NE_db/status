@@ -1,1 +1,1 @@
-{"_default": {"1": {"type": "dasboard", "data": {"arm_ready": "NO", "fpga_ready": "NO", "ok_3v": "OK", "ok_5v": "OK", "arr": [], "cpu_temp": "0 oC", "temp": "0", "humd": "0"}}}}
+{"_default": {"1": {"type": "dasboard", "data": {"arm_ready": "NO", "fpga_ready": "NO", "ok_3v": "OK", "ok_5v": "OK", "arr": [], "cpu_temp": "0 oC", "temp": "39.1", "humd": "28.3"}}}}

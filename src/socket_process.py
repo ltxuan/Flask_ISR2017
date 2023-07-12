@@ -6,10 +6,47 @@ import json
 import datetime
 from flask_session import Session
 import subprocess
+import time
 
 from sip_process import *
 from pjsip import *
 import asyncio
+
+
+def time_setting(msg):
+    subprocess.run(['timedatectl', 'set-timezone', msg['time_setting']['timezone']])
+    if msg.get('time_setting'):
+        if msg['time_setting'].get('sync'):
+            print("time")
+            subprocess.run(['timedatectl', 'set-ntp', 'yes'])
+            with open('/etc/hosts', 'r', encoding='utf-8') as file:
+                data = file.read()
+                file.close()
+                index = data.index("\n# The following ")
+                write_data = None
+                for i in range(index - 1, 0, -1):
+                    if data[i] == '\n':
+                        print(i)
+                        write_data = data[i:index + 1]
+                        break
+                write_data = data.replace(write_data, "\n" + msg['time_setting']['NTP'] + "   NTP-server-host\n")
+            with open('/etc/hosts', 'w') as file:
+                file.write(write_data)
+                file.close()
+        elif msg['time_setting'].get('manual'):
+            subprocess.run(['timedatectl', 'set-ntp', 'no'])
+            subprocess.run(['timedatectl', 'set-time', msg['time_setting']['date']])
+            time.sleep(1)
+            subprocess.run(['timedatectl', 'set-time', msg['time_setting']['time']])
+        db_system_setting = TinyDB('../NE_db/system_setting')
+        if db_system_setting.get(Query().type== 'time_setting') is not None:
+            db_system_setting.update({'data': msg['time_setting']}, Query().type== 'time_setting')
+        else:
+            db_system_setting.insert({'type': 'time_setting',  'data': msg['time_setting']})
+        db_system_setting.close()
+    
+    
+
 
 def get_eth_address(eth):
     with open('/etc/network/interfaces', encoding='utf-8') as fs:
@@ -263,7 +300,7 @@ def socket_process(socketio):
                     emit('user_not_exist')
                 else:
                     if docs[0]['password'] == msg['account'].get('old_pass_word'):
-                        db.update(User.username == msg["account"].get("change_user_name"), {'password': msg['account'].get('new_pass_word'), })
+                        db.update(User.username == msg["account"].get("change_user_name"), {'password': msg['account'].get('new_pass_word')})
                     else:
                         emit('wrong_pass')
             db.close()
@@ -347,3 +384,39 @@ def socket_process(socketio):
             asyncio.set_event_loop(loop)
             loop.run_until_complete(sip_config(msg['sip_configure']))
             loop.close()
+
+        # Tinh nang nay tam thoi chua chay duoc
+        # if 'audio_setting' in msg and msg['audio_setting']['echo'] is not None:
+        #     audio_setting(msg['audio_setting'])
+
+
+        if msg.get('infor'):
+            print(msg['infor'])
+            builtins.NODE_ID = msg['infor']['node_id']
+            write_data = "Node id: " + str(msg['infor']['node_id']) + "\n" + \
+                "Don vi/ Luc luong trien khai: " + msg['infor']['who_apply'] + '\n' + \
+                "Don vi su dung: " + msg['infor']['who_use'] + '\n' + \
+                "Ngay trien khai: " + msg['infor']['date_apply'] + '\n' + \
+                "So thue bao su dung va thong tin cac thue bao: " + msg['infor']['number_infor'] + '\n' + \
+                "Thong tin khac: " + msg['infor']['other_infor']
+
+            with open('/etc/informations.txt', 'w') as file:
+                file.write(write_data)   
+                file.close()         
+            db_system_setting = TinyDB('../NE_db/system_setting')
+            if db_system_setting.get(Query().type== 'infor') is not None:
+                db_system_setting.update({'data': msg['infor']}, Query().type== 'infor')
+            else:
+                db_system_setting.insert({'type': 'infor',  'data': msg['infor']})
+            db_system_setting.close()
+        if msg.get('time_setting'):
+            time_setting(msg)
+        if msg.get('make_cer'):
+            print(msg['make_cer'])
+            # make_cer(msg['make_cer'])
+            db_system_setting = TinyDB('../NE_db/system_setting')
+            if db_system_setting.get(Query().type== 'make_cer') is not None:
+                db_system_setting.update({'data': msg['make_cer']}, Query().type== 'make_cer')
+            else:
+                db_system_setting.insert({'type': 'make_cer',  'data': msg['make_cer']})
+            db_system_setting.close()

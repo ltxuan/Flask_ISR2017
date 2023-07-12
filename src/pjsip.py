@@ -12,13 +12,11 @@ mutex = threading.Lock()
 
 def handle_message(str):
     if 'msg:account' in str:
-        db = TinyDB('../NE_db/sip1_db')
-        db_status = TinyDB('../NE_db/status')
-        Status = Query()
-        if socketio is not None:
-            socketio.emit('config_1_status', str)
+        db_sip_db = TinyDB('../NE_db/sip1_db')
+        db_status = TinyDB('../NE_db/sip_status')
+        socketio.emit('config_1_status', str)
         arr = str.split("\n")
-        list_acc = db.all()
+        list_acc = db_sip_db.all()
         for i in range(len(arr) - 1):
             sip_uri = arr[i][arr[i].index('$index:') + 7:arr[i].rindex('$')]
             status = arr[i][arr[i].rindex(':') + 1:]
@@ -26,12 +24,13 @@ def handle_message(str):
                 if sip_uri in element['sip_uri']:
                     id = element['id']
                     break
-                if db_status.get(Status.id==id) is not None:
-                    db_status.update({'id': id, 'sip_uri': sip_uri, 'status': status}, Status.id == id)
+                print('\n', id , sip_uri, status)
+                if db_status.get(Query().id==id) is not None:
+                    db_status.update({'id': id, 'sip_uri': sip_uri, 'status': status}, Query().id == id)
                 else:
                     db_status.insert([{'id': id, 'sip_uri': sip_uri, 'status': status}])
         db_status.close()
-        db.close()
+        db_sip_db.close()
     elif 'msg:status' in str:
         if socketio is not None:
             socketio.emit('sip_state', str)
@@ -227,7 +226,8 @@ def restart_pjsip():
     print(f"Child process exited with code {exit_code}")
     time.sleep(5)
     restart_pjsip()
-    
+
+
 def start_child_process(command, directory, stdout_callback, stderr_callback, close_callback, delay):
     time.sleep(delay)  # Đợi khoảng thời gian
     child = subprocess.Popen(command, cwd=directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -254,7 +254,7 @@ def start_child_process(command, directory, stdout_callback, stderr_callback, cl
 
 def start_processes_pjsip():
     # Quá trình con thứ nhất, chạy sau 10 giây
-    builtins.child = start_child_process(
+    start_child_process(
         ['../RL_uart/app', ''],
         None,  # Thư mục hiện tại
         lambda line: print(line),  # Callback cho stdout
@@ -273,6 +273,10 @@ def start_processes_SNMP():
         15  # Khoảng thời gian chờ (15 giây)
     )
 
+def enable_restart_callback():
+    global enable_restart
+    enable_restart = True 
+
 def repeat_task():
     global enable_restart
     if enable_restart:
@@ -287,6 +291,4 @@ def repeat_task():
     # Lập lịch thực hiện lại sau một khoảng thời gian (ví dụ: 30 phút)
     repeat_time = Timer(1800, repeat_task).start()
 
-def enable_restart_callback():
-    global enable_restart
-    enable_restart = True    
+   

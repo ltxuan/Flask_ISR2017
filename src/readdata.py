@@ -22,13 +22,13 @@ def get_key_value(src, key, seperate, index, end):
 
 def read_system():
     Init_system()
-    # read_network()
-    # read_pjsip_config()
-    # read_sip_conf()
-    # read_sip_setting()
-    # read_extension_conf()
-    # read_quagga()
-    # read_infor()
+    read_network()
+    read_pjsip_config()
+    read_sip_conf()
+    read_sip_setting()
+    read_extension_conf()
+    read_quagga()
+    read_infor()
 
 def Init_system():
     db_status = TinyDB('../NE_db/status')
@@ -72,7 +72,7 @@ def Init_system():
         builtins.NODE_ID = db_system_setting.search(Query().type == 'infor')[0]['data']['node_id']
     else:
         builtins.NODE_ID = '999'
-    print(builtins.NODE_ID)
+    # print(builtins.NODE_ID)
 
     subprocess.run(['/etc/init.d/snmpd', 'stop'], shell=True)
 
@@ -83,7 +83,7 @@ def read_GE(PortGE):
         read_data = read_data.strip()
         file.close()
     data = {
-    'id': 1,
+    'id': PortGE[2],
     'ipv4': False,
     'ipv6': False,
     'dhcp': False,
@@ -122,7 +122,10 @@ def read_GE(PortGE):
                 data['primaryDNS'] = GE[GE.index('dns-nameservers ') + len('dns-nameservers '):].split(' ')[0]
                 data['secondaryDNS'] = get_key_value(GE, data['primaryDNS'], ' ', 0, '\n')
     # Ghi dữ liệu vào cơ sở dữ liệu (database)
-    db.update({'data':data}, Query().name == PortGE)
+    if db.get(Query().name == PortGE) is not None:
+        db.update({'data':data}, Query().name == PortGE)
+    else:
+        db.insert({'name': PortGE,  'data': data})
     db.close()
 
 def read_Loopback():
@@ -141,7 +144,10 @@ def read_Loopback():
         data["ipaddress"] = get_key_value(LOOP, "address", " ", 0, "\n")
         data["netmask"] = get_key_value(LOOP, "netmask", " ", 0, "\n")
     # print('loop = \n', data)
-    db.update({'data':data}, Query().name == "LOOP_BACK")
+    if db.get(Query().name == 'LOOP_BACK') is not None:
+        db.update({'data':data}, Query().name == 'LOOP_BACK')
+    else:
+        db.insert({'name': 'LOOP_BACK',  'data': data})
     db.close()
 
 def read_network():
@@ -650,7 +656,7 @@ def read_quagga():
         else: data['RIP']['kernel'] = True
         if '!redistribute connected' in tmp: data['RIP']['connected'] = False
         else: data['RIP']['connected ']= True
-    print(data)
+    # print(data)
     if db_system_setting.get(Query().type== 'quagga_setting') is not None:
         db_system_setting.update({'RIP': data['RIP']}, Query().type== 'quagga_setting')
     else:
@@ -669,7 +675,7 @@ def read_infor():
     data['date_apply'] = get_key_value(read_data, "Ngay trien khai", ":", 1, "\n").strip()
     data['number_infor'] = read_data[read_data.index("So thue bao su dung va thong tin cac thue bao : ") + len("So thue bao su dung va thong tin cac thue bao : "): read_data.index("Thong tin khac :") - 1]
     data['other_infor'] = read_data[read_data.index("Thong tin khac :") + len("Thong tin khac :"):].strip()
-    print(data)
+    # print(data)
     db_system_setting = TinyDB('../NE_db/system_setting')
     if db_system_setting.get(Query().type== 'infor') is not None:
         db_system_setting.update({'data': data}, Query().type== 'infor')

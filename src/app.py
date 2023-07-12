@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session
 from tinydb import TinyDB, Query
 import re
 from flask_socketio import SocketIO, emit, disconnect
@@ -90,20 +90,28 @@ def register():
 		msg = 'Please fill out the form !'
 	return render_template('register.html', msg = msg)
 
+def test():
+	db_sip = TinyDB('../NE_db/sip1_db')
+	data = sorted(db_sip.all(), key=lambda i: int(i['id']))
+	print(data)
+
+
 # run the application
 if __name__ == "__main__":
-	read_system()
-	# print(builtins.NODE_ID)
-	socket_process(socketio)
+	run_child_process()
+	# read_system()
+	# socket_process(socketio)
 	# process_thread = threading.Thread(target=start_processes_pjsip)
 	# process_thread.start()
+	# process_thread.join()
 	# process_thread2 = threading.Thread(target=start_processes_SNMP)
 	# process_thread2.start()
+	# process_thread2.join()
 
 	# repeat_task()
 
-	socketio.run(app, host="0.0.0.0", port=80, debug=False)
-	
+	# socketio.run(app, host="0.0.0.0", port=80, debug=False)
+	# test()
 
 
 

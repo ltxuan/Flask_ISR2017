@@ -32,7 +32,7 @@
             "domain": "10.10.0.189",
             "port": "5062",
             "hotline": "958299",
-            "transport": "UDP",
+            "transport": "TCP",
             "password": "958252",
             "sip_uri": "sip:958252@10.10.0.189:5062"
         },
